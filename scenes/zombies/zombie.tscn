@@ -1,0 +1,61 @@
+[gd_scene load_steps=16 format=3]
+
+[ext_resource type="Script" path="res://scripts/zombies/zombie.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/zombies/hurtbox.gd" id="2"]
+[ext_resource type="PackedScene" path="res://assets/models/zombie_legionary.glb" id="3"]
+[ext_resource type="PackedScene" path="res://assets/models/zombie_gladiator.glb" id="4"]
+[ext_resource type="AudioStream" path="res://assets/audio/zombie_groan_1.wav" id="5"]
+[ext_resource type="AudioStream" path="res://assets/audio/zombie_groan_2.wav" id="6"]
+[ext_resource type="AudioStream" path="res://assets/audio/zombie_groan_3.wav" id="7"]
+[ext_resource type="AudioStream" path="res://assets/audio/zombie_groan_4.wav" id="8"]
+[ext_resource type="AudioStream" path="res://assets/audio/zombie_attack_1.wav" id="9"]
+[ext_resource type="AudioStream" path="res://assets/audio/zombie_attack_2.wav" id="10"]
+[ext_resource type="AudioStream" path="res://assets/audio/zombie_death_1.wav" id="11"]
+[ext_resource type="AudioStream" path="res://assets/audio/zombie_death_2.wav" id="12"]
+
+[sub_resource type="CapsuleShape3D" id="body"]
+radius = 0.3
+height = 1.8
+
+[sub_resource type="CapsuleShape3D" id="hurt"]
+radius = 0.27
+height = 1.45
+
+[node name="Zombie" type="CharacterBody3D"]
+script = ExtResource("1")
+model_scenes = Array[PackedScene]([ExtResource("3"), ExtResource("4")])
+groan_sounds = Array[AudioStream]([ExtResource("5"), ExtResource("6"), ExtResource("7"), ExtResource("8")])
+attack_sounds = Array[AudioStream]([ExtResource("9"), ExtResource("10")])
+death_sounds = Array[AudioStream]([ExtResource("11"), ExtResource("12")])
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("body")
+
+[node name="Model" type="Node3D" parent="."]
+
+[node name="BodyHurtbox" type="Area3D" parent="."]
+script = ExtResource("2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BodyHurtbox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.82, 0.02)
+shape = SubResource("hurt")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_desired_distance = 0.7
+target_desired_distance = 1.0
+path_max_distance = 2.5
+avoidance_enabled = true
+height = 1.8
+radius = 0.42
+neighbor_distance = 4.0
+max_neighbors = 8
+time_horizon_agents = 0.6
+max_speed = 6.0
+
+[node name="Voice" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+volume_db = -1.0
+unit_size = 4.0
+max_distance = 40.0
+bus = &"SFX"

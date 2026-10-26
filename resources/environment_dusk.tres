@@ -1,0 +1,56 @@
+[gd_resource type="Environment" load_steps=5 format=3]
+
+[ext_resource type="Shader" path="res://resources/shaders/dusk_sky.gdshader" id="1"]
+[ext_resource type="Texture2D" path="res://assets/textures/stars.png" id="2"]
+
+[sub_resource type="ShaderMaterial" id="skymat"]
+shader = ExtResource("1")
+shader_parameter/stars = ExtResource("2")
+
+[sub_resource type="Sky" id="sky"]
+sky_material = SubResource("skymat")
+radiance_size = 2
+
+[resource]
+background_mode = 2
+sky = SubResource("sky")
+ambient_light_source = 3
+ambient_light_color = Color(0.45, 0.38, 0.42, 1)
+ambient_light_sky_contribution = 0.55
+ambient_light_energy = 1.35
+reflected_light_source = 2
+tonemap_mode = 3
+tonemap_exposure = 1.05
+tonemap_white = 6.0
+ssao_enabled = true
+ssao_radius = 1.6
+ssao_intensity = 1.6
+ssao_power = 1.4
+glow_enabled = true
+glow_levels/2 = 1.0
+glow_levels/4 = 0.6
+glow_intensity = 0.7
+glow_strength = 0.9
+glow_bloom = 0.05
+glow_blend_mode = 1
+glow_hdr_threshold = 1.1
+fog_enabled = true
+fog_mode = 0
+fog_light_color = Color(0.3, 0.24, 0.26, 1)
+fog_light_energy = 0.8
+fog_sun_scatter = 0.1
+fog_density = 0.006
+fog_sky_affect = 0.25
+fog_height = 1.5
+fog_height_density = 0.08
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.012
+volumetric_fog_albedo = Color(0.75, 0.72, 0.78, 1)
+volumetric_fog_emission = Color(0.03, 0.02, 0.02, 1)
+volumetric_fog_anisotropy = 0.45
+volumetric_fog_length = 70.0
+volumetric_fog_ambient_inject = 0.35
+volumetric_fog_sky_affect = 0.2
+adjustment_enabled = true
+adjustment_contrast = 1.06
+adjustment_saturation = 1.08

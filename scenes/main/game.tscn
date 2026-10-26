@@ -1,0 +1,55 @@
+[gd_scene load_steps=17 format=3]
+
+[ext_resource type="Script" path="res://scripts/main/game.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/colosseum/colosseum.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="3"]
+[ext_resource type="Script" path="res://scripts/economy/points_wallet.gd" id="4"]
+[ext_resource type="Resource" path="res://resources/economy/economy_config.tres" id="5"]
+[ext_resource type="Script" path="res://scripts/waves/wave_manager.gd" id="6"]
+[ext_resource type="Resource" path="res://resources/waves/wave_config.tres" id="7"]
+[ext_resource type="PackedScene" path="res://scenes/zombies/zombie.tscn" id="8"]
+[ext_resource type="Script" path="res://scripts/ui/hud.gd" id="9"]
+[ext_resource type="Script" path="res://scripts/ui/pause_menu.gd" id="10"]
+[ext_resource type="Script" path="res://scripts/ui/shop_menu.gd" id="11"]
+[ext_resource type="Script" path="res://scripts/ui/game_over.gd" id="12"]
+[ext_resource type="AudioStream" path="res://assets/audio/round_start.wav" id="13"]
+[ext_resource type="AudioStream" path="res://assets/audio/round_end.wav" id="14"]
+[ext_resource type="AudioStream" path="res://assets/audio/purchase.wav" id="15"]
+[ext_resource type="AudioStream" path="res://assets/audio/deny.wav" id="16"]
+
+[node name="Game" type="Node3D"]
+script = ExtResource("1")
+round_start_sound = ExtResource("13")
+round_end_sound = ExtResource("14")
+purchase_sound = ExtResource("15")
+deny_sound = ExtResource("16")
+
+[node name="Colosseum" parent="." instance=ExtResource("2")]
+
+[node name="Zombies" type="Node3D" parent="."]
+process_mode = 1
+
+[node name="Player" parent="." instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 6)
+
+[node name="PointsWallet" type="Node" parent="."]
+script = ExtResource("4")
+config = ExtResource("5")
+
+[node name="WaveManager" type="Node" parent="."]
+script = ExtResource("6")
+config = ExtResource("7")
+zombie_scene = ExtResource("8")
+container_path = NodePath("../Zombies")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+script = ExtResource("9")
+
+[node name="PauseMenu" type="CanvasLayer" parent="."]
+script = ExtResource("10")
+
+[node name="ShopMenu" type="CanvasLayer" parent="."]
+script = ExtResource("11")
+
+[node name="GameOverScreen" type="CanvasLayer" parent="."]
+script = ExtResource("12")

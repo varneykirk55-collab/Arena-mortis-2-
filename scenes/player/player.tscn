@@ -1,0 +1,48 @@
+[gd_scene load_steps=15 format=3]
+
+[ext_resource type="Script" path="res://scripts/player/player.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/player/interactor.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/weapons/weapon_manager.gd" id="3"]
+[ext_resource type="Resource" path="res://resources/weapons/pistol.tres" id="4"]
+[ext_resource type="PackedScene" path="res://assets/models/viewmodel_arms.glb" id="5"]
+[ext_resource type="AudioStream" path="res://assets/audio/player_hurt_1.wav" id="6"]
+[ext_resource type="AudioStream" path="res://assets/audio/player_hurt_2.wav" id="7"]
+[ext_resource type="AudioStream" path="res://assets/audio/player_death.wav" id="8"]
+[ext_resource type="AudioStream" path="res://assets/audio/footstep_sand_1.wav" id="9"]
+[ext_resource type="AudioStream" path="res://assets/audio/footstep_sand_2.wav" id="10"]
+[ext_resource type="AudioStream" path="res://assets/audio/footstep_sand_3.wav" id="11"]
+[ext_resource type="AudioStream" path="res://assets/audio/weapon_switch.wav" id="12"]
+[ext_resource type="AudioStream" path="res://assets/audio/hitmarker.wav" id="13"]
+
+[sub_resource type="CapsuleShape3D" id="cap"]
+radius = 0.4
+height = 1.8
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1")
+hurt_sounds = Array[AudioStream]([ExtResource("6"), ExtResource("7")])
+death_sound = ExtResource("8")
+footstep_sounds = Array[AudioStream]([ExtResource("9"), ExtResource("10"), ExtResource("11")])
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("cap")
+
+[node name="Head" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.62, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Head"]
+current = true
+fov = 80.0
+near = 0.03
+far = 500.0
+
+[node name="WeaponManager" type="Node3D" parent="Head/Camera3D"]
+script = ExtResource("3")
+starting_weapon = ExtResource("4")
+arms_scene = ExtResource("5")
+switch_sound = ExtResource("12")
+hitmarker_sound = ExtResource("13")
+
+[node name="Interactor" type="Node3D" parent="."]
+script = ExtResource("2")

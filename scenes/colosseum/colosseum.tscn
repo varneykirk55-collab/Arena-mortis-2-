@@ -1,0 +1,66 @@
+[gd_scene load_steps=20 format=3]
+
+[ext_resource type="Script" path="res://scripts/colosseum/colosseum.gd" id="1"]
+[ext_resource type="Environment" path="res://resources/environment_dusk.tres" id="2"]
+[ext_resource type="PackedScene" path="res://assets/models/colosseum_floor.glb" id="3"]
+[ext_resource type="PackedScene" path="res://assets/models/colosseum_podium.glb" id="4"]
+[ext_resource type="PackedScene" path="res://assets/models/colosseum_obstacles.glb" id="5"]
+[ext_resource type="PackedScene" path="res://assets/models/colosseum_cavea.glb" id="6"]
+[ext_resource type="PackedScene" path="res://assets/models/torch_sconce.glb" id="7"]
+[ext_resource type="PackedScene" path="res://assets/models/brazier_tall.glb" id="8"]
+[ext_resource type="PackedScene" path="res://assets/models/brazier_tripod.glb" id="9"]
+[ext_resource type="PackedScene" path="res://assets/models/banner.glb" id="10"]
+[ext_resource type="PackedScene" path="res://assets/models/statue_legionary.glb" id="11"]
+[ext_resource type="PackedScene" path="res://assets/models/statue_gladiator.glb" id="12"]
+[ext_resource type="PackedScene" path="res://assets/models/floor_debris.glb" id="13"]
+[ext_resource type="PackedScene" path="res://scenes/interactables/mystery_box.tscn" id="14"]
+[ext_resource type="PackedScene" path="res://scenes/interactables/pack_a_punch.tscn" id="15"]
+[ext_resource type="AudioStream" path="res://assets/audio/fire_loop.wav" id="16"]
+[ext_resource type="AudioStream" path="res://assets/audio/ambient_colosseum.wav" id="17"]
+
+[node name="Colosseum" type="Node3D"]
+script = ExtResource("1")
+torch_scene = ExtResource("7")
+brazier_scene = ExtResource("8")
+tripod_scene = ExtResource("9")
+banner_scene = ExtResource("10")
+statue_scenes = Array[PackedScene]([ExtResource("11"), ExtResource("12")])
+debris_scene = ExtResource("13")
+mystery_box_scene = ExtResource("14")
+pack_a_punch_scene = ExtResource("15")
+fire_crackle = ExtResource("16")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("2")
+
+[node name="Moon" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.334565, 0.371572, 0.000000, 0.743145, 0.669131, -0.500000, 0.579484, -0.643582, 0, 40, 0)
+light_color = Color(0.62, 0.7, 0.95, 1)
+light_energy = 1.05
+shadow_enabled = true
+shadow_bias = 0.04
+shadow_normal_bias = 1.5
+directional_shadow_max_distance = 120.0
+directional_shadow_split_1 = 0.08
+directional_shadow_split_2 = 0.25
+directional_shadow_split_3 = 0.55
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+
+[node name="Floor" parent="NavigationRegion3D" instance=ExtResource("3")]
+
+[node name="Podium" parent="NavigationRegion3D" instance=ExtResource("4")]
+
+[node name="Obstacles" parent="NavigationRegion3D" instance=ExtResource("5")]
+
+[node name="Cavea" parent="." instance=ExtResource("6")]
+
+[node name="Props" type="Node3D" parent="."]
+
+[node name="Markers" type="Node3D" parent="."]
+
+[node name="Ambience" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("17")
+volume_db = -4.0
+autoplay = true
+bus = &"Ambient"

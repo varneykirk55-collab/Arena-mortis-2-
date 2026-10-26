@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="WaveConfig" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/waves/wave_config.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+base_count = 6
+count_linear = 2.4
+count_quadratic = 0.15
+max_active = 24
+spawn_interval_start = 2.0
+spawn_interval_decay = 0.94
+spawn_interval_min = 0.45
+first_spawn_delay = 2.0
+min_spawn_distance = 7.0
+health_base = 150.0
+health_per_round = 100.0
+health_linear_rounds = 9
+health_growth = 1.1
+walk_speed_min = 1.1
+walk_speed_max = 1.6
+jog_speed = 2.4
+run_speed_min = 3.6
+run_speed_max = 4.3
+jog_from_round = 3
+run_from_round = 5
+run_chance_per_round = 0.12
+run_chance_max = 0.85
+damage = 35.0

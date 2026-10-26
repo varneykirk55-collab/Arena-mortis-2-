@@ -1,0 +1,17 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/interactables/pack_a_punch.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/models/pack_a_punch.glb" id="2"]
+[ext_resource type="AudioStream" path="res://assets/audio/pap_work.wav" id="3"]
+[ext_resource type="AudioStream" path="res://assets/audio/pap_done.wav" id="4"]
+[ext_resource type="AudioStream" path="res://assets/audio/deny.wav" id="5"]
+
+[node name="PackAPunch" type="Node3D"]
+script = ExtResource("1")
+work_sound = ExtResource("3")
+done_sound = ExtResource("4")
+deny_sound = ExtResource("5")
+prompt_offset = Vector3(0, 1.1, 0.9)
+extra_reach = 0.8
+
+[node name="Model" parent="." instance=ExtResource("2")]

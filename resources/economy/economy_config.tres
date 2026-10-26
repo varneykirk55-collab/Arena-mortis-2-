@@ -1,0 +1,48 @@
+[gd_resource type="Resource" script_class="EconomyConfig" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/economy/economy_config.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/economy/shop_item.gd" id="2"]
+
+[sub_resource type="Resource" id="max_health"]
+script = ExtResource("2")
+id = &"max_health"
+display_name = "Vigour of Hercules"
+description = "+25 maximum health (and fully healed)."
+effect = 0
+base_cost = 1500
+cost_step = 500
+max_purchases = 4
+effect_value = 25.0
+
+[sub_resource type="Resource" id="ammo"]
+script = ExtResource("2")
+id = &"ammo_refill"
+display_name = "Armory Resupply"
+description = "Refill the magazines and reserve ammunition of every weapon you carry."
+effect = 1
+base_cost = 750
+cost_step = 0
+max_purchases = 0
+effect_value = 0.0
+
+[sub_resource type="Resource" id="damage"]
+script = ExtResource("2")
+id = &"damage"
+display_name = "Blessing of Mars"
+description = "+15% damage with all weapons."
+effect = 2
+base_cost = 2000
+cost_step = 1000
+max_purchases = 5
+effect_value = 0.15
+
+[resource]
+script = ExtResource("1")
+starting_points = 500
+points_per_hit = 10
+points_per_kill = 60
+points_per_headshot_kill = 100
+round_bonus_per_round = 50
+mystery_box_cost = 950
+pack_a_punch_cost = 5000
+shop_items = Array[ExtResource("2")]([SubResource("max_health"), SubResource("ammo"), SubResource("damage")])

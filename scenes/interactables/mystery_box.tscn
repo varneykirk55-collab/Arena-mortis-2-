@@ -1,0 +1,23 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scripts/interactables/mystery_box.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/models/mystery_box.glb" id="2"]
+[ext_resource type="Resource" path="res://resources/weapons/m4.tres" id="3"]
+[ext_resource type="Resource" path="res://resources/weapons/jupiter.tres" id="4"]
+[ext_resource type="AudioStream" path="res://assets/audio/box_open.wav" id="5"]
+[ext_resource type="AudioStream" path="res://assets/audio/box_close.wav" id="6"]
+[ext_resource type="AudioStream" path="res://assets/audio/box_reveal.wav" id="7"]
+[ext_resource type="AudioStream" path="res://assets/audio/deny.wav" id="8"]
+[ext_resource type="Script" path="res://scripts/weapons/weapon_data.gd" id="9"]
+
+[node name="MysteryBox" type="Node3D"]
+script = ExtResource("1")
+pool = Array[ExtResource("9")]([ExtResource("3"), ExtResource("4")])
+open_sound = ExtResource("5")
+close_sound = ExtResource("6")
+reveal_sound = ExtResource("7")
+deny_sound = ExtResource("8")
+prompt_offset = Vector3(0, 0.6, 0)
+extra_reach = 0.6
+
+[node name="Model" parent="." instance=ExtResource("2")]
