@@ -99,4 +99,5 @@ regenerate them with the commands in the README.
   Windows binaries. It hasn't been run anywhere yet.
 * **Audio unheard.** Sounds are synthesised and their waveforms were checked
   visually, but nobody has listened to them yet.
+* **Main menu not screenshotted.** It loads and instantiates in the tests, but the software-rendered capture of its orbiting backdrop never finished here.
 * **Blender not used** (unavailable here). See `docs/ASSET_SOURCES.md`.
