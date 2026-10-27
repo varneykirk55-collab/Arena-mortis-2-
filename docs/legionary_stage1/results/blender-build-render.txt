@@ -1,0 +1,209 @@
+Info: Saved "Legionary_Zombie.blend"
+ERROR Draco mesh compression is not available because library could not be found at /usr/bin/4.3/python/lib/python3.13/site-packages/libextern_draco.so
+15:42:28 | INFO: Starting glTF 2.0 export
+15:42:28 | INFO: Extracting primitive: Leather_Equipment_Topology
+15:42:28 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+15:42:28 | INFO: Primitives created: 1
+15:42:28 | INFO: Extracting primitive: Lorica_Helmet_Topology
+15:42:28 | INFO: Primitives created: 1
+15:42:28 | INFO: Extracting primitive: Skin_Anatomy_Topology
+15:42:28 | INFO: Primitives created: 1
+15:42:28 | INFO: Extracting primitive: Tunic_Cloth_Topology
+15:42:28 | INFO: Primitives created: 1
+15:42:29 | INFO: Finished glTF 2.0 export in 1.5044968128204346 s
+Blender 4.3.2
+Fra:10 Mem:53.17M (Peak 53.17M) | Time:00:00.00 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Skin_Anatomy
+Fra:10 Mem:53.17M (Peak 53.17M) | Time:00:00.00 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Leather_Equipment
+Fra:10 Mem:58.66M (Peak 58.66M) | Time:00:00.02 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Initializing
+Fra:10 Mem:56.94M (Peak 58.66M) | Time:00:00.02 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Updating Images | Loading Legionary_BaseColor
+Fra:10 Mem:56.94M (Peak 58.66M) | Time:00:00.02 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Updating Images | Loading Legionary_Normal
+Fra:10 Mem:56.94M (Peak 58.66M) | Time:00:00.02 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Updating Images | Loading Legionary_ORM
+Fra:10 Mem:79.85M (Peak 104.94M) | Time:00:00.03 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Waiting for render to start
+Fra:10 Mem:79.85M (Peak 104.94M) | Time:00:00.03 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Loading render kernels (may take a few minutes the first time)
+Fra:10 Mem:79.85M (Peak 104.94M) | Time:00:00.03 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Scene
+Fra:10 Mem:79.85M (Peak 104.94M) | Time:00:00.03 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Shaders
+Fra:10 Mem:79.93M (Peak 104.94M) | Time:00:00.03 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Procedurals
+Fra:10 Mem:79.93M (Peak 104.94M) | Time:00:00.03 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Background
+Fra:10 Mem:79.93M (Peak 104.94M) | Time:00:00.03 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Camera
+Fra:10 Mem:79.93M (Peak 104.94M) | Time:00:00.03 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Meshes Flags
+Fra:10 Mem:79.93M (Peak 104.94M) | Time:00:00.03 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Objects
+Fra:10 Mem:79.93M (Peak 104.94M) | Time:00:00.03 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Objects | Copying Transformations to device
+Fra:10 Mem:79.94M (Peak 104.94M) | Time:00:00.03 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Objects | Applying Static Transformations
+Fra:10 Mem:79.94M (Peak 104.94M) | Time:00:00.03 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Particle Systems
+Fra:10 Mem:79.94M (Peak 104.94M) | Time:00:00.03 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Particle Systems | Copying Particles to device
+Fra:10 Mem:79.94M (Peak 104.94M) | Time:00:00.03 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Meshes
+Fra:10 Mem:80.50M (Peak 104.94M) | Time:00:00.03 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Mesh | Computing attributes
+Fra:10 Mem:83.31M (Peak 104.94M) | Time:00:00.04 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Mesh | Copying Attributes to device
+Fra:10 Mem:83.31M (Peak 104.94M) | Time:00:00.04 | Mem:26.81M, Peak:26.81M | Scene, ViewLayer | Updating Scene BVH | Building
+Fra:10 Mem:83.31M (Peak 104.94M) | Time:00:00.04 | Mem:26.81M, Peak:26.81M | Scene, ViewLayer | Updating Scene BVH | Building BVH
+Fra:10 Mem:83.31M (Peak 104.94M) | Time:00:00.04 | Mem:27.94M, Peak:27.94M | Scene, ViewLayer | Updating Scene BVH | Building BVH 0%
+Fra:10 Mem:83.31M (Peak 104.94M) | Time:00:00.04 | Mem:29.18M, Peak:30.31M | Scene, ViewLayer | Updating Scene BVH | Copying BVH to device
+Fra:10 Mem:83.31M (Peak 104.94M) | Time:00:00.04 | Mem:29.18M, Peak:30.31M | Scene, ViewLayer | Updating Mesh | Computing normals
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.04 | Mem:29.18M, Peak:30.31M | Scene, ViewLayer | Updating Mesh | Copying Mesh to device
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.04 | Mem:30.57M, Peak:30.57M | Scene, ViewLayer | Updating Objects Flags
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.04 | Mem:30.57M, Peak:30.57M | Scene, ViewLayer | Updating Primitive Offsets
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.04 | Mem:30.57M, Peak:30.57M | Scene, ViewLayer | Updating Images
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.04 | Mem:30.57M, Peak:30.57M | Scene, ViewLayer | Updating Camera Volume
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.04 | Mem:30.57M, Peak:30.57M | Scene, ViewLayer | Updating Lookup Tables
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.04 | Mem:30.65M, Peak:30.65M | Scene, ViewLayer | Updating Lights
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.04 | Mem:30.65M, Peak:30.65M | Scene, ViewLayer | Updating Lights | Computing tree
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.04 | Mem:30.65M, Peak:30.65M | Scene, ViewLayer | Updating Integrator
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.04 | Mem:30.65M, Peak:30.65M | Scene, ViewLayer | Updating Film
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.04 | Mem:30.57M, Peak:30.65M | Scene, ViewLayer | Updating Lookup Tables
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.04 | Mem:30.65M, Peak:30.65M | Scene, ViewLayer | Updating Baking
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.04 | Mem:30.65M, Peak:30.65M | Scene, ViewLayer | Updating Device | Writing constant memory
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.04 | Mem:30.65M, Peak:30.65M | Scene, ViewLayer | Sample 0/48
+Fra:10 Mem:112.19M (Peak 112.19M) | Time:00:00.24 | Remaining:00:09.42 | Mem:58.13M, Peak:58.13M | Scene, ViewLayer | Sample 1/48
+Fra:10 Mem:124.40M (Peak 148.82M) | Time:00:09.59 | Mem:58.13M, Peak:58.13M | Scene, ViewLayer | Sample 48/48
+Fra:10 Mem:124.40M (Peak 148.82M) | Time:00:09.59 | Mem:58.13M, Peak:58.13M | Scene, ViewLayer | Finished
+Saved: '/workspace/Arena-mortis-2-/docs/legionary_stage1/blender/front.png'
+Time: 00:09.88 (Saving: 00:00.28)
+
+Fra:10 Mem:53.17M (Peak 53.17M) | Time:00:00.00 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Skin_Anatomy
+Fra:10 Mem:53.17M (Peak 53.17M) | Time:00:00.00 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Tunic_Cloth
+Fra:10 Mem:53.38M (Peak 53.38M) | Time:00:00.00 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Leather_Equipment
+Fra:10 Mem:58.66M (Peak 58.66M) | Time:00:00.02 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Initializing
+Fra:10 Mem:56.94M (Peak 58.66M) | Time:00:00.02 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Updating Images | Loading Legionary_BaseColor
+Fra:10 Mem:56.94M (Peak 58.66M) | Time:00:00.02 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Updating Images | Loading Legionary_ORM
+Fra:10 Mem:79.85M (Peak 104.94M) | Time:00:00.04 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Waiting for render to start
+Fra:10 Mem:79.85M (Peak 104.94M) | Time:00:00.04 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Loading render kernels (may take a few minutes the first time)
+Fra:10 Mem:79.85M (Peak 104.94M) | Time:00:00.04 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Scene
+Fra:10 Mem:79.85M (Peak 104.94M) | Time:00:00.04 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Shaders
+Fra:10 Mem:79.93M (Peak 104.94M) | Time:00:00.04 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Procedurals
+Fra:10 Mem:79.93M (Peak 104.94M) | Time:00:00.04 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Background
+Fra:10 Mem:79.93M (Peak 104.94M) | Time:00:00.04 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Camera
+Fra:10 Mem:79.93M (Peak 104.94M) | Time:00:00.04 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Meshes Flags
+Fra:10 Mem:79.93M (Peak 104.94M) | Time:00:00.04 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Objects
+Fra:10 Mem:79.93M (Peak 104.94M) | Time:00:00.04 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Objects | Copying Transformations to device
+Fra:10 Mem:79.94M (Peak 104.94M) | Time:00:00.04 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Objects | Applying Static Transformations
+Fra:10 Mem:79.94M (Peak 104.94M) | Time:00:00.04 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Particle Systems
+Fra:10 Mem:79.94M (Peak 104.94M) | Time:00:00.04 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Particle Systems | Copying Particles to device
+Fra:10 Mem:79.94M (Peak 104.94M) | Time:00:00.04 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Meshes
+Fra:10 Mem:80.50M (Peak 104.94M) | Time:00:00.04 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Mesh | Computing attributes
+Fra:10 Mem:83.31M (Peak 104.94M) | Time:00:00.04 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Mesh | Copying Attributes to device
+Fra:10 Mem:83.31M (Peak 104.94M) | Time:00:00.04 | Mem:26.81M, Peak:26.81M | Scene, ViewLayer | Updating Scene BVH | Building
+Fra:10 Mem:83.31M (Peak 104.94M) | Time:00:00.04 | Mem:26.81M, Peak:26.81M | Scene, ViewLayer | Updating Scene BVH | Building BVH
+Fra:10 Mem:83.31M (Peak 104.94M) | Time:00:00.04 | Mem:27.94M, Peak:27.94M | Scene, ViewLayer | Updating Scene BVH | Building BVH 0%
+Fra:10 Mem:83.31M (Peak 104.94M) | Time:00:00.05 | Mem:29.18M, Peak:30.31M | Scene, ViewLayer | Updating Scene BVH | Copying BVH to device
+Fra:10 Mem:83.31M (Peak 104.94M) | Time:00:00.05 | Mem:29.18M, Peak:30.31M | Scene, ViewLayer | Updating Mesh | Computing normals
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.05 | Mem:29.18M, Peak:30.31M | Scene, ViewLayer | Updating Mesh | Copying Mesh to device
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.05 | Mem:30.57M, Peak:30.57M | Scene, ViewLayer | Updating Objects Flags
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.05 | Mem:30.57M, Peak:30.57M | Scene, ViewLayer | Updating Primitive Offsets
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.05 | Mem:30.57M, Peak:30.57M | Scene, ViewLayer | Updating Images
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.05 | Mem:30.57M, Peak:30.57M | Scene, ViewLayer | Updating Camera Volume
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.05 | Mem:30.57M, Peak:30.57M | Scene, ViewLayer | Updating Lookup Tables
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.05 | Mem:30.65M, Peak:30.65M | Scene, ViewLayer | Updating Lights
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.05 | Mem:30.65M, Peak:30.65M | Scene, ViewLayer | Updating Lights | Computing tree
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.05 | Mem:30.65M, Peak:30.65M | Scene, ViewLayer | Updating Integrator
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.05 | Mem:30.65M, Peak:30.65M | Scene, ViewLayer | Updating Film
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.05 | Mem:30.57M, Peak:30.65M | Scene, ViewLayer | Updating Lookup Tables
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.05 | Mem:30.65M, Peak:30.65M | Scene, ViewLayer | Updating Baking
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.05 | Mem:30.65M, Peak:30.65M | Scene, ViewLayer | Updating Device | Writing constant memory
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.05 | Mem:30.65M, Peak:30.65M | Scene, ViewLayer | Sample 0/48
+Fra:10 Mem:112.19M (Peak 112.19M) | Time:00:00.23 | Remaining:00:08.66 | Mem:58.13M, Peak:58.13M | Scene, ViewLayer | Sample 1/48
+Fra:10 Mem:124.40M (Peak 148.82M) | Time:00:10.38 | Mem:58.13M, Peak:58.13M | Scene, ViewLayer | Sample 48/48
+Fra:10 Mem:124.40M (Peak 148.82M) | Time:00:10.38 | Mem:58.13M, Peak:58.13M | Scene, ViewLayer | Finished
+Saved: '/workspace/Arena-mortis-2-/docs/legionary_stage1/blender/back.png'
+Time: 00:10.54 (Saving: 00:00.15)
+
+Fra:10 Mem:53.17M (Peak 53.17M) | Time:00:00.00 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Skin_Anatomy
+Fra:10 Mem:53.17M (Peak 53.17M) | Time:00:00.00 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Tunic_Cloth
+Fra:10 Mem:53.38M (Peak 53.38M) | Time:00:00.00 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Leather_Equipment
+Fra:10 Mem:58.66M (Peak 58.95M) | Time:00:00.11 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Initializing
+Fra:10 Mem:56.94M (Peak 58.95M) | Time:00:00.11 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Updating Images | Loading Legionary_BaseColor
+Fra:10 Mem:56.94M (Peak 58.95M) | Time:00:00.11 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Updating Images | Loading Legionary_ORM
+Fra:10 Mem:79.85M (Peak 104.94M) | Time:00:00.15 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Waiting for render to start
+Fra:10 Mem:79.85M (Peak 104.94M) | Time:00:00.15 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Loading render kernels (may take a few minutes the first time)
+Fra:10 Mem:79.85M (Peak 104.94M) | Time:00:00.15 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Scene
+Fra:10 Mem:79.85M (Peak 104.94M) | Time:00:00.15 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Shaders
+Fra:10 Mem:79.93M (Peak 104.94M) | Time:00:00.15 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Procedurals
+Fra:10 Mem:79.93M (Peak 104.94M) | Time:00:00.15 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Background
+Fra:10 Mem:79.93M (Peak 104.94M) | Time:00:00.15 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Camera
+Fra:10 Mem:79.93M (Peak 104.94M) | Time:00:00.15 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Meshes Flags
+Fra:10 Mem:79.93M (Peak 104.94M) | Time:00:00.15 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Objects
+Fra:10 Mem:79.93M (Peak 104.94M) | Time:00:00.15 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Objects | Copying Transformations to device
+Fra:10 Mem:79.94M (Peak 104.94M) | Time:00:00.15 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Objects | Applying Static Transformations
+Fra:10 Mem:79.94M (Peak 104.94M) | Time:00:00.15 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Particle Systems
+Fra:10 Mem:79.94M (Peak 104.94M) | Time:00:00.15 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Particle Systems | Copying Particles to device
+Fra:10 Mem:79.94M (Peak 104.94M) | Time:00:00.15 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Meshes
+Fra:10 Mem:80.50M (Peak 104.94M) | Time:00:00.15 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Mesh | Computing attributes
+Fra:10 Mem:83.31M (Peak 104.94M) | Time:00:00.15 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Mesh | Copying Attributes to device
+Fra:10 Mem:83.31M (Peak 104.94M) | Time:00:00.15 | Mem:26.81M, Peak:26.81M | Scene, ViewLayer | Updating Scene BVH | Building
+Fra:10 Mem:83.31M (Peak 104.94M) | Time:00:00.15 | Mem:26.81M, Peak:26.81M | Scene, ViewLayer | Updating Scene BVH | Building BVH
+Fra:10 Mem:83.31M (Peak 104.94M) | Time:00:00.15 | Mem:27.94M, Peak:27.94M | Scene, ViewLayer | Updating Scene BVH | Building BVH 0%
+Fra:10 Mem:83.31M (Peak 104.94M) | Time:00:00.15 | Mem:29.18M, Peak:30.31M | Scene, ViewLayer | Updating Scene BVH | Copying BVH to device
+Fra:10 Mem:83.31M (Peak 104.94M) | Time:00:00.15 | Mem:29.18M, Peak:30.31M | Scene, ViewLayer | Updating Mesh | Computing normals
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.15 | Mem:29.18M, Peak:30.31M | Scene, ViewLayer | Updating Mesh | Copying Mesh to device
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.15 | Mem:30.57M, Peak:30.57M | Scene, ViewLayer | Updating Objects Flags
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.15 | Mem:30.57M, Peak:30.57M | Scene, ViewLayer | Updating Primitive Offsets
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.15 | Mem:30.57M, Peak:30.57M | Scene, ViewLayer | Updating Images
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.15 | Mem:30.57M, Peak:30.57M | Scene, ViewLayer | Updating Camera Volume
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.15 | Mem:30.57M, Peak:30.57M | Scene, ViewLayer | Updating Lookup Tables
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.15 | Mem:30.65M, Peak:30.65M | Scene, ViewLayer | Updating Lights
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.15 | Mem:30.65M, Peak:30.65M | Scene, ViewLayer | Updating Lights | Computing tree
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.15 | Mem:30.65M, Peak:30.65M | Scene, ViewLayer | Updating Integrator
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.15 | Mem:30.65M, Peak:30.65M | Scene, ViewLayer | Updating Film
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.15 | Mem:30.57M, Peak:30.65M | Scene, ViewLayer | Updating Lookup Tables
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.15 | Mem:30.65M, Peak:30.65M | Scene, ViewLayer | Updating Baking
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.15 | Mem:30.65M, Peak:30.65M | Scene, ViewLayer | Updating Device | Writing constant memory
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.15 | Mem:30.65M, Peak:30.65M | Scene, ViewLayer | Sample 0/48
+Fra:10 Mem:112.19M (Peak 112.19M) | Time:00:00.36 | Remaining:00:09.62 | Mem:58.13M, Peak:58.13M | Scene, ViewLayer | Sample 1/48
+Fra:10 Mem:124.40M (Peak 148.82M) | Time:00:09.72 | Mem:58.13M, Peak:58.13M | Scene, ViewLayer | Sample 48/48
+Fra:10 Mem:124.40M (Peak 148.82M) | Time:00:09.72 | Mem:58.13M, Peak:58.13M | Scene, ViewLayer | Finished
+Saved: '/workspace/Arena-mortis-2-/docs/legionary_stage1/blender/three_quarter.png'
+Time: 00:09.84 (Saving: 00:00.12)
+
+Fra:10 Mem:53.17M (Peak 53.17M) | Time:00:00.00 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Skin_Anatomy
+Fra:10 Mem:53.39M (Peak 53.39M) | Time:00:00.00 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Tunic_Cloth
+Fra:10 Mem:53.41M (Peak 53.41M) | Time:00:00.00 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Lorica_Helmet
+Fra:10 Mem:53.45M (Peak 53.45M) | Time:00:00.00 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Leather_Equipment
+Fra:10 Mem:58.66M (Peak 58.79M) | Time:00:00.05 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Initializing
+Fra:10 Mem:56.94M (Peak 58.79M) | Time:00:00.05 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Updating Images | Loading Legionary_BaseColor
+Fra:10 Mem:56.94M (Peak 58.79M) | Time:00:00.05 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Updating Images | Loading Legionary_ORM
+Fra:10 Mem:79.85M (Peak 104.94M) | Time:00:00.09 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Waiting for render to start
+Fra:10 Mem:79.85M (Peak 104.94M) | Time:00:00.09 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Loading render kernels (may take a few minutes the first time)
+Fra:10 Mem:79.85M (Peak 104.94M) | Time:00:00.09 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Scene
+Fra:10 Mem:79.85M (Peak 104.94M) | Time:00:00.09 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Shaders
+Fra:10 Mem:79.93M (Peak 104.94M) | Time:00:00.09 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Procedurals
+Fra:10 Mem:79.93M (Peak 104.94M) | Time:00:00.09 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Background
+Fra:10 Mem:79.93M (Peak 104.94M) | Time:00:00.09 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Camera
+Fra:10 Mem:79.93M (Peak 104.94M) | Time:00:00.09 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Meshes Flags
+Fra:10 Mem:79.93M (Peak 104.94M) | Time:00:00.09 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Objects
+Fra:10 Mem:79.93M (Peak 104.94M) | Time:00:00.09 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Objects | Copying Transformations to device
+Fra:10 Mem:79.94M (Peak 104.94M) | Time:00:00.09 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Objects | Applying Static Transformations
+Fra:10 Mem:79.94M (Peak 104.94M) | Time:00:00.09 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Particle Systems
+Fra:10 Mem:79.94M (Peak 104.94M) | Time:00:00.09 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Particle Systems | Copying Particles to device
+Fra:10 Mem:79.94M (Peak 104.94M) | Time:00:00.09 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Meshes
+Fra:10 Mem:80.50M (Peak 104.94M) | Time:00:00.09 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Mesh | Computing attributes
+Fra:10 Mem:83.31M (Peak 104.94M) | Time:00:00.10 | Mem:24.00M, Peak:24.00M | Scene, ViewLayer | Updating Mesh | Copying Attributes to device
+Fra:10 Mem:83.31M (Peak 104.94M) | Time:00:00.10 | Mem:26.81M, Peak:26.81M | Scene, ViewLayer | Updating Scene BVH | Building
+Fra:10 Mem:83.31M (Peak 104.94M) | Time:00:00.10 | Mem:26.81M, Peak:26.81M | Scene, ViewLayer | Updating Scene BVH | Building BVH
+Fra:10 Mem:83.31M (Peak 104.94M) | Time:00:00.10 | Mem:27.94M, Peak:27.94M | Scene, ViewLayer | Updating Scene BVH | Building BVH 0%
+Fra:10 Mem:83.31M (Peak 104.94M) | Time:00:00.10 | Mem:29.18M, Peak:30.31M | Scene, ViewLayer | Updating Scene BVH | Copying BVH to device
+Fra:10 Mem:83.31M (Peak 104.94M) | Time:00:00.10 | Mem:29.18M, Peak:30.31M | Scene, ViewLayer | Updating Mesh | Computing normals
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.10 | Mem:29.18M, Peak:30.31M | Scene, ViewLayer | Updating Mesh | Copying Mesh to device
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.10 | Mem:30.57M, Peak:30.57M | Scene, ViewLayer | Updating Objects Flags
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.10 | Mem:30.57M, Peak:30.57M | Scene, ViewLayer | Updating Primitive Offsets
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.10 | Mem:30.57M, Peak:30.57M | Scene, ViewLayer | Updating Images
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.10 | Mem:30.57M, Peak:30.57M | Scene, ViewLayer | Updating Camera Volume
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.10 | Mem:30.57M, Peak:30.57M | Scene, ViewLayer | Updating Lookup Tables
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.10 | Mem:30.65M, Peak:30.65M | Scene, ViewLayer | Updating Lights
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.10 | Mem:30.65M, Peak:30.65M | Scene, ViewLayer | Updating Lights | Computing tree
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.10 | Mem:30.65M, Peak:30.65M | Scene, ViewLayer | Updating Integrator
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.10 | Mem:30.65M, Peak:30.65M | Scene, ViewLayer | Updating Film
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.10 | Mem:30.57M, Peak:30.65M | Scene, ViewLayer | Updating Lookup Tables
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.10 | Mem:30.65M, Peak:30.65M | Scene, ViewLayer | Updating Baking
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.10 | Mem:30.65M, Peak:30.65M | Scene, ViewLayer | Updating Device | Writing constant memory
+Fra:10 Mem:84.70M (Peak 104.94M) | Time:00:00.10 | Mem:30.65M, Peak:30.65M | Scene, ViewLayer | Sample 0/48
+Fra:10 Mem:112.19M (Peak 112.19M) | Time:00:00.75 | Remaining:00:30.40 | Mem:58.13M, Peak:58.13M | Scene, ViewLayer | Sample 1/48
+Fra:10 Mem:112.19M (Peak 112.19M) | Time:00:13.16 | Remaining:00:05.93 | Mem:58.13M, Peak:58.13M | Scene, ViewLayer | Sample 33/48
+Fra:10 Mem:124.40M (Peak 148.82M) | Time:00:20.05 | Mem:58.13M, Peak:58.13M | Scene, ViewLayer | Sample 48/48
+Fra:10 Mem:124.40M (Peak 148.82M) | Time:00:20.05 | Mem:58.13M, Peak:58.13M | Scene, ViewLayer | Finished
+Saved: '/workspace/Arena-mortis-2-/docs/legionary_stage1/blender/face_helmet.png'
+Time: 00:20.17 (Saving: 00:00.12)
+
+
+LEGIONARY_BUILD_DONE triangles= 37168  materials=1 meshes= 4  bones= 52  clips= ['Attack', 'Death', 'Emerge', 'Hit', 'Idle', 'Run', 'Walk']
+LEGIONARY_BLENDER_RENDERS_DONE
+
+Blender quit

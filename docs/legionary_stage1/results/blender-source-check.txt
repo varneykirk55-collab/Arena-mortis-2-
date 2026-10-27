@@ -1,0 +1,5 @@
+EDITABLE_SOURCE_CHECK 4 52 ['Attack', 'Death', 'Emerge', 'Hit', 'Idle', 'Run', 'Walk'] [('Legionary_BaseColor', True), ('Legionary_Normal', True), ('Legionary_ORM', True)]
+Blender 4.3.2
+Read blend: "/workspace/Arena-mortis-2-/assets/sources/legionary_stage1/Legionary_Zombie.blend"
+
+Blender quit

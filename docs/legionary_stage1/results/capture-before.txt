@@ -1,0 +1,19 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.
+     at: viewport_set_screen_space_aa (servers/rendering/renderer_viewport.cpp:1435)
+LEGIONARY_CAPTURE res://docs/legionary_stage1/before/front.png
+LEGIONARY_CAPTURE res://docs/legionary_stage1/before/back.png
+LEGIONARY_CAPTURE res://docs/legionary_stage1/before/three_quarter.png
+LEGIONARY_CAPTURE res://docs/legionary_stage1/before/face_helmet.png
+WARNING: Volumetric fog is only available when using the Forward+ renderer.
+     at: environment_set_volumetric_fog (servers/rendering/storage/environment_storage.cpp:458)
+     GDScript backtrace (most recent call first):
+         [0] _run (res://tools/preview/legionary_capture.gd:78)
+         [1] frames (res://tools/preview/legionary_capture.gd:11)
+LEGIONARY_CAPTURE res://docs/legionary_stage1/before/combat_distance.png
+LEGIONARY_CAPTURE res://docs/legionary_stage1/before/colosseum_lighting.png
+LEGIONARY_CAPTURE_DONE

@@ -1,0 +1,23 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.
+     at: viewport_set_screen_space_aa (servers/rendering/renderer_viewport.cpp:1435)
+Movie Maker mode enabled, recording movie in 1600×900 @ 24 FPS...
+DEMO_CLIP Idle
+DEMO_CLIP Walk
+DEMO_CLIP Run
+DEMO_CLIP Attack
+DEMO_CLIP Hit
+DEMO_CLIP Death
+DEMO_CLIP Emerge
+LEGIONARY_ANIMATION_DEMO_DONE
+--------------------------------------------------------------------------------
+Done recording movie at path: /workspace/.arena-setup/legionary-demo-final.avi
+279 frames at 24 FPS (movie length: 00:00:11:15), recorded in 00:01:34 (11% of real-time speed).
+CPU render time: 65.72 seconds (average: 235.57 ms/frame)
+GPU render time: 67.50 seconds (average: 241.93 ms/frame)
+Encoding time: 11.23 seconds (average: 40.25 ms/frame)
+--------------------------------------------------------------------------------
