@@ -1,0 +1,14 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/textures/m4_finish.png" id="1"]
+
+[resource]
+resource_name = "m4_polymer"
+albedo_color = Color(0.25, 0.26499998569488525, 0.2199999988079071, 1)
+metallic = 0.0
+roughness = 0.949999988079071
+roughness_texture = ExtResource("1")
+roughness_texture_channel = 0
+uv1_triplanar = true
+uv1_scale = Vector3(16, 16, 16)
+texture_filter = 5

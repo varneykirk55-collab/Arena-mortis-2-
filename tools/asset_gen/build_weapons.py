@@ -13,6 +13,9 @@ Each weapon GLB contains named nodes the game uses:
 import math
 import os
 import sys
+import shutil
+import subprocess
+from pathlib import Path
 
 import numpy as np
 
@@ -308,8 +311,15 @@ def arms():
 
 
 def main():
+    # The M4 now has a Blender source. Never silently regenerate its legacy mesh.
+    blender = shutil.which("blender")
+    if blender is None:
+        raise SystemExit("Blender is required for the Stage 1 M4; install it before regenerating weapons.")
     os.makedirs(OUT, exist_ok=True)
-    for name, fn in (("weapon_pistol", pistol), ("weapon_m4", m4), ("weapon_jupiter", jupiter), ("viewmodel_arms", arms)):
+    subprocess.run([blender, "--background", "--factory-startup", "--python",
+                    str(Path(__file__).with_name("build_m4_blender.py").resolve()),
+                    "--", str(Path(OUT).resolve())], check=True)
+    for name, fn in (("weapon_pistol", pistol), ("weapon_jupiter", jupiter), ("viewmodel_arms", arms)):
         sc = fn()
         size = sc.write_glb(os.path.join(OUT, name + ".glb"))
         print(name, f"{size / 1e3:.0f} KB")

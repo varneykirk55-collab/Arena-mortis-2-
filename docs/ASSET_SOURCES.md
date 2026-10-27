@@ -1,5 +1,15 @@
 # Asset sources and licences
 
+## M4 Stage 1 update
+
+The M4 now uses Blender 4.3.2, executed in this cloud environment. Its original
+model source is `tools/asset_gen/build_m4_blender.py`, with editable output
+`assets/sources/m4_stage1.blend`. The script generates the GLB, M4-only Godot
+materials and a seeded microfinish roughness texture. It uses no third-party
+models or texture assets. See [the M4 review](m4_stage1/README.md) for actual
+Godot comparisons and validation. The historical pipeline below still applies
+to the other weapons and arms.
+
 Every model, texture, material and sound in this project is **original** and was
 generated for Arena Mortis by the scripts in `tools/asset_gen/`. No assets were
 ripped from Call of Duty or any other game, and the reference sheet was used only
