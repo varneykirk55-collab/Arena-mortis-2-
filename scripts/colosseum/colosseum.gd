@@ -21,6 +21,8 @@ const LAYOUT_PATH := "res://resources/colosseum_layout.json"
 @export var debris_scene: PackedScene
 ## Modular architecture (visual overhaul). One mesh per module, reused per bay.
 @export var podium_modules_scene: PackedScene
+## Distant stand modules (arcades, attic) drawn with one MultiMesh per module.
+@export var cavea_modules_scene: PackedScene
 @export var mystery_box_scene: PackedScene
 @export var pack_a_punch_scene: PackedScene
 @export var fire_crackle: AudioStream
@@ -42,6 +44,7 @@ func _ready() -> void:
 	B = layout.get("B", 20.0)
 	_shadow_setup()
 	_place_modules()
+	_place_cavea_instances()
 	_place_lighting_props()
 	_place_statues()
 	_place_banners()
@@ -193,6 +196,38 @@ func _place_modules() -> void:
 			root.add_child(mi)
 			mi.global_transform = Transform3D(basis_from(c.basis), v3(c.pos))
 			k += 1
+
+
+## Distant, highly repeated arcade/attic bays: one MultiMeshInstance3D per
+## module keeps draw calls low (one draw per material surface per module).
+func _place_cavea_instances() -> void:
+	if cavea_modules_scene == null or not layout.has("cavea_instances"):
+		return
+	var lib: Node = cavea_modules_scene.instantiate()
+	var meshes := {}
+	for mi in lib.find_children("*", "MeshInstance3D", true, false):
+		meshes[String(mi.name)] = (mi as MeshInstance3D).mesh
+	lib.free()
+	var root := Node3D.new()
+	root.name = "Stands"
+	add_child(root)
+	var inst: Dictionary = layout["cavea_instances"]
+	for key in inst:
+		var mesh: Mesh = meshes.get(String(key))
+		if mesh == null:
+			continue
+		var list: Array = inst[key]
+		var mm := MultiMesh.new()
+		mm.transform_format = MultiMesh.TRANSFORM_3D
+		mm.mesh = mesh
+		mm.instance_count = list.size()
+		for i in list.size():
+			mm.set_instance_transform(i, Transform3D(basis_from(list[i].basis), v3(list[i].pos)))
+		var mmi := MultiMeshInstance3D.new()
+		mmi.name = String(key)
+		mmi.multimesh = mm
+		mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_DOUBLE_SIDED
+		root.add_child(mmi)
 
 
 func _place_statues() -> void:

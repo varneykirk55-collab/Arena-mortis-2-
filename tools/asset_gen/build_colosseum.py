@@ -20,6 +20,7 @@ import numpy as np
 
 import meshkit as mk
 import build_arena_v2 as v2
+import arch_kit as ak
 
 A, B = 30.0, 20.0              # arena floor semi-axes
 PODIUM_H = 5.0                 # podium wall height
@@ -28,7 +29,7 @@ N_PODIUM_BAYS = 30             # divisible by 6 (gates)
 GATE_EVERY = 5
 # Visual overhaul: podium bays rebuilt from modular assets (podium_modules.glb).
 # Stage A = the north span between the two north gates; "all" = every bay.
-MODULAR_STAGE = os.environ.get("ARENA_MODULAR", "A")
+MODULAR_STAGE = os.environ.get("ARENA_MODULAR", "all")
 STAGE_A_BAYS = {20, 21, 22, 23, 24, 25}
 OUT = sys.argv[1] if len(sys.argv) > 1 else "../../assets/models"
 LAYOUT = sys.argv[2] if len(sys.argv) > 2 else "../../resources/colosseum_layout.json"
@@ -561,6 +562,89 @@ def build_cavea(layout):
     return vis
 
 
+def build_cavea_v2(layout):
+    """Modular stands: seat slabs in culling sectors, instanced arcade/attic
+    modules (MultiMesh in Godot), continuous corridors and entablatures."""
+    nodes = []
+    misc = mk.Mesh()
+    n_sec = 12
+    # --- seats I ---
+    aisles1 = equal_arc_ts(4.0, 20, 0.5)
+    sec1 = v2.seat_rows(E, frame, equal_arc_ts, perimeter, 4.0, PODIUM_H, 14, TREAD, RISE, aisles1, n_sec, 501)
+    d_end1, y_end1 = 4.0 + 14 * TREAD, PODIUM_H + 14 * RISE
+    misc.add(stair_aisles(4.0, PODIUM_H, 14, 20).material("lime_trim"))
+    # backing under the seats (fills any gap seen through missing slabs)
+    misc.add(seat_steps(4.0, PODIUM_H - 0.12, 14, 240)[0].material("lime_seat").tint((0.72, 0.7, 0.68)))
+    d_wall2 = d_end1 + 1.0
+    misc.add(sweep([(d_end1, y_end1), (d_wall2, y_end1)], 0.0, 360, "paving"))
+    # --- tier wall II (instanced arcade) ---
+    h2 = 4.0
+    inst = {}
+    mods = {}
+
+    def ring(name, d_face, y0, height, bay_target, ow, sp, th, corridor_depth, phase, seed, layout_key=None,
+             dmg_frac=0.12, col_r=0.3):
+        n = max(6, int(round(perimeter(d_face) / bay_target)))
+        ts = equal_arc_ts(d_face, n, phase)
+        w = bay_width(d_face, n)
+        mods[name] = v2.arcade_far(w, height, ow, sp, th, seed, col_r=col_r)
+        mods[name + "Damaged"] = v2.arcade_far(w, height, ow, sp, th, seed + 1, damaged=True, col_r=col_r)
+        r_ = np.random.default_rng(seed)
+        for k, t in enumerate(ts):
+            key = name + ("Damaged" if r_.random() < dmg_frac else "")
+            F = frame(d_face, t, y0)
+            inst.setdefault(key, []).append({"pos": F[:3, 3].tolist(), "basis": F[:3, :3].T.tolist()})
+            if layout_key:
+                p_ = F @ np.array([-w / 2, height - 0.9, 0.35, 1.0])
+                layout.setdefault(layout_key, []).append({"pos": p_[:3].tolist(), "basis": F[:3, :3].T.tolist()})
+        misc.add(corridor(d_face, th, corridor_depth, y0, height - 0.3, 240))
+        return n
+
+    ring("Tier2Bay", d_wall2, y_end1, h2, 4.2, 2.0, 1.9, 0.8, 2.2, 0.5, 100, "tier2_bays")
+    y2 = y_end1 + h2
+    misc.add(entablature(d_wall2, y2 - 0.55, 360, 0.3, 0.55).material("lime_trim"))
+    misc.add(sweep([(0.0, y2), (0.8, y2)], d_wall2, 360, "paving"))
+    # --- seats II ---
+    aisles2 = equal_arc_ts(d_wall2 + 0.8, 24, 0.25)
+    sec2 = v2.seat_rows(E, frame, equal_arc_ts, perimeter, d_wall2 + 0.8, y2, 11, TREAD, RISE, aisles2, n_sec, 502)
+    misc.add(stair_aisles(d_wall2 + 0.8, y2, 11, 24, phase=0.25).material("lime_trim"))
+    misc.add(seat_steps(d_wall2 + 0.8, y2 - 0.12, 11, 240)[0].material("lime_seat").tint((0.72, 0.7, 0.68)))
+    d_end2, y_end2 = d_wall2 + 0.8 + 11 * TREAD, y2 + 11 * RISE
+    d_top = d_end2 + 1.0
+    misc.add(sweep([(d_end2, y_end2), (d_top, y_end2)], 0.0, 360, "paving"))
+    # --- galleries ---
+    hA, hB = 6.0, 5.0
+    nA = ring("GalleryABay", d_top, y_end2, hA, 4.8, 2.8, 3.9, 1.0, 3.0, 0.0, 200, "galleryA_bays", col_r=0.34)
+    misc.add(entablature(d_top, y_end2 + hA - 0.6, 360, 0.4, 0.75).material("lime_trim"))
+    ring("GalleryBBay", d_top, y_end2 + hA + 0.15, hB, 4.8, 2.4, 3.1, 1.0, 2.4, 0.0, 300, None, col_r=0.3)
+    yC = y_end2 + hA + 0.15 + hB
+    misc.add(entablature(d_top, yC - 0.6, 360, 0.4, 0.75).material("lime_trim"))
+    # --- attic ---
+    tsC = equal_arc_ts(d_top, nA, 0.0)
+    wC = bay_width(d_top, nA)
+    attic_h = 3.6
+    mods["Attic"] = v2.attic_bay(wC, attic_h, 601)
+    mods["AtticMast"] = v2.attic_bay(wC, attic_h, 602, mast=True)
+    mods["AtticBroken"] = v2.attic_bay(wC, attic_h, 603, broken=True)
+    mods["AtticBroken2"] = v2.attic_bay(wC, attic_h, 604, broken=True)
+    r_ = np.random.default_rng(605)
+    for k, t in enumerate(tsC):
+        u = r_.random()
+        key = "AtticBroken" if u < 0.08 else ("AtticBroken2" if u < 0.15 else ("AtticMast" if k % 2 == 0 else "Attic"))
+        F = frame(d_top, t, yC)
+        inst.setdefault(key, []).append({"pos": F[:3, 3].tolist(), "basis": F[:3, :3].T.tolist()})
+    layout["top_height"] = yC + attic_h
+    layout["tiers"] = {"seats1": [4.0, PODIUM_H, d_end1, y_end1], "wall2": [d_wall2, y_end1, y2],
+                       "seats2": [d_wall2 + 0.8, y2, d_end2, y_end2], "gallery": [d_top, y_end2, yC]}
+    layout["cavea_instances"] = inst
+    for i, m in enumerate(sec1):
+        nodes.append(("SeatsI_%02d" % i, m))
+    for i, m in enumerate(sec2):
+        nodes.append(("SeatsII_%02d" % i, m))
+    nodes.append(("Galleries", misc))
+    return nodes, mods
+
+
 # ----------------------------------------------------------------------------
 # FLOOR
 # ----------------------------------------------------------------------------
@@ -598,7 +682,17 @@ def build_floor(layout):
         g["I"] = g["I"][:, ::-1].copy()
         g["N"] = -g["N"]
     # darker near the wall, scuffed centre
-    m.color_fn(lambda p, n_: np.clip(0.7 + 0.3 * (1 - rr ** 4) + 0.25 * (mk.value_noise3(p, 0.35, 9) - 0.5), 0.5, 1.1) * np.ones(len(p)))
+    def floor_col(p, n_):
+        base = np.clip(0.62 + 0.3 * (1 - rr ** 5) + 0.22 * (mk.value_noise3(p, 0.35, 9) - 0.5), 0.45, 1.0)
+        # old blood / damp patches: darker and redder
+        blot = np.clip((mk.value_noise3(p, 0.22, 21) - 0.62) * 4.0, 0, 1) * np.clip((mk.value_noise3(p, 1.1, 22) - 0.3) * 2, 0, 1)
+        # trampled paths between gates: slightly lighter, compacted
+        path = np.clip(1 - np.abs(np.sin(np.arctan2(p[:, 2] / B, p[:, 0] / A) * 3)) * 3, 0, 1) * np.clip(rr * 1.4 - 0.2, 0, 1)
+        r = base * (1 - 0.35 * blot) * (1 + 0.06 * path)
+        g = base * (1 - 0.55 * blot) * (1 + 0.05 * path)
+        b = base * (1 - 0.55 * blot) * (1 + 0.04 * path)
+        return np.stack([r, g, b], axis=1)
+    m.color_fn(floor_col)
     floor = m
 
     # hypogeum grates (iron grilles flush with the sand) - 4 in a cross
@@ -625,6 +719,16 @@ def build_floor(layout):
 # ----------------------------------------------------------------------------
 # arena obstacles (cover / navigation obstacles)
 # ----------------------------------------------------------------------------
+
+def v2_drum(r, h, rng, flutes=20):
+    """Fluted column drum (full round, capped) with chipped edges."""
+    prof = [(r * 0.97, 0.0), (r, 0.03), (r, h - 0.03), (r * 0.97, h)]
+    m = ak._fluted_lathe(prof, flutes, 3, 0.05, 0.0, 2 * math.pi, "lime_trim")
+    m.add(mk.disk(r * 0.97, flutes * 3, "lime_trim").translate(0, h, 0))
+    m.add(mk.disk(r * 0.97, flutes * 3, "lime_trim").rotate((1, 0, 0), math.pi))
+    m.jitter(0.01, int(rng.integers(0, 1 << 30)))
+    return ak.tint(m, rng, var=0.1)
+
 
 def column_drum(r=0.55, h=0.9, fluted=True, mat="stone_plain"):
     seg = 20
@@ -656,36 +760,57 @@ def build_obstacles(layout):
     for (cx, cz, yaw, seed) in ((-9.0, 8.0, 0.4, 1), (10.5, -7.5, 2.2, 2)):
         m = mk.Mesh()
         c = mk.Mesh()
-        base = mk.box(1.8, 0.6, 1.8, bevel=0.05, material="stone_plain").translate(0, 0.3, 0)
-        stand = column_drum(0.55, 1.6).translate(0, 0.6, 0)
-        stand_top = stand.groups["stone_plain"]
+        r_ = np.random.default_rng(seed + 40)
+        base = ak.chipped_block(1.8, 0.45, 1.8, r_, bevel=0.05, chips=3, chip=0.1, material="lime_trim").translate(0, 0.225, 0)
+        base.add(mk.lathe([(0.78, 0.45), (0.8, 0.52), (0.72, 0.6), (0.62, 0.64), (0.55, 0.7)], 24, "lime_trim", smooth=False))
+        stand = v2_drum(0.55, 1.5, r_).translate(0, 0.7, 0)
+        stand_top = stand.groups["lime_trim"]
         top = stand_top["P"][:, 1] > 2.1
-        stand_top["P"][top, 1] += (np.random.default_rng(seed).random(top.sum()) - 0.5) * 0.5
+        _a = np.arctan2(stand_top["P"][top, 2], stand_top["P"][top, 0])
+        _ph = r_.random(3) * 6.28
+        # smooth, irregular fracture line (low-frequency) rather than per-vertex spikes
+        stand_top["P"][top, 1] += 0.16 * np.sin(_a + _ph[0]) + 0.07 * np.sin(2 * _a + _ph[1]) + 0.03 * np.sin(5 * _a + _ph[2]) - 0.1
         m.add(base)
         m.add(stand)
         c.add(mk.box(1.8, 2.3, 1.8, material="col").translate(0, 1.15, 0))
         for i in range(3):
-            drum = column_drum(0.55, 0.9).rotate((0, 0, 1), math.pi / 2).rotate((0, 1, 0), 0.3 * i)
+            drum = v2_drum(0.55, 0.9, r_).translate(0, -0.45, 0).rotate((0, 0, 1), math.pi / 2).rotate((0, 1, 0), 0.3 * i).translate(0.45, 0, 0)
             drum.translate(2.0 + i * 1.05, 0.55, -0.4 + 0.5 * i)
             m.add(drum)
             c.add(mk.box(0.95, 1.1, 1.15, material="col").rotate((0, 1, 0), 0.3 * i).translate(2.0 + i * 1.05 - 0.45, 0.55, -0.4 + 0.5 * i))
-        m.jitter(0.015, seed)
-        m.color_fn(lambda p, n_: mk.grime(p, n_, low_y=0, high_y=1.5, dark=0.6))
+        m.add(ak.rubble(9, (1.2, 0, 0.6), (1.0, 0, 0.8), (0.06, 0.22), r_, material="lime_trim"))
         T = mk.mat_translate((cx, 0, cz)) @ mk.ry(yaw)
         add(m.transform(T), c.transform(T), {"type": "fallen_column", "pos": [cx, 0, cz]})
 
     # 2. ruined wall fragment with arch (cover)
     for (cx, cz, yaw) in ((-16.0, -6.5, 1.1), (17.0, 7.0, 4.2)):
         m = mk.Mesh()
-        frag = arcade_bay(4.6, 4.2, 2.2, 2.2, 0.9, column=False, damaged=0.04, seed=abs(int(cx)))
-        g = frag.groups["stone_blocks"]
-        hi = g["P"][:, 1] > 3.0
-        xs = g["P"][hi, 0]
-        g["P"][hi, 1] -= np.clip(xs + 1.5, 0, 3) * 0.45 + np.random.default_rng(3).random(hi.sum()) * 0.4
-        frag.translate(0, 0, 0.45)
-        m.add(frag)
-        m.add(rubble(10, lambda r_: np.array([1.4, 0, 1.2]), 0.9, (0.15, 0.5), seed=abs(int(cz * 10))))
-        m.color_fn(lambda p, n_: mk.grime(p, n_, low_y=0, high_y=3, dark=0.55))
+        r_ = np.random.default_rng(abs(int(cx * 7)))
+        ow, sp = 2.2, 2.2
+        clip = ak.arch_clipper(ow / 2, sp, ow / 2 + 0.36)
+
+        def ruin_clip(xa, xb, ya, yb, clip=clip):
+            xm = (xa + xb) / 2
+            top = 4.2 - np.clip(xm + 1.5, 0, 3) * 0.55 + 0.35 * math.sin(xm * 3.1)
+            if ya > top:
+                return []
+            return clip(xa, xb, ya, min(yb, top + 0.2))
+        for face in (1, -1):
+            wall = ak.ashlar(-2.3, 2.3, 0.0, 4.2, r_, depth=0.42, clipper=ruin_clip, backing=None)
+            if face < 0:
+                wall.rotate((0, 1, 0), math.pi)
+            m.add(wall.translate(0, 0, 0.45 * face if face > 0 else -0.45 + 0.0))
+        core = mk.extrude([(-2.25, 0), (-ow / 2, 0), (-ow / 2, sp), (ow / 2, sp), (ow / 2, 0), (2.25, 0), (2.25, 1.8), (0.4, 2.9), (-2.25, 3.9)], 0.5, "rubble_core")
+        m.add(core.tint((0.6, 0.6, 0.6)))
+        vs = ak.voussoirs(ow / 2, ow / 2 + 0.35, 0.9, 11, r_, spring=sp, proud=0.47, z_back=-0.47)
+        g = vs.groups["lime_trim"]
+        tri_c = g["P"][g["I"]].mean(axis=1)
+        keep = ~((tri_c[:, 0] > 0.15))     # right half of the arch has fallen
+        g["I"] = g["I"][keep]
+        m.add(vs)
+        m.add(ak.soffit(ow / 2, 0.45, -0.45).translate(0, sp, 0))
+        m.add(ak.rubble(16, (1.6, 0, 1.0), (0.9, 0, 0.7), (0.12, 0.45), r_, material="lime_block"))
+        m.add(ak.rubble(6, (-1.2, 0, -1.1), (0.7, 0, 0.4), (0.1, 0.3), r_, material="lime_block"))
         c = mk.Mesh()
         c.add(mk.box(1.2, 4.0, 0.9, material="col").translate(-1.7, 2.0, 0))
         c.add(mk.box(1.2, 3.0, 0.9, material="col").translate(1.7, 1.5, 0))
@@ -696,12 +821,20 @@ def build_obstacles(layout):
     # 3. stone altar with steps at centre-north/south (low cover; dais for statue)
     for (cx, cz, yaw) in ((0.0, 0.0, 0.0),):
         m = mk.Mesh()
-        m.add(mk.box(4.6, 0.3, 3.2, bevel=0.04, material="stone_plain").translate(0, 0.15, 0))
-        m.add(mk.box(3.8, 0.3, 2.4, bevel=0.04, material="stone_plain").translate(0, 0.45, 0))
-        m.add(mk.box(2.4, 1.0, 1.2, bevel=0.05, material="marble").translate(0, 1.1, 0))
-        m.add(mk.box(2.7, 0.2, 1.45, bevel=0.04, material="stone_plain").translate(0, 1.7, 0))
-        m.add(mk.box(2.6, 0.15, 1.35, bevel=0.03, material="stone_plain").translate(0, 0.65, 0))
-        m.color_fn(lambda p, n_: mk.grime(p, n_, low_y=0, high_y=1.8, dark=0.65))
+        r_ = np.random.default_rng(77)
+        m.add(ak.flagstones(-2.3, 2.3, -1.6, 1.6, r_, y=0.3, material="paving", thick=0.3))
+        m.add(ak.flagstones(-1.9, 1.9, -1.2, 1.2, r_, y=0.6, material="paving", thick=0.3))
+        m.add(ak.chipped_block(2.4, 0.95, 1.2, r_, bevel=0.03, chips=2, chip=0.05, material="marble_v2").translate(0, 1.075, 0))
+        prof_b = [(0.0, 0.0), (0.12, 0.0), (0.12, 0.05), (0.06, 0.1), (0.0, 0.14), (-0.2, 0.14), (-0.2, 0.0)]
+        prof_t = [(0.0, 0.0), (0.06, 0.04), (0.12, 0.1), (0.15, 0.14), (0.15, 0.2), (-0.2, 0.2), (-0.2, 0.0)]
+        for (sx, sz, ry_) in ((2.4, 0.6, 0.0), (2.4, -0.6, math.pi), (1.2, 1.2, math.pi / 2), (1.2, -1.2, -math.pi / 2)):
+            for (prof, y_) in ((prof_b, 0.6), (prof_t, 1.5)):
+                piece = ak.profile_extrude([(z, y + y_) for (z, y) in prof], sx + (0.3 if prof is prof_t else 0.24), "lime_trim")
+                piece.rotate((0, 1, 0), ry_).translate(*( (0, 0, sz) if abs(ry_) < 1e-6 or abs(ry_ - math.pi) < 1e-6 else (sz, 0, 0)))
+                m.add(ak.tint(piece, r_, var=0.08))
+        m.add(ak.chipped_block(2.75, 0.12, 1.55, r_, bevel=0.03, chips=2, chip=0.04, material="lime_trim").translate(0, 1.76, 0))
+        # offerings: a bronze bowl and a fallen helmet
+        m.add(mk.lathe([(0.001, 1.82), (0.18, 1.84), (0.26, 1.95), (0.27, 1.97), (0.22, 1.96), (0.001, 1.88)], 18, "bronze").translate(0.6, 0, 0.1))
         c = mk.Mesh()
         c.add(mk.box(4.6, 0.3, 3.2, material="col").translate(0, 0.15, 0))
         c.add(mk.box(3.8, 0.3, 2.4, material="col").translate(0, 0.45, 0))
@@ -714,8 +847,7 @@ def build_obstacles(layout):
     for i in range(10):
         t = rng.random() * 2 * math.pi
         cpos = E(-1.2 - rng.random() * 1.5, t)
-        vis.add(rubble(8, lambda r_, c=cpos: c, 0.7, (0.08, 0.35), seed=50 + i).color_fn(
-            lambda p, n_: mk.grime(p, n_, 0, 0.6, 0.6)))
+        vis.add(ak.rubble(9, cpos, (0.7, 0, 0.7), (0.08, 0.35), np.random.default_rng(50 + i), material="lime_block"))
     layout["obstacles"] = obs
     return vis, col
 
@@ -724,13 +856,15 @@ def build_obstacles(layout):
 # main
 # ----------------------------------------------------------------------------
 
-def write(name, nodes):
+def write(name, nodes, lods=False):
+    """lods=False: Godot's automatic LOD simplifier damages meshes made of many
+    separate small solids (masonry blocks, seat slabs), so it is off by default."""
     s = mk.Scene()
     for nm, mesh in nodes:
         if mesh is None or mesh.is_empty():
             continue
         s.add(mk.Node(nm, mesh))
-    sz = s.write_glb(os.path.join(OUT, name + ".glb"))
+    sz = s.write_glb(os.path.join(OUT, name + ".glb"), lods=lods)
     tris = sum(m.tri_count() for _, m in nodes if m is not None)
     print(f"{name}.glb  {sz / 1e6:.1f} MB  {tris} tris")
 
@@ -739,12 +873,22 @@ def main():
     os.makedirs(OUT, exist_ok=True)
     layout = {"A": A, "B": B, "podium_h": PODIUM_H, "podium_t": PODIUM_T}
     floor, grates, floor_col = build_floor(layout)
-    write("colosseum_floor", [("Floor", floor), ("Grates", grates), ("FloorCollision-colonly", floor_col)])
+    write("colosseum_floor", [("Floor", floor), ("Grates", grates), ("FloorCollision-colonly", floor_col)], lods=True)
     pod, pod_col, bays = build_podium(layout)
     write("colosseum_podium", [("Podium", pod), ("PodiumCollision-colonly", pod_col)])
     build_podium_modules(layout, equal_arc_ts(0.0, N_PODIUM_BAYS), bays, layout["podium_bay_width"])
-    cav = build_cavea(layout)
-    write("colosseum_cavea", [("Cavea", cav)])
+    if MODULAR_STAGE == "all":
+        cav_nodes, cav_mods = build_cavea_v2(layout)
+        write("colosseum_cavea", cav_nodes)
+        sc = mk.Scene()
+        for k_, m_ in cav_mods.items():
+            sc.add(mk.Node(k_, m_))
+        sz = sc.write_glb(os.path.join(OUT, "cavea_modules.glb"), lods=False)
+        print("cavea_modules.glb", f"{sz / 1e6:.1f} MB", {k_: m_.tri_count() for k_, m_ in cav_mods.items()},
+              {k_: len(v_) for k_, v_ in layout["cavea_instances"].items()})
+    else:
+        cav = build_cavea(layout)
+        write("colosseum_cavea", [("Cavea", cav)])
     obs, obs_col = build_obstacles(layout)
     write("colosseum_obstacles", [("Obstacles", obs), ("ObstacleCollision-colonly", obs_col)])
     with open(LAYOUT, "w") as f:

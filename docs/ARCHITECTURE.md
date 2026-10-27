@@ -118,6 +118,38 @@ Special node-name suffixes used in the GLBs (Godot import conventions):
 `-colonly` (invisible trimesh collision) for floor/podium/obstacles and
 `-convcol` (visible + convex collision) for braziers and machines.
 
+### Modular colosseum (visual overhaul, phase 1)
+
+The podium wall and distant tiers are no longer one swept mesh.
+
+* `tools/asset_gen/arch_kit.py` holds the masonry vocabulary (ashlar courses
+  clipped around arches, voussoirs, fluted columns, profile mouldings, rubble,
+  flagstones, sand drifts).
+* `tools/asset_gen/build_arena_v2.py` assembles that into bay modules. Every
+  podium bay has the same width (equal arc-length placement), so one module
+  fits any bay. Modules are authored in a local bay frame (X along the wall,
+  Y up, Z toward the arena floor).
+* `build_colosseum.py` writes `podium_modules.glb` / `cavea_modules.glb` and
+  records each bay's module, mirror flag and transform in
+  `colosseum_layout.json` (`podium_modules`, `podium_columns`,
+  `cavea_instances`). Set `ARENA_MODULAR=stageA` to rebuild only the north
+  span (bays 20–25) for comparison.
+* `scripts/colosseum/colosseum.gd` (`_place_modules`, `_place_cavea_instances`)
+  instances them at load: one `MeshInstance3D` per podium bay sharing a mesh
+  per module, one `MultiMeshInstance3D` per distant module.
+* **Collision, navigation and spawns are unchanged.** The visual sweep in front
+  of modular bays is cut out (`_cut_bays`) but the `-colonly` collision mesh,
+  gate positions, obstacle collision boxes and the navmesh source are the same
+  as before (navmesh still bakes to 185 polygons).
+* Stone surfaces use `resources/shaders/stone.gdshader`: world-space
+  triplanar PBR, so blocks never show UV seams and textures do not repeat
+  visibly (two-scale macro variation), plus height-based ground grime, rain
+  streaks and sand dust on ledges. It uses no screen-space effects. SSAO
+  stays off; it caused the original black-rendering corruption.
+* Mesh auto-LOD (`meshes/generate_lods`) is disabled for meshes made of many
+  separate blocks (the simplifier collapses them into slivers); the floor
+  keeps auto-LOD.
+
 ## 5. Extending
 
 * **New weapon:** add a `.glb` with `Muzzle`, `RightHand`, `LeftHand`

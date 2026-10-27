@@ -13,6 +13,7 @@ const SHOTS := {
 	"G3_high": [Vector3(0, 26, 30), Vector3(0, 4, -4)],
 	"G4_south_pap": [Vector3(4, 1.7, 9), Vector3(-1, 2.5, 19)],
 	"G5_stands": [Vector3(10, 1.7, -4), Vector3(-6, 14, -30)],
+	"Z1_zombies_combat": [Vector3(0, 1.7, 9), Vector3(0, 1.3, 0)],
 }
 
 func _ready() -> void:
@@ -39,6 +40,18 @@ func _run() -> void:
 		if only.size() > 0 and not only.has(key):
 			continue
 		var s: Array = SHOTS[key]
+		if key.begins_with("Z1"):
+			# readability check: zombies at combat range with the weapon raised
+			for zp in [Vector3(-1.5, 0.05, 3.5), Vector3(1.2, 0.05, 1.5), Vector3(3.5, 0.05, 4.5)]:
+				var z: Zombie = game.waves.zombie_scene.instantiate()
+				z.configure(500.0, 0.0, 0.0, false)
+				game.get_node("Zombies").add_child(z)
+				z.global_position = zp
+				z.rotation.y = 0.0
+			game.player.weapons.visible = true
+			game.player.global_position = s[0] - Vector3(0, 1.62, 0)
+			for i in 90:
+				await get_tree().process_frame
 		cam.global_position = s[0]
 		cam.look_at(s[1], Vector3.UP)
 		cam.fov = 75.0

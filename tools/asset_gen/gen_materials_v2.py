@@ -18,7 +18,8 @@ MATS = {
     # finer architectural trim: columns, cornices, voussoirs, plinths
     "lime_trim": dict(tex="limestone", scale=0.8, nstr=0.9, rmin=0.55, rmax=0.95, dirt=0.45, streak=0.25, dust=0.6,
                       tint=(1.05, 1.03, 1.0)),
-    "marble_v2": dict(tex="marble", scale=0.6, nstr=0.6, rmin=0.35, rmax=0.75, dirt=0.4, streak=0.3, dust=0.45),
+    "marble_v2": dict(tex="marble", scale=0.6, nstr=0.6, rmin=0.35, rmax=0.75, dirt=0.5, streak=0.3, dust=0.45,
+                      tint=(0.74, 0.71, 0.67)),
     "mortar_v2": dict(tex="mortar", scale=1.4, nstr=1.0, rmin=0.85, rmax=1.0, dirt=0.3, streak=0.1, dust=0.3,
                       tint=(0.8, 0.78, 0.76)),
     "rubble_core": dict(tex="mortar", scale=0.9, nstr=1.4, rmin=0.85, rmax=1.0, dirt=0.4, streak=0.2, dust=0.5),
@@ -26,6 +27,23 @@ MATS = {
                    tint=(0.86, 0.83, 0.79)),
     "tunnel_stone": dict(tex="limestone", scale=0.42, nstr=1.1, rmin=0.7, rmax=1.0, dirt=0.5, streak=0.2, dust=0.2,
                          tint=(0.62, 0.58, 0.54)),
+    # distant tiers: ashlar course texture through the same weathering shader
+    "lime_ashlar": dict(tex="stone_blocks", scale=1 / 2.4, nstr=1.0, rmin=0.65, rmax=1.0, dirt=0.35, streak=0.4, dust=0.45,
+                        tint=(0.98, 0.95, 0.9)),
+    "lime_seat": dict(tex="limestone", scale=0.55, nstr=1.0, rmin=0.6, rmax=0.95, dirt=0.2, streak=0.0, dust=0.55,
+                      tint=(0.95, 0.93, 0.9)),
+    # legacy material names (props, statues, obstacles, anything not yet rebuilt)
+    # now use the same weathering shader so the whole arena reads consistently
+    "stone_blocks": dict(tex="stone_blocks", scale=1 / 2.4, nstr=1.0, rmin=0.65, rmax=1.0, dirt=0.5, streak=0.35, dust=0.45),
+    "stone_plain": dict(tex="limestone", scale=0.5, nstr=1.0, rmin=0.6, rmax=1.0, dirt=0.45, streak=0.25, dust=0.5),
+    "stone_seat": dict(tex="limestone", scale=0.55, nstr=1.0, rmin=0.6, rmax=0.95, dirt=0.2, streak=0.0, dust=0.55,
+                       tint=(0.95, 0.93, 0.9)),
+    "stone_dark": dict(tex="limestone", scale=0.45, nstr=1.0, rmin=0.75, rmax=1.0, dirt=0.3, streak=0.2, dust=0.1,
+                       tint=(0.42, 0.39, 0.36)),
+    "marble": dict(tex="marble", scale=0.9, nstr=0.6, rmin=0.35, rmax=0.75, dirt=0.35, streak=0.15, dust=0.35,
+                   tint=(0.76, 0.73, 0.69)),
+    "sand": dict(tex="sand_v2", scale=0.28, nstr=1.0, rmin=0.8, rmax=1.0, dirt=0.0, streak=0.0, dust=0.0,
+                 macro_a=(1.04, 1.0, 0.94), macro_b=(0.68, 0.62, 0.56), macro_strength=1.0),
     "sand_v2": dict(tex="sand_v2", scale=0.28, nstr=1.0, rmin=0.8, rmax=1.0, dirt=0.0, streak=0.0, dust=0.0,
                     macro_a=(1.06, 1.02, 0.96), macro_b=(0.72, 0.66, 0.60), macro_strength=1.0),
 }

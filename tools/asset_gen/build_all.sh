@@ -4,6 +4,8 @@ set -e
 cd "$(dirname "$0")"
 python3 textures.py ../../assets/textures
 python3 gen_materials.py ../../resources/materials
+python3 textures_v2.py ../../assets/textures
+python3 gen_materials_v2.py ../../resources/materials   # overrides legacy stone/sand names
 python3 build_colosseum.py ../../assets/models ../../resources/colosseum_layout.json
 python3 build_characters.py ../../assets/models
 python3 build_weapons.py ../../assets/models

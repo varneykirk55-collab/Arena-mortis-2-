@@ -41,6 +41,26 @@ the Godot import settings (material remap script) still apply.
 Licence for all of the above: original work created for this project; the
 project owner may license it however they choose.
 
+## Visual overhaul, phase 1 (October 2026)
+
+Blender was checked again before this pass: no `blender` binary, `bpy` is not
+installable from PyPI here, and download.blender.org returns 403 through the
+sandbox proxy. **Blender was not used for this pass either.** All new
+architecture was modelled with the same Python kit and exported with the same
+GLB writer; Godot 4.7.2 imported every file (verified with `godot --import`
+and in-engine renders).
+
+| Asset | Generator | Notes |
+|---|---|---|
+| Modular podium bays (PanelA/B/C, Niche, Gate, Column): individual ashlar blocks with chipped edges and per-block tint, recessed mortar, voussoir arches with keystones, fluted engaged columns with bases and capitals, moulded cornice, parapet, base course, sand drifts, rubble, flagstones, damaged variant | `arch_kit.py`, `build_arena_v2.py` → `podium_modules.glb` | Placed per bay by `scripts/colosseum/colosseum.gd`, all instances share one mesh per module |
+| Cavea: individual seat slabs (trimmed at stair aisles), arcade bays for tier 2 and galleries (intact and damaged), attic bays (plain, mast, broken) | `build_arena_v2.py` → `colosseum_cavea.glb`, `cavea_modules.glb` | Distant arcade/attic bays drawn as MultiMesh |
+| Rebuilt arena ruins: fluted column drums, ashlar ruin walls with rubble core and half-fallen arch, flagstone altar | `build_colosseum.py` → `colosseum_obstacles.glb` | Collision shapes unchanged |
+| Textures: limestone, warm sandstone, marble, mortar, sand v2, macro variation, rain streaks (albedo / normal / roughness) | `textures_v2.py` | Procedural, seeded, tileable |
+| Weathered-stone shader (world triplanar PBR + macro variation + ground grime + streaks + ledge dust) | `resources/shaders/stone.gdshader` | Original |
+| Materials `lime_*`, `marble_v2`, `mortar_v2`, `rubble_core`, `paving`, `tunnel_stone`, `sand_v2`, and shader overrides of the legacy `stone_*`, `marble`, `sand` | `gen_materials_v2.py` | Original |
+
+No third-party textures, scans or models were added in this pass.
+
 ## Third-party assets
 
 | Asset | Source | Licence |

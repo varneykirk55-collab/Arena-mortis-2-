@@ -317,3 +317,146 @@ def assign_modules(bays):
             out[k] = (panel_cycle[pi % len(panel_cycle)], (k * 7) % 3 == 0)
             pi += 1
     return out
+
+
+# ============================================================================
+# CAVEA (stands): seat blocks, far arcade modules, attic
+# ============================================================================
+
+def seat_block(L, R, T, rng, chamfer=0.05, material="lime_seat"):
+    """One seat slab: L long (X), R tall (Y, extended down), T deep (Z).
+    Front face at z=+T/2, worn chamfer on the front-top edge."""
+    drop = R * 1.6
+    hx, ht, hz = L / 2, R / 2, T / 2
+    c = chamfer * (0.6 + 0.8 * rng.random())
+    pts = []
+    for sx in (-1, 1):
+        pts += [(sx * hx, ht, -hz), (sx * hx, -ht - drop, -hz), (sx * hx, -ht - drop, hz),
+                (sx * hx, ht - c, hz), (sx * hx, ht, hz - c * 0.8)]
+    P = np.array(pts) + rng.normal(size=(10, 3)) * 0.004
+    if rng.random() < 0.35:   # chipped front corner
+        k = int(rng.choice([3, 4, 8, 9]))
+        P[k] += np.array([0, -1, -1]) * rng.uniform(0.03, 0.08)
+    b = mk.hull(P, material)
+    return ak.edge_wear(b, light=1.05)
+
+
+def seat_rows(E, frame, equal_arc_ts, perimeter, d0, y0, steps, tread, rise, aisle_ts, n_sectors, seed,
+              aisle_width=1.5):
+    """Rows of individual seat slabs around the ellipse, split into angular
+    sectors (separate meshes -> frustum culling). Aisles are left open."""
+    rng = np.random.default_rng(seed)
+    sectors = [mk.Mesh() for _ in range(n_sectors)]
+    for i in range(steps):
+        d = d0 + i * tread + tread / 2
+        y_top = y0 + (i + 1) * rise
+        # arc-length parametrisation of this row
+        m_ = 3000
+        ts = np.linspace(0, 2 * math.pi, m_ + 1)
+        p = np.stack([np.cos(ts) * (E(d, 0)[0]), np.sin(ts) * (E(d, math.pi / 2)[2])], axis=1)
+        s = np.concatenate([[0], np.cumsum(np.linalg.norm(np.diff(p, axis=0), axis=1))])
+        Ltot = s[-1]
+        aisle_s = [np.interp(t, ts, s) for t in aisle_ts]
+        pos = rng.random() * 1.5
+        while pos < Ltot - 0.3:
+            L = rng.uniform(1.1, 2.1)
+            a0_, b0_ = pos, min(pos + L, Ltot)
+            pos += L
+            # trim the slab at stair-aisle edges instead of dropping it whole
+            pieces = [(a0_, b0_)]
+            for sa in aisle_s:
+                for off in (-Ltot, 0.0, Ltot):
+                    lo, hi = sa + off - aisle_width / 2, sa + off + aisle_width / 2
+                    nxt = []
+                    for (pa, pb) in pieces:
+                        if pb <= lo or pa >= hi:
+                            nxt.append((pa, pb))
+                            continue
+                        if pa < lo:
+                            nxt.append((pa, lo))
+                        if pb > hi:
+                            nxt.append((hi, pb))
+                    pieces = nxt
+            for (a, b) in pieces:
+                if b - a < 0.3:
+                    continue
+                if rng.random() < 0.012:      # missing slab
+                    continue
+                mid = (a + b) / 2
+                t = float(np.interp(mid % Ltot, s, ts))
+                blk = seat_block(b - a - 0.025, rise, tread, rng)
+                dy = rng.uniform(-0.015, 0.012)
+                tilt = rng.normal() * 0.006
+                blk.rotate((0, 0, 1), tilt).translate(0, dy, 0)
+                ak.tint(blk, rng, var=0.16)
+                F = frame(d, t, y_top - rise / 2)
+                sec = int(t / (2 * math.pi) * n_sectors) % n_sectors
+                sectors[sec].add(blk.transform(F))
+    for m in sectors:
+        m.color_fn(lambda P, N: np.stack([0.82 + 0.18 * np.clip((P[:, 1] - y0) / (steps * rise), 0, 1)] * 3, axis=1))
+    return sectors
+
+
+def column_simple(r, h, rng, seg=10, material="lime_trim"):
+    """Low-cost engaged column for distant arcades (no flutes)."""
+    a0, a1 = 0.0, math.pi
+    m = mk.Mesh()
+    m.add(mk.box(2.6 * r, 0.3, 1.3 * r, material=material).translate(0, 0.15, 0.65 * r))
+    m.add(mk.lathe([(1.25 * r, 0.3), (1.25 * r, 0.42), (1.05 * r, 0.5), (1.0 * r, 0.55)], seg, material, angle0=a0, angle1=a1, smooth=False))
+    m.add(mk.lathe([(r, 0.55), (r * 0.94, h * 0.5), (r * 0.86, h - 0.5)], seg, material, angle0=a0, angle1=a1))
+    m.add(mk.lathe([(r * 0.86, h - 0.5), (r * 0.95, h - 0.42), (r * 1.25, h - 0.26)], seg, material, angle0=a0, angle1=a1, smooth=False))
+    m.add(mk.box(2.6 * r, 0.24, 1.3 * r, material=material).translate(0, h - 0.12, 0.65 * r))
+    return m
+
+
+def arcade_far(w, height, ow, sp, th, seed, damaged=False, col_r=0.3, wall_mat="lime_ashlar"):
+    """Arcade bay for the distant tiers: textured ashlar piers/spandrel
+    (course texture), real voussoirs, impost blocks, soffit, engaged column."""
+    import build_colosseum as bc
+    rng = np.random.default_rng(seed)
+    m = mk.Mesh()
+    w2 = w * 1.012
+    r = ow / 2
+    pw = (w2 - ow) / 2
+    for sx in (-1, 1):
+        cx = sx * (r + pw / 2)
+        m.add(mk.box(pw, sp, th, material=wall_mat).translate(cx, sp / 2, -th / 2))
+        m.add(ak.chipped_block(pw * 0.55 + 0.1, 0.18, th + 0.12, rng, bevel=0.02, chips=1, material="lime_trim")
+              .translate(sx * (r + (pw * 0.55 + 0.1) / 2 - 0.05), sp - 0.09, -th / 2))
+    m.add(mk.extrude(bc.arch_poly(w2, ow + 0.02, sp, height), th, material=wall_mat).translate(0, 0, -th / 2))
+    m.add(ak.soffit(r, 0.0, -th).translate(0, sp, 0))
+    m.add(ak.voussoirs(r, r + 0.3, 0.12, 11, rng, spring=sp, proud=0.06, z_back=-0.04))
+    m.add(column_simple(col_r, height - 0.05, rng).translate(-w / 2, 0, 0))
+    if damaged:
+        g = m.groups[wall_mat]
+        hi = (g["P"][:, 1] > height - 0.6) & (g["P"][:, 0] > 0)
+        g["P"][hi, 1] -= rng.uniform(0.4, 1.0)
+        m.add(ak.rubble(5, (w / 4, sp + 0.02, 0.2), (0.4, 0, 0.1), (0.08, 0.2), rng, material="lime_trim"))
+    m.color_fn(lambda P, N: np.stack([0.7 + 0.3 * np.clip(P[:, 1] / height, 0, 1)] * 3, axis=1))
+    ak.tint(m, rng, var=0.06)
+    return m
+
+
+def attic_bay(wC, attic_h, seed, broken=False, mast=False):
+    rng = np.random.default_rng(seed)
+    bay = mk.Mesh()
+    h = attic_h * (0.4 + 0.3 * rng.random()) if broken else attic_h
+    poly = [(-wC * 1.012 / 2, 0), (wC * 1.012 / 2, 0), (wC * 1.012 / 2, h), (-wC * 1.012 / 2, h)]
+    wall = mk.extrude(poly, 1.0, material="lime_ashlar").translate(0, 0, -0.5)
+    if broken:
+        g = wall.groups["lime_ashlar"]
+        top = g["P"][:, 1] > h - 0.01
+        g["P"][top, 1] += (rng.random(top.sum()) - 0.5) * 0.9
+        bay.add(ak.rubble(4, (0, h, 0.0), (0.8, 0, 0.2), (0.15, 0.35), rng, material="lime_trim"))
+    bay.add(wall)
+    if not broken:
+        bay.add(mk.box(0.85, 1.05, 0.06, material="void").translate(0, 1.6, 0.0))
+        for (sx, sy, cx, cy) in ((1.1, 0.1, 0, 2.17), (1.1, 0.1, 0, 1.03), (0.1, 1.05, -0.5, 1.6), (0.1, 1.05, 0.5, 1.6)):
+            bay.add(mk.box(sx, sy, 0.14, material="lime_trim").translate(cx, cy, 0.05))
+        bay.add(ak.chipped_block(0.42, 0.36, 0.45, rng, bevel=0.03, chips=1, material="lime_trim").translate(-wC / 2, 0.35, 0.22))
+        bay.add(ak.chipped_block(wC * 1.012, 0.26, 1.18, rng, bevel=0.02, chips=2, chip=0.05, material="lime_trim").translate(0, h + 0.13, 0))
+        if mast:
+            bay.add(mk.cylinder(0.12, 6.0, 8, "wood_box", r2=0.09).translate(-wC / 2, 0.5, 0.22))
+            bay.add(ak.chipped_block(0.5, 0.25, 0.55, rng, bevel=0.03, chips=1, material="lime_trim").translate(-wC / 2, attic_h - 0.2, 0.22))
+    bay.color_fn(lambda P, N: np.stack([0.75 + 0.25 * np.clip(P[:, 1] / attic_h, 0, 1)] * 3, axis=1))
+    return bay
