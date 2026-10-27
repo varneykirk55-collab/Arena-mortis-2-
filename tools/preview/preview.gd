@@ -40,7 +40,7 @@ func _run() -> void:
 	var sun := DirectionalLight3D.new()
 	sun.rotation_degrees = Vector3(-50, 40, 0)
 	sun.light_energy = 1.4
-	sun.shadow_enabled = true
+	sun.shadow_enabled = OS.get_environment("PREVIEW_NOSHADOW") == ""
 	world.add_child(sun)
 	var fill := DirectionalLight3D.new()
 	fill.rotation_degrees = Vector3(-20, 220, 0)

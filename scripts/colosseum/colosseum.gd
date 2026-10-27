@@ -19,6 +19,8 @@ const LAYOUT_PATH := "res://resources/colosseum_layout.json"
 @export var banner_scene: PackedScene
 @export var statue_scenes: Array[PackedScene] = []
 @export var debris_scene: PackedScene
+## Modular architecture (visual overhaul). One mesh per module, reused per bay.
+@export var podium_modules_scene: PackedScene
 @export var mystery_box_scene: PackedScene
 @export var pack_a_punch_scene: PackedScene
 @export var fire_crackle: AudioStream
@@ -39,6 +41,7 @@ func _ready() -> void:
 	A = layout.get("A", 30.0)
 	B = layout.get("B", 20.0)
 	_shadow_setup()
+	_place_modules()
 	_place_lighting_props()
 	_place_statues()
 	_place_banners()
@@ -153,6 +156,43 @@ func _machine_panels() -> Dictionary:
 		if p.pos[2] > south.pos[2]:
 			south = p
 	return {int(north.bay): north, int(south.bay): south}
+
+
+## Instantiates the modular podium bays listed in the layout. Each module mesh
+## is shared by every bay that uses it (mesh reuse; per-instance culling/LOD).
+func _place_modules() -> void:
+	if podium_modules_scene == null or not layout.has("podium_modules"):
+		return
+	var lib: Node = podium_modules_scene.instantiate()
+	var meshes := {}
+	for mi in lib.find_children("*", "MeshInstance3D", true, false):
+		meshes[String(mi.name)] = (mi as MeshInstance3D).mesh
+	lib.free()
+	var root := Node3D.new()
+	root.name = "Architecture"
+	add_child(root)
+	for e in layout.get("podium_modules", []):
+		var mesh: Mesh = meshes.get(String(e.module))
+		if mesh == null:
+			continue
+		var mi := MeshInstance3D.new()
+		mi.name = "Bay%02d_%s" % [int(e.bay), e.module]
+		mi.mesh = mesh
+		var b := basis_from(e.basis)
+		if e.get("mirror", false):
+			b = b * Basis.from_scale(Vector3(-1, 1, 1))
+		root.add_child(mi)
+		mi.global_transform = Transform3D(b, v3(e.pos))
+	var col_mesh: Mesh = meshes.get("Column")
+	if col_mesh:
+		var k := 0
+		for c in layout.get("podium_columns", []):
+			var mi := MeshInstance3D.new()
+			mi.name = "Column%02d" % k
+			mi.mesh = col_mesh
+			root.add_child(mi)
+			mi.global_transform = Transform3D(basis_from(c.basis), v3(c.pos))
+			k += 1
 
 
 func _place_statues() -> void:

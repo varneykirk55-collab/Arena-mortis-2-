@@ -791,7 +791,7 @@ class Scene:
         return node
 
     # ----------------------------------------------------------------
-    def write_glb(self, path):
+    def write_glb(self, path, lods=True):
         gl = {
             "asset": {"version": "2.0", "generator": "ArenaMortis meshkit"},
             "scene": 0,
@@ -958,7 +958,7 @@ class Scene:
         out += struct.pack("<II", len(blob), 0x004E4942) + blob
         with open(path, "wb") as f:
             f.write(out)
-        write_import_file(path)
+        write_import_file(path, lods=lods)
         return total
 
 
@@ -998,15 +998,23 @@ def grime(p, n, base=1.0, low_y=0.0, high_y=3.0, dark=0.55, noise_amt=0.25, seed
     return np.stack([v, v, v], axis=1)
 
 
-def write_import_file(glb_path, extra_params=""):
+def write_import_file(glb_path, extra_params="", lods=True):
     """Write a minimal Godot .import so every generated GLB runs the
-    material-remap post-import script. Godot fills in the remaining keys."""
+    material-remap post-import script. Godot fills in the remaining keys.
+    lods=False disables Godot's automatic LOD simplifier, which damages
+    meshes made of many separate small solids (e.g. individual masonry blocks)."""
     imp = glb_path + ".import"
+    want = "meshes/generate_lods=%s" % ("true" if lods else "false")
     if os.path.exists(imp):
         txt = open(imp).read()
+        if "material_remap.gd" in txt and want in txt:
+            return
         if "material_remap.gd" in txt:
+            import re
+            txt = re.sub(r"meshes/generate_lods=\w+", want, txt)
+            open(imp, "w").write(txt)
             return
     with open(imp, "w") as f:
         f.write('[remap]\n\nimporter="scene"\nimporter_version=1\ntype="PackedScene"\n\n'
                 '[params]\n\nimport_script/path="res://tools/import/material_remap.gd"\n'
-                'meshes/generate_lods=true\nmeshes/ensure_tangents=true\nanimation/fps=30\n' + extra_params)
+                + want + '\nmeshes/ensure_tangents=true\nanimation/fps=30\n' + extra_params)

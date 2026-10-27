@@ -1,0 +1,25 @@
+[gd_resource type="ShaderMaterial" load_steps=7 format=3]
+
+[ext_resource type="Shader" path="res://resources/shaders/stone.gdshader" id="1"]
+[ext_resource type="Texture2D" path="res://assets/textures/limestone_warm_albedo.png" id="2"]
+[ext_resource type="Texture2D" path="res://assets/textures/limestone_warm_normal.png" id="3"]
+[ext_resource type="Texture2D" path="res://assets/textures/limestone_warm_rough.png" id="4"]
+[ext_resource type="Texture2D" path="res://assets/textures/macro_variation.png" id="5"]
+[ext_resource type="Texture2D" path="res://assets/textures/streaks.png" id="6"]
+
+[resource]
+resource_name = "lime_block_warm"
+shader = ExtResource("1")
+shader_parameter/albedo_tex = ExtResource("2")
+shader_parameter/normal_tex = ExtResource("3")
+shader_parameter/rough_tex = ExtResource("4")
+shader_parameter/macro_tex = ExtResource("5")
+shader_parameter/streak_tex = ExtResource("6")
+shader_parameter/albedo_color = Color(1.0, 1.0, 1.0, 1)
+shader_parameter/tex_scale = 0.42
+shader_parameter/normal_strength = 1.1
+shader_parameter/roughness_min = 0.62
+shader_parameter/roughness_max = 1.0
+shader_parameter/dirt_strength = 0.55
+shader_parameter/streak_strength = 0.35
+shader_parameter/dust_strength = 0.5

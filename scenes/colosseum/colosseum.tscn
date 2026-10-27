@@ -17,6 +17,7 @@
 [ext_resource type="PackedScene" path="res://scenes/interactables/pack_a_punch.tscn" id="15"]
 [ext_resource type="AudioStream" path="res://assets/audio/fire_loop.wav" id="16"]
 [ext_resource type="AudioStream" path="res://assets/audio/ambient_colosseum.wav" id="17"]
+[ext_resource type="PackedScene" path="res://assets/models/podium_modules.glb" id="18"]
 
 [node name="Colosseum" type="Node3D"]
 script = ExtResource("1")
@@ -29,6 +30,7 @@ debris_scene = ExtResource("13")
 mystery_box_scene = ExtResource("14")
 pack_a_punch_scene = ExtResource("15")
 fire_crackle = ExtResource("16")
+podium_modules_scene = ExtResource("18")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("2")

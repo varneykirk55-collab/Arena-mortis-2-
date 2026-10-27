@@ -19,12 +19,17 @@ import sys
 import numpy as np
 
 import meshkit as mk
+import build_arena_v2 as v2
 
 A, B = 30.0, 20.0              # arena floor semi-axes
 PODIUM_H = 5.0                 # podium wall height
 PODIUM_T = 1.2                 # podium wall thickness
 N_PODIUM_BAYS = 30             # divisible by 6 (gates)
 GATE_EVERY = 5
+# Visual overhaul: podium bays rebuilt from modular assets (podium_modules.glb).
+# Stage A = the north span between the two north gates; "all" = every bay.
+MODULAR_STAGE = os.environ.get("ARENA_MODULAR", "A")
+STAGE_A_BAYS = {20, 21, 22, 23, 24, 25}
 OUT = sys.argv[1] if len(sys.argv) > 1 else "../../assets/models"
 LAYOUT = sys.argv[2] if len(sys.argv) > 2 else "../../resources/colosseum_layout.json"
 
@@ -246,6 +251,8 @@ def build_podium(layout):
     for k, t in enumerate(ts):
         kind = "gate" if k % GATE_EVERY == 0 else ("niche" if k % GATE_EVERY in (1, 4) else "panel")
         bays.append((k, t, kind))
+    modular = set(range(N_PODIUM_BAYS)) if MODULAR_STAGE == "all" else (STAGE_A_BAYS if MODULAR_STAGE == "A" else set())
+    layout["modular_bays"] = sorted(modular)
     for (k, t, kind) in bays:
         bay = mk.Mesh()
         w2 = w * 1.012
@@ -328,6 +335,8 @@ def build_podium(layout):
             layout.setdefault("panels", []).append({"pos": p[:3].tolist(), "basis": frame(0.0, t)[:3, :3].T.tolist(), "bay": k})
             bp = frame(0.0, t) @ np.array([0, PODIUM_H - 0.2, 0.25, 1.0])
             layout.setdefault("banners_low", []).append({"pos": bp[:3].tolist(), "basis": frame(0.0, t)[:3, :3].T.tolist()})
+        if k in modular:
+            continue
         bay.color_fn(lambda p, n_: mk.grime(p, n_, low_y=0.0, high_y=3.0, dark=0.5, seed=k))
         vis.add(place(bay, 0.0, t))
 
@@ -335,20 +344,61 @@ def build_podium(layout):
     n = 360
     plinth = sweep([(0.0, 0.0), (-0.18, 0.0), (-0.18, 0.45), (-0.06, 0.6), (0.0, 0.6)], 0.0, n, "stone_plain")
     plinth_mask = plinth  # (gates cut through visually - acceptable: plinth stops at gate bays)
-    vis.add(_cut_gates(plinth_mask, ts, bays, w))
+    vis.add(_cut_bays(_cut_gates(plinth_mask, ts, bays, w), ts, modular, w))
     cornice = sweep([(0.0, PODIUM_H - 0.55), (-0.1, PODIUM_H - 0.55), (-0.1, PODIUM_H - 0.35), (-0.35, PODIUM_H - 0.2),
                      (-0.35, PODIUM_H), (0.3, PODIUM_H)], 0.0, n, "stone_plain")
-    vis.add(cornice)
+    vis.add(_cut_bays(cornice, ts, modular, w))
     terrace = sweep([(0.3, PODIUM_H), (4.0, PODIUM_H)], 0.0, n, "stone_seat")
     vis.add(terrace)
     parapet = sweep([(-0.05, PODIUM_H), (-0.05, PODIUM_H + 0.95), (-0.15, PODIUM_H + 1.0), (-0.15, PODIUM_H + 1.12),
                      (0.45, PODIUM_H + 1.12), (0.45, PODIUM_H + 1.0), (0.35, PODIUM_H + 0.95), (0.35, PODIUM_H)], 0.0, n, "stone_plain")
-    vis.add(parapet)
+    vis.add(_cut_bays(parapet, ts, modular, w))
     vis.color_fn(lambda p, n_: np.where(p[:, 1] > PODIUM_H - 0.6, 0.95, 1.0) * np.ones(len(p)))
 
     # collision for the full wall top (prevents climbing / jumping out)
     col.add(sweep([(0.0, PODIUM_H), (0.0, PODIUM_H + 30.0)], 0.0, 96, "col"))
     return vis, col, bays
+
+
+def _cut_bays(mesh, ts, bay_set, w):
+    """Remove sweep triangles lying in front of the given (modular) bays."""
+    if not bay_set:
+        return mesh
+    for g in mesh.groups.values():
+        tri_c = g["P"][g["I"]].mean(axis=1)
+        keep = np.ones(len(g["I"]), dtype=bool)
+        for k in bay_set:
+            t = ts[k]
+            c = E(0.0, t)
+            along = (tri_c - c) @ tangent(0.0, t)
+            dist = np.linalg.norm((tri_c - c) * np.array([1, 0, 1]), axis=1)
+            keep &= ~((np.abs(along) <= w / 2 + 0.01) & (dist < w))
+        g["I"] = g["I"][keep]
+    return mesh
+
+
+def build_podium_modules(layout, ts, bays, w):
+    """Write the modular podium GLB and record per-bay module placement."""
+    modular = set(layout.get("modular_bays", []))
+    v2.write_modules(os.path.join(OUT, "podium_modules.glb"), w)
+    assign = v2.assign_modules(bays)
+    layout["podium_modules"] = []
+    cols = set()
+    for (k, t, kind) in bays:
+        if k not in modular:
+            continue
+        name, mirror = assign[k]
+        layout["podium_modules"].append({"bay": k, "module": name, "mirror": bool(mirror),
+                                          "pos": E(0.0, t).tolist(), "basis": frame(0.0, t)[:3, :3].T.tolist()})
+        cols.add(k)
+        cols.add((k + 1) % N_PODIUM_BAYS)
+    bts = equal_arc_ts(0.0, N_PODIUM_BAYS, -0.5)   # boundary k sits between bay k-1 and bay k
+    layout["podium_columns"] = [{"pos": E(0.0, bts[k]).tolist(), "basis": frame(0.0, bts[k])[:3, :3].T.tolist()}
+                                for k in sorted(cols)]
+    # statues stand on the new niche floor
+    for n in layout.get("niches", []):
+        if n["bay"] in modular:
+            n["pos"][1] = v2.BASE_H + 0.02
 
 
 def _cut_gates(mesh, ts, bays, w):
@@ -692,6 +742,7 @@ def main():
     write("colosseum_floor", [("Floor", floor), ("Grates", grates), ("FloorCollision-colonly", floor_col)])
     pod, pod_col, bays = build_podium(layout)
     write("colosseum_podium", [("Podium", pod), ("PodiumCollision-colonly", pod_col)])
+    build_podium_modules(layout, equal_arc_ts(0.0, N_PODIUM_BAYS), bays, layout["podium_bay_width"])
     cav = build_cavea(layout)
     write("colosseum_cavea", [("Cavea", cav)])
     obs, obs_col = build_obstacles(layout)
