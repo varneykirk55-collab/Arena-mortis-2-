@@ -80,6 +80,13 @@ Rendered and inspected:
 Screenshots live in `tools/preview/out/` locally. They are git-ignored, so
 regenerate them with the commands in the README.
 
+## 4. Visual overhaul, phase 1 (re-run on branch `visual-overhaul-phase1`)
+
+* `tests/run_tests.tscn`: 223 checks passed, 0 failed.
+* `tests/smoke_run.tscn`: round 1 runs normally; navmesh 185 polygons (the same on the pre-overhaul tag).
+* `tests/beauty_shots.tscn`: ten fixed cameras before and after, with draw-call and triangle counts.
+  See `docs/VISUAL_PASS_PHASE1.md`.
+
 ## Limitations (not verified)
 
 * **No real GPU, no live play.** Nobody played the game interactively with

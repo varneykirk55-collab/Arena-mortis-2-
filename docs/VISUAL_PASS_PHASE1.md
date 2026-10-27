@@ -64,7 +64,7 @@ tiers and grates. Only statue heights in the niches changed, plus new keys
 for the modules.
 
 Collision meshes and the navigation source are unchanged, and the navmesh
-still bakes to 185 polygons. Zombies spawn and path normally in the smoke run.
+still bakes to 185 polygons (also 185 on the tagged build). Zombies spawn and path normally in the smoke run.
 
 ## 4. Verification
 
@@ -79,9 +79,24 @@ still bakes to 185 polygons. Zombies spawn and path normally in the smoke run.
 
 ## 5. Performance
 
-PERF_TABLE
+Measured with the same ten cameras on the tagged pre-overhaul build and on this branch (Compatibility renderer, visible pass):
 
-* Unique geometry in the scene is PERF_SURFACES. The podium uses 30 bay
+| Shot | Draw calls before → after | Triangles before → after | Visible objects before → after |
+|---|---|---|---|
+| A1_north_wall | 500 → 905 | 322 k → 350 k | 434 → 794 |
+| A2_north_oblique | 807 → 1496 | 327 k → 378 k | 687 → 1271 |
+| A3_wall_closeup | 368 → 707 | 319 k → 315 k | 327 → 633 |
+| A4_north_gate | 203 → 416 | 322 k → 322 k | 200 → 389 |
+| G1_spawn | 872 → 1544 | 327 k → 389 k | 792 → 1393 |
+| G2_overview | 1280 → 2344 | 348 k → 503 k | 1127 → 2048 |
+| G3_high | 1462 → 2680 | 343 k → 601 k | 1252 → 2272 |
+| G4_south_pap | 769 → 1402 | 328 k → 357 k | 716 → 1290 |
+| G5_stands | 711 → 1262 | 321 k → 374 k | 643 → 1137 |
+| Z1_zombies_combat | 980 → 1648 | 350 k → 410 k | 886 → 1484 |
+
+Video memory: 151 MB before → 162 MB after.
+
+* Unique geometry in the scene is 635 mesh surfaces across all geometry instances, up from 408 before (`tools/preview/count_draws.gd`). The podium uses 30 bay
   instances that share 6 meshes. Upper tiers are 10 MultiMeshes, one per
   module (about 280 instances).
 * Triangle budgets per module:
@@ -112,8 +127,8 @@ PERF_TABLE
 * **Forward+ never seen.** All screenshots use the Compatibility renderer
   (llvmpipe, no GPU here). Fog, glow and shadow softness may need retuning
   on a real GPU.
-* **Draw calls.** Visible draw calls are higher than before in wide views
-  (see table). If it matters on target hardware, the next step is to merge
+* **Draw calls.** Visible draw calls roughly doubled (for example 1462 → 2680 in the
+  high overview); triangles rose by up to 75 % (the high overview) and were flat in close wall views. If it matters on target hardware, the next step is to merge
   podium bays per quadrant into MultiMeshes and drop a material surface (sand
   drifts) into a shared mesh.
 * **Panel C damage patch.** The damaged panel's exposed rubble core reads as a
