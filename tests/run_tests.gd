@@ -136,7 +136,7 @@ func _load_weapon(id: String) -> WeaponData:
 # ------------------------------------------------------------------ unit tests
 
 func test_weapon_resources() -> void:
-	for id in ["pistol", "m4", "jupiter"]:
+	for id in ["pistol", "m4", "jupiter", "mk35"]:
 		var w := _load_weapon(id)
 		check(w != null, "%s loads" % id)
 		check(w.damage > 0 and w.fire_rate > 0 and w.magazine_size > 0 and w.reserve_ammo > 0, "%s has sane stats" % id)
@@ -269,6 +269,9 @@ func test_model_imports() -> void:
 			var mesh: Mesh = (mi as MeshInstance3D).mesh
 			if mesh and mesh.get_surface_count() > 0 and mesh.surface_get_material(0) and mesh.surface_get_material(0).resource_path.begins_with("res://resources/materials/"):
 				remapped = true
+			if m == "weapon_m4" and mesh:
+				var mat := mesh.surface_get_material(0) as StandardMaterial3D
+				remapped = mat != null and mat.albedo_texture != null and mat.normal_texture != null and mat.roughness_texture != null and mat.metallic_texture != null
 		check(remapped, "%s materials remapped to project materials" % m)
 		inst.free()
 	var mb: Node = load("res://assets/models/mystery_box.glb").instantiate()

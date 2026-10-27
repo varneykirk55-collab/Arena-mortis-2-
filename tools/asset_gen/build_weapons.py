@@ -13,7 +13,6 @@ Each weapon GLB contains named nodes the game uses:
 import math
 import os
 import sys
-import shutil
 import subprocess
 from pathlib import Path
 
@@ -311,14 +310,9 @@ def arms():
 
 
 def main():
-    # The M4 now has a Blender source. Never silently regenerate its legacy mesh.
-    blender = shutil.which("blender")
-    if blender is None:
-        raise SystemExit("Blender is required for the Stage 1 M4; install it before regenerating weapons.")
+    # Preserve Grok's supplied geometry; use the archived originals verbatim.
     os.makedirs(OUT, exist_ok=True)
-    subprocess.run([blender, "--background", "--factory-startup", "--python",
-                    str(Path(__file__).with_name("build_m4_blender.py").resolve()),
-                    "--", str(Path(OUT).resolve())], check=True)
+    subprocess.run([sys.executable, str(Path(__file__).with_name("install_grok_models.py").resolve()), str(Path(OUT).resolve())], check=True)
     for name, fn in (("weapon_pistol", pistol), ("weapon_jupiter", jupiter), ("viewmodel_arms", arms)):
         sc = fn()
         size = sc.write_glb(os.path.join(OUT, name + ".glb"))

@@ -26,13 +26,13 @@ func _run() -> void:
 	var w := wm.current()
 	var vm := wm.current_viewmodel()
 	check(w.data.id == &"m4" and wm.state == WeaponManager.State.READY, "real WeaponManager equips M4")
-	check(vm.muzzle.position.is_equal_approx(Vector3(0, 0.022, -0.56)), "muzzle transform preserved")
-	check(vm.sight.position.is_equal_approx(Vector3(0, 0.092, 0.03)), "sight transform preserved")
+	check(vm.muzzle.position.is_equal_approx(Vector3(0, 0.06, -0.4755)), "muzzle at Grok suppressor tip")
+	check(vm.sight.position.is_equal_approx(Vector3(0, 0.13, 0.0505)), "sight matches Grok iron sights")
 	var rh := vm.model.find_child("RightHand", true, false) as Node3D
 	var lh := vm.model.find_child("LeftHand", true, false) as Node3D
-	check(rh.position.is_equal_approx(Vector3(0, -0.016, 0.022)), "right hand anchor preserved")
+	check(rh.position.is_equal_approx(Vector3(0, -0.004, 0.05)), "right hand at Grok grip")
 	check(is_equal_approx(rh.rotation.x, deg_to_rad(-15)), "right hand rotation preserved")
-	check(lh.position.is_equal_approx(Vector3(0, 0.022, -0.29)), "left hand anchor preserved")
+	check(lh.position.is_equal_approx(Vector3(0, 0.01, -0.28)), "left hand at Grok handguard")
 	check(rh.find_child("RightArm",true,false) != null and lh.find_child("LeftArmRifle",true,false) != null, "existing arms attach")
 	var bolt_rest := vm.slide.position
 	var mag_rest := vm.magazine.position
@@ -59,7 +59,8 @@ func _run() -> void:
 		check(mesh.material_overlay != null and mesh.material_overlay.shader == Viewmodel.CAMO_SHADER, "animated camo retained on " + String(mesh.name))
 		for i in mesh.mesh.get_surface_count():
 			var material := mesh.mesh.surface_get_material(i)
-			check(material != null and material.resource_path.begins_with("res://resources/materials/"), "project material remap on " + String(mesh.name) + ":" + str(i))
+			var pbr := material as StandardMaterial3D
+			check(pbr != null and pbr.albedo_texture != null and pbr.normal_texture != null and pbr.roughness_texture != null and pbr.metallic_texture != null, "Grok PBR textures on " + String(mesh.name) + ":" + str(i))
 			surfaces += 1
 			triangles += mesh.mesh.surface_get_array_index_len(i) / 3
 	check(surfaces <= 12 and triangles <= 30000, "first-person asset budget: %d surfaces, %d triangles" % [surfaces,triangles])

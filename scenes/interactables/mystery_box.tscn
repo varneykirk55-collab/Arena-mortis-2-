@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://scripts/interactables/mystery_box.gd" id="1"]
 [ext_resource type="PackedScene" path="res://assets/models/mystery_box.glb" id="2"]
@@ -10,9 +10,11 @@
 [ext_resource type="AudioStream" path="res://assets/audio/deny.wav" id="8"]
 [ext_resource type="Script" path="res://scripts/weapons/weapon_data.gd" id="9"]
 
+[ext_resource type="Resource" path="res://resources/weapons/mk35.tres" id="10"]
+
 [node name="MysteryBox" type="Node3D"]
 script = ExtResource("1")
-pool = Array[ExtResource("9")]([ExtResource("3"), ExtResource("4")])
+pool = Array[ExtResource("9")]([ExtResource("3"), ExtResource("4"), ExtResource("10")])
 open_sound = ExtResource("5")
 close_sound = ExtResource("6")
 reveal_sound = ExtResource("7")
