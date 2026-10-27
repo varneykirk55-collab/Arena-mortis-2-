@@ -5,10 +5,10 @@
 
 [resource]
 resource_name = "gun_bronze"
-albedo_color = Color(1.15, 1.0, 0.75, 1)
+albedo_color = Color(1.25, 1.08, 0.82, 1)
 albedo_texture = ExtResource("1")
-roughness = 0.28
-metallic = 0.95
+roughness = 0.32
+metallic = 0.75
 metallic_specular = 0.5
 normal_enabled = true
 normal_scale = 1.0

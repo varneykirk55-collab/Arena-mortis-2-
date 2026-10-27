@@ -4,8 +4,8 @@
 
 [resource]
 resource_name = "sleeve"
-albedo_color = Color(0.2, 0.21, 0.17, 1)
-roughness = 0.95
+albedo_color = Color(0.32, 0.34, 0.28, 1)
+roughness = 0.9
 normal_enabled = true
 normal_scale = 1.0
 normal_texture = ExtResource("1")

@@ -37,6 +37,14 @@ fov = 80.0
 near = 0.03
 far = 500.0
 
+[node name="PlayerLight" type="OmniLight3D" parent="Head/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15, 0.2, 0.1)
+light_color = Color(1, 0.88, 0.76, 1)
+light_energy = 0.55
+omni_range = 7.5
+omni_attenuation = 1.3
+shadow_enabled = false
+
 [node name="WeaponManager" type="Node3D" parent="Head/Camera3D"]
 script = ExtResource("3")
 starting_weapon = ExtResource("4")

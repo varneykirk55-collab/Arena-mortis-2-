@@ -5,8 +5,9 @@
 
 [resource]
 resource_name = "gun_polymer"
+albedo_color = Color(3.2, 3.2, 3.4, 1)
 albedo_texture = ExtResource("1")
-roughness = 0.65
+roughness = 0.55
 normal_enabled = true
 normal_scale = 1.0
 normal_texture = ExtResource("2")

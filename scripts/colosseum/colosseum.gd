@@ -115,7 +115,7 @@ func _place_lighting_props() -> void:
 		var xf := Transform3D(basis_from(t.basis), v3(t.pos))
 		var torch := _add(torch_scene, xf)
 		if torch:
-			_add_fire(torch, 0.45, 2.0, 8.0, false)
+			_add_fire(torch, 0.45, 2.5, 11.0, false)
 	# tall braziers in front of the panel bays (not where the machines go)
 	var panels: Array = layout.get("panels", [])
 	var reserved := _machine_panels()
@@ -130,14 +130,14 @@ func _place_lighting_props() -> void:
 		pos -= Vector3(pos.x, 0, pos.z).normalized() * 0.4
 		var b := _add(brazier_scene, Transform3D(Basis.IDENTITY, pos), nav_region)
 		if b:
-			_add_fire(b, 1.0, 3.2, 15.0, i % 4 == 1)
+			_add_fire(b, 1.0, 3.8, 18.0, i % 4 == 1)
 	# small tripods along the podium terrace
 	var n_tri := 16
 	for k in n_tri:
 		var t := TAU * (k + 0.5) / n_tri
 		var tri := _add(tripod_scene, Transform3D(Basis.IDENTITY, ellipse_point(2.2, t, layout.get("podium_h", 5.0))))
 		if tri:
-			_add_fire(tri, 0.55, 1.8, 10.0, false)
+			_add_fire(tri, 0.55, 2.2, 12.0, false)
 
 
 func _machine_panels() -> Dictionary:

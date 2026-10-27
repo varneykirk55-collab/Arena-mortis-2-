@@ -6,11 +6,12 @@
 
 [resource]
 resource_name = "gun_metal"
+albedo_color = Color(2.6, 2.6, 2.75, 1)
 albedo_texture = ExtResource("1")
 roughness_texture = ExtResource("2")
 roughness_texture_channel = 4
 roughness = 1.0
-metallic = 0.8
+metallic = 0.45
 metallic_specular = 0.5
 normal_enabled = true
 normal_scale = 1.0

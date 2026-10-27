@@ -35,8 +35,8 @@ environment = ExtResource("2")
 
 [node name="Moon" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866025, -0.334565, 0.371572, 0.000000, 0.743145, 0.669131, -0.500000, 0.579484, -0.643582, 0, 40, 0)
-light_color = Color(0.62, 0.7, 0.95, 1)
-light_energy = 1.05
+light_color = Color(0.72, 0.78, 0.96, 1)
+light_energy = 1.45
 shadow_enabled = true
 shadow_bias = 0.04
 shadow_normal_bias = 1.5
@@ -44,6 +44,12 @@ directional_shadow_max_distance = 120.0
 directional_shadow_split_1 = 0.08
 directional_shadow_split_2 = 0.25
 directional_shadow_split_3 = 0.55
+
+[node name="FillLight" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, 0.334565, -0.371572, 0.000000, 0.743145, 0.669131, 0.500000, -0.579484, 0.643582, 0, 40, 0)
+light_color = Color(0.95, 0.72, 0.56, 1)
+light_energy = 0.45
+shadow_enabled = false
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
 
