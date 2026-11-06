@@ -11,6 +11,7 @@ const KEYS := {
 	"sprint": [KEY_SHIFT],
 	"jump": [KEY_SPACE],
 	"reload": [KEY_R],
+	"camera_toggle": [KEY_V],
 	"interact": [KEY_E],
 	"pause": [KEY_ESCAPE],
 	"weapon_1": [KEY_1],

@@ -28,6 +28,7 @@ var ads_amount := 0.0
 var player: Node            ## set by Player
 var camera: Camera3D
 
+var _tp_viewmodels: Dictionary = {}
 var _viewmodels: Dictionary = {}     ## WeaponInstance -> Viewmodel
 var _cooldown := 0.0
 var _state_timer := 0.0
@@ -38,6 +39,14 @@ var _sway := Vector2.ZERO
 var _pivot: Node3D
 var _audio: AudioStreamPlayer
 var _spread_bloom := 0.0
+# PROVISIONAL range/cadence/balance pending Kirk approval. Hard safety cap is not balance.
+const CHAIN_MAX_TARGETS := 10
+const CHAIN_RADIUS := 9.0
+const CHAIN_HOP_DELAY := 0.025
+const CHARGE_SOUND := preload("res://assets/audio/jupiter_charge.wav")
+const CHAIN_SOUND := preload("res://assets/audio/jupiter_chain.wav")
+const ELECTRIC_IMPACT := preload("res://assets/audio/lightning_impact.wav")
+var _electric_voices: Array[AudioStreamPlayer3D] = []
 var _rng := RandomNumberGenerator.new()
 
 
@@ -63,7 +72,35 @@ func current() -> WeaponInstance:
 
 func current_viewmodel() -> Viewmodel:
 	var w := current()
-	return _viewmodels.get(w) if w else null
+	if w == null:
+		return null
+	if player and player.third_person:
+		return _tp_viewmodel(w)
+	return _viewmodels.get(w)
+
+
+func _tp_viewmodel(w: WeaponInstance) -> Viewmodel:
+	if not _tp_viewmodels.has(w):
+		var vm := Viewmodel.new()
+		player.perspective.weapon_mount.add_child(vm)
+		vm.setup(w.data, null) # NO FP-only arms in third person.
+		vm.visible = false
+		_tp_viewmodels[w] = vm
+	return _tp_viewmodels[w]
+
+
+func sync_perspective() -> void:
+	var w := current()
+	for inst in _viewmodels:
+		_viewmodels[inst].visible = inst == w and not player.third_person
+	for inst in _tp_viewmodels:
+		_tp_viewmodels[inst].visible = inst == w and player.third_person
+	var vm := current_viewmodel()
+	if vm:
+		vm.visible = true
+		vm.set_upgraded(w.upgraded)
+		if state == State.RELOADING:
+			vm.play_reload(maxf(_state_timer, 0.05))
 
 
 func has_weapon(id: StringName) -> bool:
@@ -120,6 +157,9 @@ func _make_viewmodel(inst: WeaponInstance) -> void:
 
 
 func _free_viewmodel(inst: WeaponInstance) -> void:
+	if _tp_viewmodels.has(inst):
+		_tp_viewmodels[inst].queue_free()
+		_tp_viewmodels.erase(inst)
 	if _viewmodels.has(inst):
 		_viewmodels[inst].queue_free()
 		_viewmodels.erase(inst)
@@ -145,6 +185,8 @@ func switch_to(index: int, force := false) -> void:
 	state = State.SWITCHING
 	_state_timer = t
 	_play(switch_sound, -6.0)
+	if player:
+		sync_perspective()
 	weapon_changed.emit(current())
 	ammo_changed.emit(current())
 
@@ -217,7 +259,10 @@ func reload() -> void:
 	var dur := w.data.reload_time * (0.85 if w.upgraded else 1.0)
 	_state_timer = dur
 	current_viewmodel().play_reload(dur)
-	_play(w.data.reload_sound, -2.0)
+	if w.data.projectile == WeaponData.Projectile.LIGHTNING:
+		_electric_sound(w.data.reload_sound, current_viewmodel().muzzle_position(), -6.0)
+	else:
+		_play(w.data.reload_sound, -2.0)
 	reload_started.emit(w, dur)
 
 
@@ -275,7 +320,11 @@ func _fire(w: WeaponInstance) -> void:
 	var vm := current_viewmodel()
 	vm.play_fire()
 	var snd := w.data.upgraded_fire_sound if (w.upgraded and w.data.upgraded_fire_sound) else w.data.fire_sound
-	Sfx.play_2d(self, snd, -3.0, 0.04)
+	if w.data.projectile == WeaponData.Projectile.LIGHTNING:
+		_electric_sound(snd, vm.muzzle_position(), -6.0)
+		_electric_sound(CHARGE_SOUND, vm.muzzle_position(), -12.0)
+	else:
+		Sfx.play_2d(self, snd, -3.0, 0.04)
 	if w.data.projectile == WeaponData.Projectile.LIGHTNING:
 		_fire_lightning(w)
 	else:
@@ -299,6 +348,17 @@ func _aim_ray(spread_deg: float) -> Array:
 		var right := camera.global_basis.x
 		var up := camera.global_basis.y
 		fwd = (fwd + (right * cos(rot) + up * sin(rot)) * tan(ang)).normalized()
+	if player and player.third_person:
+		# Reticle ray chooses aim point; actual muzzle ray preserves cover and
+		# parallax (cannot shoot through a wall next to the shoulder/body).
+		var reticle_hit := _raycast(from, fwd, current().data.max_range, [])
+		var aim_point := from + fwd * current().data.max_range
+		if not reticle_hit.is_empty():
+			aim_point = reticle_hit.position
+		var vm := current_viewmodel()
+		if vm:
+			from = vm.muzzle_position()
+			fwd = (aim_point - from).normalized()
 	return [from, fwd]
 
 
@@ -345,7 +405,6 @@ func _fire_hitscan(w: WeaponInstance) -> void:
 
 
 func _fire_lightning(w: WeaponInstance) -> void:
-	# No spread, no auto-aim, no chaining: the bolt strikes exactly where aimed.
 	var ray := _aim_ray(0.0)
 	var from: Vector3 = ray[0]
 	var dir: Vector3 = ray[1]
@@ -354,25 +413,108 @@ func _fire_lightning(w: WeaponInstance) -> void:
 		exclude.append((player as CollisionObject3D).get_rid())
 	var end_point := from + dir * w.data.max_range
 	var normal := -dir
-	for i in 4:
+	var first: Hurtbox
+	for i in 8:
 		var hit := _raycast(from, dir, w.data.max_range, exclude)
 		if hit.is_empty():
 			break
+		end_point = hit.position
+		normal = hit.normal
 		if hit.collider is Hurtbox:
 			var hb := hit.collider as Hurtbox
 			if hb.zombie == null or not hb.zombie.is_alive():
 				exclude.append(hb.get_rid())
 				continue
-			end_point = hit.position
-			_apply_hit(w, hb, hit.position, dir, from.distance_to(hit.position), true)
-			break
-		end_point = hit.position
-		normal = hit.normal
+			first = hb
 		break
 	var vm := current_viewmodel()
 	var start := vm.muzzle_position() if vm else from
-	LightningBeam.spawn(self, start, end_point, w.data.bolt_color, 0.1 if not w.upgraded else 0.14)
+	LightningBeam.spawn(self, start, end_point, w.data.bolt_color, 0.12)
 	ImpactFX.lightning_hit(self, end_point, normal, w.data.bolt_color)
+	if first == null:
+		return
+	# Snapshot nearby living enemies before lethal hits remove them from the group.
+	# Damage remains synchronous/atomic; visual hops reveal progressively, independent
+	# of weapon switching or player death. Each shot owns its own visited identities.
+	var candidates := get_tree().get_nodes_in_group("zombies")
+	var visited := {}
+	var hb := first
+	var source: Zombie = first.zombie
+	for hop in CHAIN_MAX_TARGETS:
+		var z := hb.zombie
+		if not is_instance_valid(z) or not z.is_alive() or visited.has(z.get_instance_id()):
+			break
+		visited[z.get_instance_id()] = true
+		_apply_hit(w, hb, end_point, dir, from.distance_to(end_point), true)
+		if hop == 0:
+			_electric_sound(ELECTRIC_IMPACT, end_point, -12.0)
+		if hop == CHAIN_MAX_TARGETS - 1:
+			break
+		var next := _chain_target(end_point, source, candidates, visited)
+		if next == null:
+			break
+		var next_pos := _chain_position(next)
+		dir = (next_pos - end_point).normalized()
+		LightningBeam.spawn(self, end_point, next_pos, Color(0.72, 0.88, 1.0), 0.085, (hop + 1) * CHAIN_HOP_DELAY, 0.3)
+		_chain_impact(next_pos, -dir, w.data.bolt_color, (hop + 1) * CHAIN_HOP_DELAY)
+		if hop == 0:
+			_electric_sound(CHAIN_SOUND, next_pos, -13.0)
+		end_point = next_pos
+		hb = next
+		source = next.zombie
+
+
+func _chain_position(hb: Hurtbox) -> Vector3:
+	# Area origin is at the feet in the existing zombie scene. Aim at the
+	# collision shape center, not the root, so arcs/LOS stay on the torso.
+	var shape := hb.get_node_or_null("CollisionShape3D") as CollisionShape3D
+	return shape.global_position if shape else hb.global_position
+
+
+func _chain_target(pos: Vector3, source: Zombie, candidates: Array, visited: Dictionary) -> Hurtbox:
+	var best: Hurtbox
+	var best_dist := CHAIN_RADIUS * CHAIN_RADIUS
+	for candidate in candidates:
+		if not is_instance_valid(candidate) or not candidate is Zombie:
+			continue
+		var z := candidate as Zombie
+		if not z.is_alive() or visited.has(z.get_instance_id()):
+			continue
+		var body := z.get_node_or_null("BodyHurtbox") as Hurtbox
+		if body == null or body.zombie != z:
+			continue
+		var d := pos.distance_squared_to(_chain_position(body))
+		if d > best_dist or d < 0.0001:
+			continue
+		# Ignore the source body/head only. World AND intervening live enemies
+		# obstruct the jump; a later candidate may still be reachable.
+		var ignored: Array[RID] = [source.get_rid()]
+		for h in source._hurtboxes:
+			ignored.append(h.get_rid())
+		var direction := (_chain_position(body) - pos).normalized()
+		var hit := _raycast(pos, direction, sqrt(d) + 0.05, ignored)
+		if not hit.is_empty() and hit.collider is Hurtbox and hit.collider.zombie == z:
+			best = body
+			best_dist = d
+	return best
+
+
+func _chain_impact(pos: Vector3, normal: Vector3, color: Color, delay: float) -> void:
+	await get_tree().create_timer(delay, false).timeout
+	ImpactFX.lightning_hit(self, pos, normal, color, 0.25)
+
+
+func _electric_sound(stream: AudioStream, pos: Vector3, volume: float) -> void:
+	# Maximum 8 simultaneous electric voices, at most 4 requests per discharge.
+	# No per-target sound storm. Retire oldest so discharge is never starved.
+	_electric_voices = _electric_voices.filter(func(p): return is_instance_valid(p) and p.playing)
+	if _electric_voices.size() >= 8:
+		var oldest: AudioStreamPlayer3D = _electric_voices.pop_front()
+		oldest.stop()
+		oldest.queue_free()
+	var voice := Sfx.play_3d(self, stream, pos, volume, 0.04, &"SFX", 40.0)
+	if voice:
+		_electric_voices.append(voice)
 
 
 func _apply_hit(w: WeaponInstance, hb: Hurtbox, pos: Vector3, dir: Vector3, dist: float, lightning: bool) -> void:
@@ -387,7 +529,7 @@ func _apply_hit(w: WeaponInstance, hb: Hurtbox, pos: Vector3, dir: Vector3, dist
 	result["weapon"] = w
 	if not lightning:
 		ImpactFX.flesh_hit(self, pos, dir)
-	_play(hitmarker_sound, -8.0 if not result.get("killed", false) else -4.0)
+		_play(hitmarker_sound, -8.0 if not result.get("killed", false) else -4.0)
 	hit_registered.emit(result)
 
 
@@ -416,6 +558,11 @@ func _process(delta: float) -> void:
 	var sway := Vector3(-_sway.x, _sway.y, 0.0) * (1.0 - 0.7 * ads_amount)
 	var ads_off := w.data.ads_offset
 	var base := w.data.hip_offset.lerp(ads_off, ease(ads_amount, -1.6))
+	if player and player.third_person and player.perspective.has_weapon_socket:
+		# Bot1's authored RightWeaponSocket owns rest placement, not FP offsets.
+		base = Vector3.ZERO
+		bob = Vector3.ZERO
+		sway = Vector3.ZERO
 	var sprint_pose := 1.0 if (sprinting and state == State.READY) else 0.0
 	var kick := vm.kick_amount()
 	var pos := base + bob + sway + vm.anim_offset + Vector3(0, -0.04, 0.05) * sprint_pose + Vector3(0, 0, w.data.recoil_kick * kick)
