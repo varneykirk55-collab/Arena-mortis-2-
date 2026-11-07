@@ -1,180 +1,7 @@
 {
-  "godot_per_clip": {
-    "AimIdle": {
-      "right_grip_reference_mm": 0.00037,
-      "left_rob_palm_mm": 0.00183,
-      "socket_world_matrix_delta": 1.27e-06,
-      "loop_mode": 1,
-      "baseline_left_rob_mm": 76.1465281248093
-    },
-    "AimIdle_Jupiter": {
-      "right_grip_reference_mm": 0.00017,
-      "left_rob_palm_mm": 0.00157,
-      "socket_world_matrix_delta": 1.02e-06,
-      "loop_mode": 1,
-      "baseline_left_rob_mm": 33.1069268286228
-    },
-    "AimIdle_Pistol": {
-      "right_grip_reference_mm": 0.00027,
-      "left_rob_palm_mm": 0.00147,
-      "socket_world_matrix_delta": 7.8e-07,
-      "loop_mode": 1,
-      "baseline_left_rob_mm": 8.41548852622509
-    },
-    "FireRecoil": {
-      "right_grip_reference_mm": 0.00025,
-      "left_rob_palm_mm": 0.00096,
-      "socket_world_matrix_delta": 6e-07,
-      "loop_mode": 0,
-      "baseline_left_rob_mm": 76.1465206742287
-    },
-    "FireRecoil_Jupiter": {
-      "right_grip_reference_mm": 0.00015,
-      "left_rob_palm_mm": 0.00123,
-      "socket_world_matrix_delta": 1.31e-06,
-      "loop_mode": 0,
-      "baseline_left_rob_mm": 33.1066735088825
-    },
-    "FireRecoil_Pistol": {
-      "right_grip_reference_mm": 0.00025,
-      "left_rob_palm_mm": 0.00109,
-      "socket_world_matrix_delta": 7.2e-07,
-      "loop_mode": 0,
-      "baseline_left_rob_mm": 8.4154549986124
-    },
-    "Idle": {
-      "right_grip_reference_mm": 0.00028,
-      "left_rob_palm_mm": 0.00207,
-      "socket_world_matrix_delta": 1.11e-06,
-      "loop_mode": 1,
-      "baseline_left_rob_mm": 76.1472284793854
-    },
-    "Idle_Jupiter": {
-      "right_grip_reference_mm": 0.00015,
-      "left_rob_palm_mm": 0.00204,
-      "socket_world_matrix_delta": 9.8e-07,
-      "loop_mode": 1,
-      "baseline_left_rob_mm": 33.1071615219116
-    },
-    "Idle_Pistol": {
-      "right_grip_reference_mm": 0.00012,
-      "left_rob_palm_mm": 0.00239,
-      "socket_world_matrix_delta": 1.09e-06,
-      "loop_mode": 1,
-      "baseline_left_rob_mm": 8.41553881764412
-    },
-    "Run": {
-      "right_grip_reference_mm": 0.00026,
-      "left_rob_palm_mm": 0.00133,
-      "socket_world_matrix_delta": 1.14e-06,
-      "loop_mode": 1,
-      "baseline_left_rob_mm": 76.1466324329376
-    },
-    "Run_Jupiter": {
-      "right_grip_reference_mm": 0.00014,
-      "left_rob_palm_mm": 0.00218,
-      "socket_world_matrix_delta": 7.6e-07,
-      "loop_mode": 1,
-      "baseline_left_rob_mm": 33.1069231033325
-    },
-    "Run_Pistol": {
-      "right_grip_reference_mm": 0.00015,
-      "left_rob_palm_mm": 0.00203,
-      "socket_world_matrix_delta": 1.11e-06,
-      "loop_mode": 1,
-      "baseline_left_rob_mm": 8.41568503528833
-    },
-    "Walk": {
-      "right_grip_reference_mm": 0.00014,
-      "left_rob_palm_mm": 0.00127,
-      "socket_world_matrix_delta": 1.36e-06,
-      "loop_mode": 1,
-      "baseline_left_rob_mm": 76.1464014649391
-    },
-    "Walk_Jupiter": {
-      "right_grip_reference_mm": 0.00014,
-      "left_rob_palm_mm": 0.00205,
-      "socket_world_matrix_delta": 9.8e-07,
-      "loop_mode": 1,
-      "baseline_left_rob_mm": 33.1061035394669
-    },
-    "Walk_Pistol": {
-      "right_grip_reference_mm": 0.00014,
-      "left_rob_palm_mm": 0.00193,
-      "socket_world_matrix_delta": 6e-07,
-      "loop_mode": 1,
-      "baseline_left_rob_mm": 8.41552671045065
-    }
-  },
-  "penetration_sampled": {
-    "m4": {
-      "Right": {
-        "old_fraction_pct": 9.635416666666668,
-        "old_depth_mm": 17.233634367585182,
-        "new_fraction_pct": 25.512104283054004,
-        "new_depth_mm": 12.879181653261185
-      },
-      "Left": {
-        "old_fraction_pct": 17.16417910447761,
-        "old_depth_mm": 7.534941658377647,
-        "new_fraction_pct": 15.828677839851025,
-        "new_depth_mm": 13.076895847916603
-      }
-    },
-    "pistol": {
-      "Right": {
-        "old_fraction_pct": 0,
-        "old_depth_mm": 0,
-        "new_fraction_pct": 11.731843575418994,
-        "new_depth_mm": 12.820765376091003
-      },
-      "Left": {
-        "old_fraction_pct": 1.8656716417910446,
-        "old_depth_mm": 0.8304264047183096,
-        "new_fraction_pct": 12.104283054003725,
-        "new_depth_mm": 12.648616917431355
-      }
-    },
-    "jupiter": {
-      "Right": {
-        "old_fraction_pct": 58.072916666666664,
-        "old_depth_mm": 33.30035135149956,
-        "new_fraction_pct": 23.463687150837988,
-        "new_depth_mm": 31.53970092535019
-      },
-      "Left": {
-        "old_fraction_pct": 45.8955223880597,
-        "old_depth_mm": 14.836831018328667,
-        "new_fraction_pct": 25.41899441340782,
-        "new_depth_mm": 25.050362572073936
-      }
-    }
-  },
-  "dimensions": {
-    "Right": {
-      "wrist_to_middle_tip_bone_mm": 176.58952267671114,
-      "hand_local_y_bounds_mm": [
-        -29.919477179646492,
-        176.73011124134064
-      ],
-      "skin_y_extent_mm": 206.64958842098713,
-      "source_vertices": 1621,
-      "source_polygons": 1607,
-      "max_original_influences": 4
-    },
-    "Left": {
-      "wrist_to_middle_tip_bone_mm": 176.58908547388637,
-      "hand_local_y_bounds_mm": [
-        -29.919330030679703,
-        176.73011124134064
-      ],
-      "skin_y_extent_mm": 206.64944127202034,
-      "source_vertices": 1621,
-      "source_polygons": 1607,
-      "max_original_influences": 4
-    }
-  },
-  "export": {
+  "generated_local": "2026-11-07 00:59 EST",
+  "baseline": "Rob-tested 454307f, from supplied local files; no Git commands",
+  "geometry": {
     "bones": 54,
     "clips": [
       "AimIdle",
@@ -195,32 +22,1041 @@
     ],
     "meshes": {
       "node_0": {
-        "vertices": 17873,
-        "triangles": 16074
+        "vertices": 23702,
+        "triangles": 23583
       },
       "FP_Arms": {
-        "vertices": 5983,
-        "triangles": 7509
+        "vertices": 2581,
+        "triangles": 4600
       }
     }
   },
-  "body_partition_proof": {
-    "source_triangles": 19343,
-    "export_body_material_triangles": 19343,
-    "missing_triangles": 0,
-    "extra_triangles": 0,
-    "unmatched_export_vertices": 0,
-    "max_bind_position_error_m": 4.2146848510894035e-08,
-    "position_tolerance_m": 1e-06,
-    "skin_nodes": [
-      [
-        "FP_Arms",
-        0
+  "stored_triangles": 28183,
+  "samurai_glb_bytes": 8005196,
+  "samurai_sha256": "41d59fba8a618b1e06db1a6f02fbad5fb839cd24a8fb3c39265f384f800c207f",
+  "FP_forearm_filter": {
+    "min_vertex_forearm_t": 0.15326106826093047,
+    "max_vertex_distance_from_forearm_axis_m": 0.057759264495085116,
+    "upper_arm_shoulders_included": false
+  },
+  "contacts_godot": {
+    "bone_count": 54,
+    "clips": {
+      "AimIdle": {
+        "before_left_max_mm": 0.0018296295820619,
+        "before_right_max_mm": 48.7244762480259,
+        "duration_s": 2.0,
+        "left_max_mm": 0.00218046307054465,
+        "loop_mode": 1,
+        "right_max_mm": 40.3378345072269,
+        "samples": 61,
+        "socket_basis_axis_delta_max": 8.20054651740065e-07,
+        "socket_origin_delta_max_mm": 0.000477999890335923,
+        "weapon": "m4"
+      },
+      "AimIdle_Jupiter": {
+        "before_left_max_mm": 0.00157389001742558,
+        "before_right_max_mm": 65.3277412056923,
+        "duration_s": 2.0,
+        "left_max_mm": 0.00158240231939999,
+        "loop_mode": 1,
+        "right_max_mm": 54.0582984685898,
+        "samples": 61,
+        "socket_basis_axis_delta_max": 9.87444764177781e-07,
+        "socket_origin_delta_max_mm": 0.000518123442816432,
+        "weapon": "jupiter"
+      },
+      "AimIdle_Pistol": {
+        "before_left_max_mm": 0.00146885247431783,
+        "before_right_max_mm": 37.8453731536865,
+        "duration_s": 2.0,
+        "left_max_mm": 0.00202781166080968,
+        "loop_mode": 1,
+        "right_max_mm": 26.0759796947241,
+        "samples": 61,
+        "socket_basis_axis_delta_max": 7.26013865914865e-07,
+        "socket_origin_delta_max_mm": 0.000622335335265234,
+        "weapon": "pistol"
+      },
+      "FireRecoil": {
+        "before_left_max_mm": 0.000962942522164667,
+        "before_right_max_mm": 48.7246178090572,
+        "duration_s": 0.233333334326744,
+        "left_max_mm": 0.00120690208404994,
+        "loop_mode": 0,
+        "right_max_mm": 40.3380021452904,
+        "samples": 9,
+        "socket_basis_axis_delta_max": 7.2183269139714e-07,
+        "socket_origin_delta_max_mm": 0.000333200091517938,
+        "weapon": "m4"
+      },
+      "FireRecoil_Jupiter": {
+        "before_left_max_mm": 0.00123103791338508,
+        "before_right_max_mm": 65.3276965022087,
+        "duration_s": 0.233333334326744,
+        "left_max_mm": 0.0013235218148111,
+        "loop_mode": 0,
+        "right_max_mm": 54.0584847331047,
+        "samples": 9,
+        "socket_basis_axis_delta_max": 9.46509771893034e-07,
+        "socket_origin_delta_max_mm": 0.000484230440633837,
+        "weapon": "jupiter"
+      },
+      "FireRecoil_Pistol": {
+        "before_left_max_mm": 0.00108946903765172,
+        "before_right_max_mm": 37.845354527235,
+        "duration_s": 0.233333334326744,
+        "left_max_mm": 0.00132452930756699,
+        "loop_mode": 0,
+        "right_max_mm": 26.0759387165308,
+        "samples": 9,
+        "socket_basis_axis_delta_max": 6.40796372408658e-07,
+        "socket_origin_delta_max_mm": 0.00049427177373218,
+        "weapon": "pistol"
+      },
+      "Idle": {
+        "before_left_max_mm": 0.00207163657250931,
+        "before_right_max_mm": 48.7245135009289,
+        "duration_s": 2.40000009536743,
+        "left_max_mm": 0.00205787137019797,
+        "loop_mode": 1,
+        "right_max_mm": 40.3381735086441,
+        "samples": 74,
+        "socket_basis_axis_delta_max": 9.09691038941673e-07,
+        "socket_origin_delta_max_mm": 0.000491117020828824,
+        "weapon": "m4"
+      },
+      "Idle_Jupiter": {
+        "before_left_max_mm": 0.00203639501705766,
+        "before_right_max_mm": 65.3276517987251,
+        "duration_s": 2.40000009536743,
+        "left_max_mm": 0.00168297390246153,
+        "loop_mode": 1,
+        "right_max_mm": 54.0583617985249,
+        "samples": 74,
+        "socket_basis_axis_delta_max": 8.27487497190305e-07,
+        "socket_origin_delta_max_mm": 0.000392271488180995,
+        "weapon": "jupiter"
+      },
+      "Idle_Pistol": {
+        "before_left_max_mm": 0.0023899849566078,
+        "before_right_max_mm": 37.8453209996223,
+        "duration_s": 2.40000009536743,
+        "left_max_mm": 0.00238955226450344,
+        "loop_mode": 1,
+        "right_max_mm": 26.0759256780148,
+        "samples": 74,
+        "socket_basis_axis_delta_max": 8.81803600805142e-07,
+        "socket_origin_delta_max_mm": 0.000599436134507414,
+        "weapon": "pistol"
+      },
+      "Run": {
+        "before_left_max_mm": 0.00133265461954579,
+        "before_right_max_mm": 48.7244762480259,
+        "duration_s": 0.666666686534882,
+        "left_max_mm": 0.00143740214753052,
+        "loop_mode": 1,
+        "right_max_mm": 40.3380282223225,
+        "samples": 22,
+        "socket_basis_axis_delta_max": 8.41953351482516e-07,
+        "socket_origin_delta_max_mm": 0.000338817159217797,
+        "weapon": "m4"
+      },
+      "Run_Jupiter": {
+        "before_left_max_mm": 0.00218046307054465,
+        "before_right_max_mm": 65.3275921940804,
+        "duration_s": 0.666666686534882,
+        "left_max_mm": 0.0022753442863177,
+        "loop_mode": 1,
+        "right_max_mm": 54.0583841502666,
+        "samples": 22,
+        "socket_basis_axis_delta_max": 7.93653612163325e-07,
+        "socket_origin_delta_max_mm": 0.000305382940268828,
+        "weapon": "jupiter"
+      },
+      "Run_Pistol": {
+        "before_left_max_mm": 0.00203080708160996,
+        "before_right_max_mm": 37.8452911973,
+        "duration_s": 0.666666686534882,
+        "left_max_mm": 0.0021530861431529,
+        "loop_mode": 1,
+        "right_max_mm": 26.075966656208,
+        "samples": 22,
+        "socket_basis_axis_delta_max": 1.0336475497752e-06,
+        "socket_origin_delta_max_mm": 0.000481471261082334,
+        "weapon": "pistol"
+      },
+      "Walk": {
+        "before_left_max_mm": 0.0012694005135927,
+        "before_right_max_mm": 48.7246550619602,
+        "duration_s": 1.0,
+        "left_max_mm": 0.00107989728803659,
+        "loop_mode": 1,
+        "right_max_mm": 40.3380542993546,
+        "samples": 31,
+        "socket_basis_axis_delta_max": 1.01033265309525e-06,
+        "socket_origin_delta_max_mm": 0.000493372454002383,
+        "weapon": "m4"
+      },
+      "Walk_Jupiter": {
+        "before_left_max_mm": 0.00204509956347465,
+        "before_right_max_mm": 65.3277486562729,
+        "duration_s": 1.0,
+        "left_max_mm": 0.00191530648407934,
+        "loop_mode": 1,
+        "right_max_mm": 54.0584586560726,
+        "samples": 31,
+        "socket_basis_axis_delta_max": 1.18089167244761e-06,
+        "socket_origin_delta_max_mm": 0.000249455410994415,
+        "weapon": "jupiter"
+      },
+      "Walk_Pistol": {
+        "before_left_max_mm": 0.00193258165381849,
+        "before_right_max_mm": 37.8452837467194,
+        "duration_s": 1.0,
+        "left_max_mm": 0.00204926095648261,
+        "loop_mode": 1,
+        "right_max_mm": 26.0759443044662,
+        "samples": 31,
+        "socket_basis_axis_delta_max": 9.50383139297628e-07,
+        "socket_origin_delta_max_mm": 0.000485389762161503,
+        "weapon": "pistol"
+      }
+    },
+    "max_bone_scale_delta": 5.06779724673834e-06,
+    "max_left_mm": 0.00238955226450344,
+    "max_socket_basis_axis_delta": 1.18089167244761e-06,
+    "max_socket_origin_delta_mm": 0.000622335335265234,
+    "mount": "socket * roll_Z_180 * Translation(-gun_RightHand.origin); marker rotation ignored",
+    "palm": "mean world origins of Hand, HandIndex1, HandPinky1",
+    "sample_rate_hz": 30
+  },
+  "by_weapon": {
+    "m4": {
+      "right_before_max_mm": 48.7246550619602,
+      "right_after_max_mm": 40.3381735086441,
+      "left_after_max_mm": 0.00218046307054465,
+      "penetration": {
+        "Right": {
+          "before": {
+            "max_enclosed_percent": 25.512104283054004,
+            "max_enclosed_depth_mm": 12.87910621613264,
+            "min_nearest_surface_distance_mm": 0.04468787301448174
+          },
+          "after": {
+            "max_enclosed_percent": 26.256983240223462,
+            "max_enclosed_depth_mm": 13.482363894581795,
+            "min_nearest_surface_distance_mm": 0.0010098882512465934
+          }
+        },
+        "Left": {
+          "before": {
+            "max_enclosed_percent": 15.828677839851025,
+            "max_enclosed_depth_mm": 21.319257095456123,
+            "min_nearest_surface_distance_mm": 0.01715245707600843
+          },
+          "after": {
+            "max_enclosed_percent": 4.003724394785848,
+            "max_enclosed_depth_mm": 14.35740664601326,
+            "min_nearest_surface_distance_mm": 0.04713054295280017
+          }
+        }
+      }
+    },
+    "pistol": {
+      "right_before_max_mm": 37.8453731536865,
+      "right_after_max_mm": 26.0759796947241,
+      "left_after_max_mm": 0.00238955226450344,
+      "penetration": {
+        "Right": {
+          "before": {
+            "max_enclosed_percent": 11.731843575418994,
+            "max_enclosed_depth_mm": 12.820716947317123,
+            "min_nearest_surface_distance_mm": 0.056781398598104715
+          },
+          "after": {
+            "max_enclosed_percent": 13.687150837988826,
+            "max_enclosed_depth_mm": 13.156238943338394,
+            "min_nearest_surface_distance_mm": 0.002440707476125681
+          }
+        },
+        "Left": {
+          "before": {
+            "max_enclosed_percent": 12.104283054003725,
+            "max_enclosed_depth_mm": 12.648607604205608,
+            "min_nearest_surface_distance_mm": 0.05392224920797162
+          },
+          "after": {
+            "max_enclosed_percent": 12.104283054003725,
+            "max_enclosed_depth_mm": 12.648607604205608,
+            "min_nearest_surface_distance_mm": 0.05392781531554647
+          }
+        }
+      }
+    },
+    "jupiter": {
+      "right_before_max_mm": 65.3277486562729,
+      "right_after_max_mm": 54.0584847331047,
+      "left_after_max_mm": 0.0022753442863177,
+      "penetration": {
+        "Right": {
+          "before": {
+            "max_enclosed_percent": 23.370577281191807,
+            "max_enclosed_depth_mm": 31.539689749479294,
+            "min_nearest_surface_distance_mm": 0.02067099921987392
+          },
+          "after": {
+            "max_enclosed_percent": 18.063314711359403,
+            "max_enclosed_depth_mm": 27.483714744448662,
+            "min_nearest_surface_distance_mm": 0.015151398656598758
+          }
+        },
+        "Left": {
+          "before": {
+            "max_enclosed_percent": 25.32588454376164,
+            "max_enclosed_depth_mm": 25.050152093172073,
+            "min_nearest_surface_distance_mm": 2.849299107765546e-05
+          },
+          "after": {
+            "max_enclosed_percent": 25.32588454376164,
+            "max_enclosed_depth_mm": 25.050168856978416,
+            "min_nearest_surface_distance_mm": 0.00025032315420503437
+          }
+        }
+      }
+    }
+  },
+  "penetration_method": "Fixed REST-decimated export hand geometry, four normalized influences; start/mid/end source frames per clip, 1074 vertices per hand, 3 non-axis ray-parity majority. Approximate for open/overlapping gun meshes; not intersection volume. Depth is nearest surface for enclosed vertices.",
+  "sampled_penetration": {
+    "before": {
+      "Idle": {
+        "right_rob_palm_mm": 48.72470420577391,
+        "left_rob_palm_mm": 0.00043501438429936767,
+        "hands": {
+          "Right": {
+            "enclosed_fraction": 0.25512104283054005,
+            "enclosed_depth_mm": 12.87907361984253,
+            "nearest_contact_mm": 0.045014887291472405,
+            "samples": 3,
+            "vertices": 1074
+          },
+          "Left": {
+            "enclosed_fraction": 0.1191806331471136,
+            "enclosed_depth_mm": 9.301991201937199,
+            "nearest_contact_mm": 0.01715245707600843,
+            "samples": 3,
+            "vertices": 1074
+          }
+        }
+      },
+      "Walk": {
+        "right_rob_palm_mm": 48.72468177858521,
+        "left_rob_palm_mm": 0.0002666641796853137,
+        "hands": {
+          "Right": {
+            "enclosed_fraction": 0.25512104283054005,
+            "enclosed_depth_mm": 12.87910621613264,
+            "nearest_contact_mm": 0.044955646444577724,
+            "samples": 3,
+            "vertices": 1074
+          },
+          "Left": {
+            "enclosed_fraction": 0.1191806331471136,
+            "enclosed_depth_mm": 9.30051039904356,
+            "nearest_contact_mm": 0.018790733520290814,
+            "samples": 3,
+            "vertices": 1074
+          }
+        }
+      },
+      "Run": {
+        "right_rob_palm_mm": 48.72462112339434,
+        "left_rob_palm_mm": 0.000248563696706478,
+        "hands": {
+          "Right": {
+            "enclosed_fraction": 0.25512104283054005,
+            "enclosed_depth_mm": 12.87908386439085,
+            "nearest_contact_mm": 0.04468787301448174,
+            "samples": 3,
+            "vertices": 1074
+          },
+          "Left": {
+            "enclosed_fraction": 0.1191806331471136,
+            "enclosed_depth_mm": 9.30458027869463,
+            "nearest_contact_mm": 0.02457980008330196,
+            "samples": 3,
+            "vertices": 1074
+          }
+        }
+      },
+      "AimIdle": {
+        "right_rob_palm_mm": 48.72474436562868,
+        "left_rob_palm_mm": 0.000512738541784443,
+        "hands": {
+          "Right": {
+            "enclosed_fraction": 0.25512104283054005,
+            "enclosed_depth_mm": 12.879030779004097,
+            "nearest_contact_mm": 0.045009106543147936,
+            "samples": 3,
+            "vertices": 1074
+          },
+          "Left": {
+            "enclosed_fraction": 0.15828677839851024,
+            "enclosed_depth_mm": 8.965380489826202,
+            "nearest_contact_mm": 0.03967395605286583,
+            "samples": 3,
+            "vertices": 1074
+          }
+        }
+      },
+      "FireRecoil": {
+        "right_rob_palm_mm": 48.72465357425751,
+        "left_rob_palm_mm": 0.0004777675730550706,
+        "hands": {
+          "Right": {
+            "enclosed_fraction": 0.25512104283054005,
+            "enclosed_depth_mm": 12.879030779004097,
+            "nearest_contact_mm": 0.045009106543147936,
+            "samples": 3,
+            "vertices": 1074
+          },
+          "Left": {
+            "enclosed_fraction": 0.15828677839851024,
+            "enclosed_depth_mm": 21.319257095456123,
+            "nearest_contact_mm": 0.026718473236542195,
+            "samples": 3,
+            "vertices": 1074
+          }
+        }
+      },
+      "Idle_Pistol": {
+        "right_rob_palm_mm": 37.84540360429363,
+        "left_rob_palm_mm": 0.0002648429893873844,
+        "hands": {
+          "Right": {
+            "enclosed_fraction": 0.11731843575418995,
+            "enclosed_depth_mm": 12.820691801607609,
+            "nearest_contact_mm": 0.05692628838005476,
+            "samples": 3,
+            "vertices": 1074
+          },
+          "Left": {
+            "enclosed_fraction": 0.12104283054003724,
+            "enclosed_depth_mm": 12.648471631109715,
+            "nearest_contact_mm": 0.0540820365131367,
+            "samples": 3,
+            "vertices": 1074
+          }
+        }
+      },
+      "Walk_Pistol": {
+        "right_rob_palm_mm": 37.845465702518446,
+        "left_rob_palm_mm": 0.0003576315824030935,
+        "hands": {
+          "Right": {
+            "enclosed_fraction": 0.11731843575418995,
+            "enclosed_depth_mm": 12.820607982575893,
+            "nearest_contact_mm": 0.056870925618568435,
+            "samples": 3,
+            "vertices": 1074
+          },
+          "Left": {
+            "enclosed_fraction": 0.12104283054003724,
+            "enclosed_depth_mm": 12.648381292819977,
+            "nearest_contact_mm": 0.05400484224082902,
+            "samples": 3,
+            "vertices": 1074
+          }
+        }
+      },
+      "Run_Pistol": {
+        "right_rob_palm_mm": 37.845342213405374,
+        "left_rob_palm_mm": 0.00019503273968419013,
+        "hands": {
+          "Right": {
+            "enclosed_fraction": 0.11731843575418995,
+            "enclosed_depth_mm": 12.820669449865818,
+            "nearest_contact_mm": 0.05696317384717986,
+            "samples": 3,
+            "vertices": 1074
+          },
+          "Left": {
+            "enclosed_fraction": 0.12104283054003724,
+            "enclosed_depth_mm": 12.64844462275505,
+            "nearest_contact_mm": 0.053995743655832484,
+            "samples": 3,
+            "vertices": 1074
+          }
+        }
+      },
+      "AimIdle_Pistol": {
+        "right_rob_palm_mm": 37.8454391188312,
+        "left_rob_palm_mm": 0.00040005264459401876,
+        "hands": {
+          "Right": {
+            "enclosed_fraction": 0.11731843575418995,
+            "enclosed_depth_mm": 12.820716947317123,
+            "nearest_contact_mm": 0.05693284037988633,
+            "samples": 3,
+            "vertices": 1074
+          },
+          "Left": {
+            "enclosed_fraction": 0.12104283054003724,
+            "enclosed_depth_mm": 12.648596428334713,
+            "nearest_contact_mm": 0.05392224920797162,
+            "samples": 3,
+            "vertices": 1074
+          }
+        }
+      },
+      "FireRecoil_Pistol": {
+        "right_rob_palm_mm": 37.845351354530415,
+        "left_rob_palm_mm": 0.00026734636084524584,
+        "hands": {
+          "Right": {
+            "enclosed_fraction": 0.11731843575418995,
+            "enclosed_depth_mm": 12.820716947317123,
+            "nearest_contact_mm": 0.056781398598104715,
+            "samples": 3,
+            "vertices": 1074
+          },
+          "Left": {
+            "enclosed_fraction": 0.12104283054003724,
+            "enclosed_depth_mm": 12.648607604205608,
+            "nearest_contact_mm": 0.05392224920797162,
+            "samples": 3,
+            "vertices": 1074
+          }
+        }
+      },
+      "Idle_Jupiter": {
+        "right_rob_palm_mm": 65.32773529386992,
+        "left_rob_palm_mm": 0.0004935412157082318,
+        "hands": {
+          "Right": {
+            "enclosed_fraction": 0.23370577281191807,
+            "enclosed_depth_mm": 31.53960406780243,
+            "nearest_contact_mm": 0.04464254016056657,
+            "samples": 3,
+            "vertices": 1074
+          },
+          "Left": {
+            "enclosed_fraction": 0.25232774674115455,
+            "enclosed_depth_mm": 25.049861520528793,
+            "nearest_contact_mm": 2.849299107765546e-05,
+            "samples": 3,
+            "vertices": 1074
+          }
+        }
+      },
+      "Walk_Jupiter": {
+        "right_rob_palm_mm": 65.32771686109938,
+        "left_rob_palm_mm": 0.0003919883500923486,
+        "hands": {
+          "Right": {
+            "enclosed_fraction": 0.23370577281191807,
+            "enclosed_depth_mm": 31.53964877128601,
+            "nearest_contact_mm": 0.04530792648438364,
+            "samples": 3,
+            "vertices": 1074
+          },
+          "Left": {
+            "enclosed_fraction": 0.2532588454376164,
+            "enclosed_depth_mm": 25.049863383173943,
+            "nearest_contact_mm": 0.00021962829066524137,
+            "samples": 3,
+            "vertices": 1074
+          }
+        }
+      },
+      "Run_Jupiter": {
+        "right_rob_palm_mm": 65.32771226682797,
+        "left_rob_palm_mm": 0.00039537248496477603,
+        "hands": {
+          "Right": {
+            "enclosed_fraction": 0.23370577281191807,
+            "enclosed_depth_mm": 31.53952583670616,
+            "nearest_contact_mm": 0.02067099921987392,
+            "samples": 3,
+            "vertices": 1074
+          },
+          "Left": {
+            "enclosed_fraction": 0.25139664804469275,
+            "enclosed_depth_mm": 25.050055235624313,
+            "nearest_contact_mm": 0.0003960782635203941,
+            "samples": 3,
+            "vertices": 1074
+          }
+        }
+      },
+      "AimIdle_Jupiter": {
+        "right_rob_palm_mm": 65.32770349594529,
+        "left_rob_palm_mm": 0.0003591767189858541,
+        "hands": {
+          "Right": {
+            "enclosed_fraction": 0.22998137802607077,
+            "enclosed_depth_mm": 31.539689749479294,
+            "nearest_contact_mm": 0.05655347558786161,
+            "samples": 3,
+            "vertices": 1074
+          },
+          "Left": {
+            "enclosed_fraction": 0.25232774674115455,
+            "enclosed_depth_mm": 25.04982426762581,
+            "nearest_contact_mm": 0.00046653963181597646,
+            "samples": 3,
+            "vertices": 1074
+          }
+        }
+      },
+      "FireRecoil_Jupiter": {
+        "right_rob_palm_mm": 65.32767559617727,
+        "left_rob_palm_mm": 0.00036983709472390583,
+        "hands": {
+          "Right": {
+            "enclosed_fraction": 0.23184357541899442,
+            "enclosed_depth_mm": 31.539689749479294,
+            "nearest_contact_mm": 0.05651390893035568,
+            "samples": 3,
+            "vertices": 1074
+          },
+          "Left": {
+            "enclosed_fraction": 0.2532588454376164,
+            "enclosed_depth_mm": 25.050152093172073,
+            "nearest_contact_mm": 0.00046653963181597646,
+            "samples": 3,
+            "vertices": 1074
+          }
+        }
+      }
+    },
+    "after": {
+      "Idle": {
+        "right_rob_palm_mm": 40.338153414506216,
+        "left_rob_palm_mm": 0.00047829013603043657,
+        "hands": {
+          "Right": {
+            "enclosed_fraction": 0.26256983240223464,
+            "enclosed_depth_mm": 13.456053100526333,
+            "nearest_contact_mm": 0.020119527107453905,
+            "samples": 3,
+            "vertices": 1074
+          },
+          "Left": {
+            "enclosed_fraction": 0.027001862197392923,
+            "enclosed_depth_mm": 13.476085849106312,
+            "nearest_contact_mm": 0.05959470217931084,
+            "samples": 3,
+            "vertices": 1074
+          }
+        }
+      },
+      "Walk": {
+        "right_rob_palm_mm": 40.33829170482739,
+        "left_rob_palm_mm": 0.0004004643753283229,
+        "hands": {
+          "Right": {
+            "enclosed_fraction": 0.2616387337057728,
+            "enclosed_depth_mm": 13.47262691706419,
+            "nearest_contact_mm": 0.0010098882512465934,
+            "samples": 3,
+            "vertices": 1074
+          },
+          "Left": {
+            "enclosed_fraction": 0.027001862197392923,
+            "enclosed_depth_mm": 13.479065150022507,
+            "nearest_contact_mm": 0.05974558735033497,
+            "samples": 3,
+            "vertices": 1074
+          }
+        }
+      },
+      "Run": {
+        "right_rob_palm_mm": 40.33812110498485,
+        "left_rob_palm_mm": 0.0002669762502188819,
+        "hands": {
+          "Right": {
+            "enclosed_fraction": 0.2616387337057728,
+            "enclosed_depth_mm": 13.482363894581795,
+            "nearest_contact_mm": 0.020458915969356894,
+            "samples": 3,
+            "vertices": 1074
+          },
+          "Left": {
+            "enclosed_fraction": 0.027001862197392923,
+            "enclosed_depth_mm": 4.165158607065678,
+            "nearest_contact_mm": 0.05987039548926987,
+            "samples": 3,
+            "vertices": 1074
+          }
+        }
+      },
+      "AimIdle": {
+        "right_rob_palm_mm": 40.33831712620519,
+        "left_rob_palm_mm": 0.0006503806365369319,
+        "hands": {
+          "Right": {
+            "enclosed_fraction": 0.2616387337057728,
+            "enclosed_depth_mm": 13.477242551743984,
+            "nearest_contact_mm": 0.020505702195805497,
+            "samples": 3,
+            "vertices": 1074
+          },
+          "Left": {
+            "enclosed_fraction": 0.04003724394785847,
+            "enclosed_depth_mm": 5.488832481205463,
+            "nearest_contact_mm": 0.06422648584702983,
+            "samples": 3,
+            "vertices": 1074
+          }
+        }
+      },
+      "FireRecoil": {
+        "right_rob_palm_mm": 40.3381710573428,
+        "left_rob_palm_mm": 0.0004826228243321671,
+        "hands": {
+          "Right": {
+            "enclosed_fraction": 0.2616387337057728,
+            "enclosed_depth_mm": 13.4773263707757,
+            "nearest_contact_mm": 0.02043538734142203,
+            "samples": 3,
+            "vertices": 1074
+          },
+          "Left": {
+            "enclosed_fraction": 0.04003724394785847,
+            "enclosed_depth_mm": 14.35740664601326,
+            "nearest_contact_mm": 0.04713054295280017,
+            "samples": 3,
+            "vertices": 1074
+          }
+        }
+      },
+      "Idle_Pistol": {
+        "right_rob_palm_mm": 26.076083623803605,
+        "left_rob_palm_mm": 0.0003736856395656002,
+        "hands": {
+          "Right": {
+            "enclosed_fraction": 0.13687150837988826,
+            "enclosed_depth_mm": 13.156223110854626,
+            "nearest_contact_mm": 0.0025184781407006085,
+            "samples": 3,
+            "vertices": 1074
+          },
+          "Left": {
+            "enclosed_fraction": 0.12104283054003724,
+            "enclosed_depth_mm": 12.648462317883968,
+            "nearest_contact_mm": 0.054047191952122375,
+            "samples": 3,
+            "vertices": 1074
+          }
+        }
+      },
+      "Walk_Pistol": {
+        "right_rob_palm_mm": 26.0760866233545,
+        "left_rob_palm_mm": 0.00048162097798027157,
+        "hands": {
+          "Right": {
+            "enclosed_fraction": 0.13687150837988826,
+            "enclosed_depth_mm": 13.156209141016006,
+            "nearest_contact_mm": 0.0025598594675102504,
+            "samples": 3,
+            "vertices": 1074
+          },
+          "Left": {
+            "enclosed_fraction": 0.12104283054003724,
+            "enclosed_depth_mm": 12.648380361497402,
+            "nearest_contact_mm": 0.05399423753260635,
+            "samples": 3,
+            "vertices": 1074
+          }
+        }
+      },
+      "Run_Pistol": {
+        "right_rob_palm_mm": 26.07601489344743,
+        "left_rob_palm_mm": 0.0002666515754196323,
+        "hands": {
+          "Right": {
+            "enclosed_fraction": 0.13687150837988826,
+            "enclosed_depth_mm": 13.156228698790073,
+            "nearest_contact_mm": 0.0025531269329803763,
+            "samples": 3,
+            "vertices": 1074
+          },
+          "Left": {
+            "enclosed_fraction": 0.12104283054003724,
+            "enclosed_depth_mm": 12.648431584239006,
+            "nearest_contact_mm": 0.054003074183128774,
+            "samples": 3,
+            "vertices": 1074
+          }
+        }
+      },
+      "AimIdle_Pistol": {
+        "right_rob_palm_mm": 26.07606055820489,
+        "left_rob_palm_mm": 0.0005092657145335709,
+        "hands": {
+          "Right": {
+            "enclosed_fraction": 0.13687150837988826,
+            "enclosed_depth_mm": 13.15611694008112,
+            "nearest_contact_mm": 0.0025602682853786973,
+            "samples": 3,
+            "vertices": 1074
+          },
+          "Left": {
+            "enclosed_fraction": 0.12104283054003724,
+            "enclosed_depth_mm": 12.648595497012138,
+            "nearest_contact_mm": 0.05392781531554647,
+            "samples": 3,
+            "vertices": 1074
+          }
+        }
+      },
+      "FireRecoil_Pistol": {
+        "right_rob_palm_mm": 26.07598131406072,
+        "left_rob_palm_mm": 0.00035811260398373776,
+        "hands": {
+          "Right": {
+            "enclosed_fraction": 0.13687150837988826,
+            "enclosed_depth_mm": 13.156238943338394,
+            "nearest_contact_mm": 0.002440707476125681,
+            "samples": 3,
+            "vertices": 1074
+          },
+          "Left": {
+            "enclosed_fraction": 0.12104283054003724,
+            "enclosed_depth_mm": 12.648607604205608,
+            "nearest_contact_mm": 0.05392781531554647,
+            "samples": 3,
+            "vertices": 1074
+          }
+        }
+      },
+      "Idle_Jupiter": {
+        "right_rob_palm_mm": 54.05850210418785,
+        "left_rob_palm_mm": 0.0004924151790695877,
+        "hands": {
+          "Right": {
+            "enclosed_fraction": 0.18063314711359404,
+            "enclosed_depth_mm": 27.483714744448662,
+            "nearest_contact_mm": 0.020126113668084145,
+            "samples": 3,
+            "vertices": 1074
+          },
+          "Left": {
+            "enclosed_fraction": 0.25232774674115455,
+            "enclosed_depth_mm": 25.05008690059185,
+            "nearest_contact_mm": 0.00025032315420503437,
+            "samples": 3,
+            "vertices": 1074
+          }
+        }
+      },
+      "Walk_Jupiter": {
+        "right_rob_palm_mm": 54.058464737476754,
+        "left_rob_palm_mm": 0.00028624195921865916,
+        "hands": {
+          "Right": {
+            "enclosed_fraction": 0.18063314711359404,
+            "enclosed_depth_mm": 27.48309262096882,
+            "nearest_contact_mm": 0.015151398656598758,
+            "samples": 3,
+            "vertices": 1074
+          },
+          "Left": {
+            "enclosed_fraction": 0.2532588454376164,
+            "enclosed_depth_mm": 25.049785152077675,
+            "nearest_contact_mm": 0.0002932542315647879,
+            "samples": 3,
+            "vertices": 1074
+          }
+        }
+      },
+      "Run_Jupiter": {
+        "right_rob_palm_mm": 54.05845331379,
+        "left_rob_palm_mm": 0.00038310766614027146,
+        "hands": {
+          "Right": {
+            "enclosed_fraction": 0.17783985102420857,
+            "enclosed_depth_mm": 27.48176082968712,
+            "nearest_contact_mm": 0.020163774024695158,
+            "samples": 3,
+            "vertices": 1074
+          },
+          "Left": {
+            "enclosed_fraction": 0.25139664804469275,
+            "enclosed_depth_mm": 25.050166994333267,
+            "nearest_contact_mm": 0.0005058213332631567,
+            "samples": 3,
+            "vertices": 1074
+          }
+        }
+      },
+      "AimIdle_Jupiter": {
+        "right_rob_palm_mm": 54.058547647460884,
+        "left_rob_palm_mm": 0.0003734220292014381,
+        "hands": {
+          "Right": {
+            "enclosed_fraction": 0.17690875232774675,
+            "enclosed_depth_mm": 27.465585619211197,
+            "nearest_contact_mm": 0.020216324628563598,
+            "samples": 3,
+            "vertices": 1074
+          },
+          "Left": {
+            "enclosed_fraction": 0.25232774674115455,
+            "enclosed_depth_mm": 25.049855932593346,
+            "nearest_contact_mm": 0.0004945182467963605,
+            "samples": 3,
+            "vertices": 1074
+          }
+        }
+      },
+      "FireRecoil_Jupiter": {
+        "right_rob_palm_mm": 54.058417461231635,
+        "left_rob_palm_mm": 0.00036378370570342843,
+        "hands": {
+          "Right": {
+            "enclosed_fraction": 0.17690875232774675,
+            "enclosed_depth_mm": 27.465585619211197,
+            "nearest_contact_mm": 0.02012252480199095,
+            "samples": 3,
+            "vertices": 1074
+          },
+          "Left": {
+            "enclosed_fraction": 0.2532588454376164,
+            "enclosed_depth_mm": 25.050168856978416,
+            "nearest_contact_mm": 0.0004945182467963605,
+            "samples": 3,
+            "vertices": 1074
+          }
+        }
+      }
+    }
+  },
+  "verification": {
+    "tests_real": {
+      "passed": 223,
+      "failed": 0,
+      "exit_cleanup_diagnostics": true,
+      "exit_ObjectDB_instances": 4,
+      "exit_resources_still_in_use": 2
+    },
+    "tests_temp": {
+      "passed": 223,
+      "failed": 0,
+      "exit_cleanup_diagnostics": true,
+      "exit_ObjectDB_instances": 40,
+      "exit_resources_still_in_use": 4
+    },
+    "godot_import_real": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "godot_import_temp": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "godot_import_preview": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "validator": {
+      "numErrors": 0,
+      "numWarnings": 4
+    },
+    "mesh_proof": {
+      "position_tolerance_m": 1e-06,
+      "max_rest_position_difference_m": 0,
+      "before_node0_plus_FP_triangles": 23583,
+      "complete_node0_triangles": 23583,
+      "missing_TP_triangles": 0,
+      "extra_TP_triangles": 0,
+      "FP_triangles": 4600,
+      "FP_triangles_absent_from_TP": 0,
+      "skinned_nodes": [
+        [
+          "FP_Arms",
+          0
+        ],
+        [
+          "node_0",
+          0
+        ]
       ],
-      [
-        "node_0",
-        0
-      ]
-    ]
-  }
+      "clip_names_duration_channel_counts_identical": true,
+      "clips": {
+        "AimIdle": {
+          "duration": 2,
+          "channels": 162
+        },
+        "AimIdle_Jupiter": {
+          "duration": 2,
+          "channels": 162
+        },
+        "AimIdle_Pistol": {
+          "duration": 2,
+          "channels": 162
+        },
+        "FireRecoil": {
+          "duration": 0.23333333333333334,
+          "channels": 162
+        },
+        "FireRecoil_Jupiter": {
+          "duration": 0.23333333333333334,
+          "channels": 162
+        },
+        "FireRecoil_Pistol": {
+          "duration": 0.23333333333333334,
+          "channels": 162
+        },
+        "Idle": {
+          "duration": 2.4,
+          "channels": 162
+        },
+        "Idle_Jupiter": {
+          "duration": 2.4,
+          "channels": 162
+        },
+        "Idle_Pistol": {
+          "duration": 2.4,
+          "channels": 162
+        },
+        "Run": {
+          "duration": 0.6666666666666666,
+          "channels": 162
+        },
+        "Run_Jupiter": {
+          "duration": 0.6666666666666666,
+          "channels": 162
+        },
+        "Run_Pistol": {
+          "duration": 0.6666666666666666,
+          "channels": 162
+        },
+        "Walk": {
+          "duration": 1,
+          "channels": 162
+        },
+        "Walk_Jupiter": {
+          "duration": 1,
+          "channels": 162
+        },
+        "Walk_Pistol": {
+          "duration": 1,
+          "channels": 162
+        }
+      },
+      "samurai_import_byte_identical": true
+    },
+    "temp_scope": "Three weapon PackedScene resource pointers use _new assets; the real new samurai is additionally instantiated for the whole suite with FP_Arms hidden. The 223 assertions are unchanged; legacy model material-remap assertions still inspect legacy files."
+  },
+  "evidence_directory": "/workspace/arena_mortis2/work/fpfix",
+  "previews_directory": "/workspace/arena_mortis2/work/previews",
+  "integration_requirement": "TP: show complete node_0 and hide FP_Arms. FP: hide node_0 and show FP_Arms. Both visible duplicate 4600 triangles and z-fight. Rob original TP code still needs its visibility loop updated; it was not edited.",
+  "caveats": [
+    "Original wrist stub/cuff join is overlapped, not welded; original angular cuffs unchanged.",
+    "Right three-bone palm means remain nonzero; these are not skin-contact distances.",
+    "Skin intersections remain, particularly Jupiter support fingers; no no-clipping claim.",
+    "No socket orientation/tilt changes, clip additions, timing/loop changes or gun edits in this revision."
+  ]
 }

@@ -1,97 +1,88 @@
-# Samurai anatomical hand rebuild — local working tree
+# Samurai anatomical hands — FP/TP follow-up to 454307f
 
-Generated 2026-11-06 23:00 EST. No commit or push made by the executor.
+Generated 2026-11-07 00:59 EST. Working tree only; no Git commands, commit or push by executor.
 
-## Geometry and provenance
+## Current asset and integration contract
 
-- Replaced both generated mitten regions with MakeHuman hm08 CC0 hand geometry, using the female/young macro, muscle 0.45, weight 0.45. Source: `/workspace/ic_proto/pipeline/assets/mh/base.obj`, female target files, and native skin weights. The OBJ header explicitly dedicates these assets to CC0 (September 2020). Existing body/weapon licences are unchanged.
-- Hand skin albedo: CC0 MakeHuman system-assets `skin_middleage_caucasian_male.png`; only the UV hand regions are used, packed in the Blender source and embedded in the GLB. Geometry uses female proportions; the texture name does not describe the mesh.
-- Each editable hand: 1,621 vertices / 1,607 quads; budgeted surface: 1,074 geometric vertices / 2,120 triangles. Distinct tapered fingers, opposed thumb, anatomical palm pads, knuckle contours and native nail/nail-bed detail. No fused strips remain.
-- Wrist-to-middle-fingertip bone landmark: 176.59 mm on each hand. The 206.65 mm mesh piece includes a 29.92 mm forearm overlap hidden under the cuff. The join is overlapped, not welded; the original generated sleeve cuff remains angular.
-- Existing 54 bones retained; the existing 30 finger bind bones were repositioned onto actual anatomical joints and weighted from the CC0 skin weights. No bones or clips added/deleted. Four-influence export weights.
-- Updated only hand/arm contact in all 15 existing clips. No Reload, Hit or Death additions, no clip unification, no socket orientation/14-degree tilt correction. Keep the existing integration roll180.
-- Total triangles: 23,583 versus 19,967 before (+3,616). The GLB is 7,910,380 bytes versus 4,064,872 before; the extra packed CC0 skin image is not cropped/atlased yet.
+- `node_0` is now the **complete TP body**, including the original full arms/sleeves and both anatomical hands: **23,583 triangles**. It equals the previous `node_0` + `FP_Arms` triangle union exactly in bind space (0 missing, 0 extra; 1e-6 m tolerance, measured max position difference 0). No other body geometry changed.
+- `FP_Arms` is a **separate duplicate**, forearms/hands/cuffs only: **4,600 triangles**, down from 7,509 (-2,909). All its triangles are also in the complete body. Both meshes use skin 0 / the same 54-bone skeleton.
+- Non-skin FP faces require every vertex at least 15% down the forearm from the elbow, average forearm/hand weight >0.35, and every vertex within 75 mm of the forearm axis. Actual minimum t=0.153261 and maximum radius=57.759 mm. No shoulder armour or upper sleeve remains.
+- **TP must show `node_0` and hide `FP_Arms`; FP must do the reverse.** Rob's existing TP loop explicitly shows all meshes and must be updated. Showing both now duplicates 4,600 triangles and will z-fight. The preview harness applies correct visibility; Rob's original checkout was not modified.
+- Total stored geometry is 28,183 triangles because FP is intentionally duplicated; active TP is 23,583 and active FP is 4,600. Active TP remains +3,616 over the original mitten asset (19,967). GLB: 8,005,196 bytes.
 
-## FP_Arms partition
+## Hands, contacts and unchanged items
 
-- Export contains `FP_Arms` (arms, sleeves, both hands; 7,509 triangles) and `node_0` (remaining body; 16,074 triangles), both referencing glTF skin 0 / the same 54-bone skeleton and 15 clips.
-- 3,269 original arm/sleeve triangles were moved from body into FP_Arms. All 19,343 non-hand body triangles were retained across the two mesh nodes, with no missing/extra triangles; maximum bind-position difference from export float conversion: 4.22e-8 m. Hide `node_0`, keep `FP_Arms` visible for first-person.
-- The .blend retains separate editable quad hand templates and the unsplit non-hand body; `export_samurai_hands.py` applies the hand budget, limits skin weights, and creates FP_Arms non-destructively at export. Use that helper instead of a plain manual export.
+- Retained the CC0 MakeHuman hm08 female/young hand rebuild: 176.59 mm wrist-to-middle-tip, 1,621 editable vertices / 1,607 quads per hand; exported budget 1,074 geometric vertices / 2,120 triangles each. Separate tapered fingers, palm pads, knuckle and nail detail. Existing 30 finger bones and all 54 names remain.
+- CC0 source: `/workspace/ic_proto/pipeline/assets/mh/base.obj`, female macro targets and native weights; header explicitly dedicates it to CC0 (September 2020). Packed hand-region skin image is MakeHuman CC0 `skin_middleage_caucasian_male.png`; female geometry is independent of that texture name.
+- Fixed a UV-layer join bug: hand and body UV layer names are unified before joining, preserving hand skin/nail UVs instead of losing them. The editable source keeps separate hand templates; use `export_samurai_hands.py`, not a plain manual export.
+- M4 support fingers now follow a handguard ellipse, with opposed thumb; MCP origins are retained so the left-palm metric is preserved. Opposite-side/top previews show the wrap; near-side views necessarily hide fingers behind the handguard. M4 right middle/ring/pinky fingers were also wrapped around the grip surface.
+- Right hand/forearm contact moved inward by 12/10/15 mm for pistol/M4/Jupiter, respectively, with right thumb/index refitted. Existing socket **world** transform was preserved, not a new gun tilt.
+- The 15 clip names, durations, 162 channels per clip and loop settings are unchanged. Only requested existing arm/hand contact keys changed. No Reload/Hit/Death additions, no clip unification, no 14-degree correction. No gun GLB or gun source was edited in this revision.
+- Pistol's marker already remains at native glTF `(0,-0.032,0.045)` from the prior revision (historically moved from `(0,0.004,0.024)`); its rotation is unchanged. Socket orientation is unchanged within float tolerance.
+- The wrist stub extends 29.92 mm under the original cuff. This is an overlap, **not a weld**; original generated cuffs remain angular. TP previews render the full body alone, with no missing-arm seam or duplicate FP surfaces.
 
-## Why the previous 0 mm measurements were wrong
+## Exact Godot palm measurements
 
-The previous tools aligned the gun with `socket * roll180 * inverse(full RightHand marker transform)`. The game aligns the RightHand marker POSITION, but does not invert its -14-degree rotation. The correct mount is:
+Mount matches the game, not full-marker inversion:
 
 ```text
-gun_world = socket_world * roll180 * Translation(-gun_RightHand.origin)
-left_palm_world = mean(world LeftHand, LeftHandIndex1, LeftHandPinky1 origins)
+gun_world = socket_world * roll_Z_180 * Translation(-gun_RightHand.origin)
+palm = mean(world origins of Hand, HandIndex1, HandPinky1)
 ```
 
-Using that mount on the actual old GLB in Godot reproduces Rob: approximately 76.147 mm M4, 33.107 mm Jupiter, and 8.416 mm pistol. The left-arm contacts were re-solved against this position-only mount in every clip. Do not reinstate full-marker inversion in the test harness. If Rob later changes the gun mount basis for his tilt fix, hand contacts must be retargeted to that new basis.
+Both right and left below use that exact three-origin mean. The old right-reference 0 mm numbers were a different internal grip landmark and must not be presented as this metric. Sampled every 1/30 second including endpoints in all 15 clips, using Godot Skeleton3D poses and identical importer settings for the 454307f baseline.
 
-## Pistol marker
-
-- RightHand translation (native glTF / Godot model coordinates): `(0, 0.004, 0.024)` -> `(0, -0.032, 0.045)`, moved off the rear slide onto the upper handle/web region. Blender source translation: `(0, -0.045, -0.032)`.
-- Marker rotation unchanged; Muzzle and LeftHand markers unchanged. The pistol GLB BIN chunk is byte-identical before/after: no gun geometry changed. M4/Jupiter/other gun GLBs untouched.
-- Right thumb/index contact was refitted against the actual position-only mount; support-hand orientation cups the grip. This improves placement, but remaining skin intersections below mean it is NOT a final no-clipping grip.
-
-## Actual Godot measurements, every 30 fps sample in all clips
-
-Distances below use Skeleton3D global bone poses, not Blender-only data. Left = Rob's exact three-origin average. Right uses the explicit grip-cylinder reference stored as `right_grip_reference_hand_local_m` on the rig (M4 `(0.035,0.05,-0.025)`, pistol `(0.03,0.05,0.005)`, Jupiter `(0.045,0.05,-0.04)`). These are internal grip references, not a promise that the whole skin surface avoids the gun.
-
-| Clip | Old left mm | New left mm | Right reference mm | Loop |
+| Clip | Before right mm | After right mm | After left mm | Loop |
 |---|---:|---:|---:|---:|
-| AimIdle | 76.146528 | 0.001830 | 0.000370 | 1 |
-| AimIdle_Jupiter | 33.106927 | 0.001570 | 0.000170 | 1 |
-| AimIdle_Pistol | 8.415489 | 0.001470 | 0.000270 | 1 |
-| FireRecoil | 76.146521 | 0.000960 | 0.000250 | 0 |
-| FireRecoil_Jupiter | 33.106674 | 0.001230 | 0.000150 | 0 |
-| FireRecoil_Pistol | 8.415455 | 0.001090 | 0.000250 | 0 |
-| Idle | 76.147228 | 0.002070 | 0.000280 | 1 |
-| Idle_Jupiter | 33.107162 | 0.002040 | 0.000150 | 1 |
-| Idle_Pistol | 8.415539 | 0.002390 | 0.000120 | 1 |
-| Run | 76.146632 | 0.001330 | 0.000260 | 1 |
-| Run_Jupiter | 33.106923 | 0.002180 | 0.000140 | 1 |
-| Run_Pistol | 8.415685 | 0.002030 | 0.000150 | 1 |
-| Walk | 76.146401 | 0.001270 | 0.000140 | 1 |
-| Walk_Jupiter | 33.106104 | 0.002050 | 0.000140 | 1 |
-| Walk_Pistol | 8.415527 | 0.001930 | 0.000140 | 1 |
+| AimIdle | 48.7245 | 40.3378 | 0.002180 | 1 |
+| AimIdle_Jupiter | 65.3277 | 54.0583 | 0.001582 | 1 |
+| AimIdle_Pistol | 37.8454 | 26.0760 | 0.002028 | 1 |
+| FireRecoil | 48.7246 | 40.3380 | 0.001207 | 0 |
+| FireRecoil_Jupiter | 65.3277 | 54.0585 | 0.001324 | 0 |
+| FireRecoil_Pistol | 37.8454 | 26.0759 | 0.001325 | 0 |
+| Idle | 48.7245 | 40.3382 | 0.002058 | 1 |
+| Idle_Jupiter | 65.3277 | 54.0584 | 0.001683 | 1 |
+| Idle_Pistol | 37.8453 | 26.0759 | 0.002390 | 1 |
+| Run | 48.7245 | 40.3380 | 0.001437 | 1 |
+| Run_Jupiter | 65.3276 | 54.0584 | 0.002275 | 1 |
+| Run_Pistol | 37.8453 | 26.0760 | 0.002153 | 1 |
+| Walk | 48.7247 | 40.3381 | 0.001080 | 1 |
+| Walk_Jupiter | 65.3277 | 54.0585 | 0.001915 | 1 |
+| Walk_Pistol | 37.8453 | 26.0759 | 0.002049 | 1 |
 
-Maximum new left distance: 0.002390 mm; maximum right reference distance: 0.000368 mm. Maximum socket world-matrix element/axis comparison delta versus baseline: 1.36e-6 with identical Godot importer parameters. Unit bone-scale error <=5.1e-6 (float precision). `.import` is byte-identical; FireRecoil variants remain non-looping and the other 12 clips loop.
+Maximum left error: **0.002390 mm**. Right max by gun: pistol 26.0760, M4 40.3382, Jupiter 54.0585 mm; deliberately not claimed to be 0. The marker is a web/grip landmark, not the bone-centroid surface. Maximum socket origin delta versus baseline: 0.000622 mm; maximum basis-axis vector delta 1.18e-06. Bone-scale error <= 5.07e-06. `.import` is byte-identical. FireRecoil variants do not loop; other 12 clips do.
 
-## Remaining release blocker: skin penetration
+## Remaining skin-intersection limitation
 
-**The hand geometry and palm-reference constraints are improved, but the low-penetration requirement is NOT met. Do not describe this as a finished, no-clipping grip.** Natural-sized fingers/pads still pass through some grip/trigger/ornament surfaces. Jupiter is worst. The old tiny mitten mesh is not a comparable vertex sampling density.
+**Not a no-clipping release.** Fingers/pads still intersect some gun surfaces; Jupiter support fingers are the worst and can look cut off by occluding metal. Do not hide this caveat behind the near-zero left-palm result. Right centroid gaps were reduced; they were not forced to zero at the cost of pushing the whole palm into the gun.
 
-Sampled every five source frames plus clip endpoints. Three non-axis ray-parity votes estimate whether each evaluated hand vertex is enclosed; depth is nearest gun-surface distance. The gun meshes contain cut/open/overlapping pieces, so these are approximate diagnostics, not exact intersection volumes. Vertex tests can also miss edge-only intersections.
+Diagnostics below use fixed rest-decimated export geometry, 4 normalized weights, 1,074 vertices/hand, at start/middle/end of each clip. Three non-axis ray-parity votes estimate enclosure; depth is nearest surface for enclosed vertices. These guns have open/overlapping pieces, so this is approximate, not a solid intersection-volume test, and vertex tests can miss edge intersections. Values are maxima over all five clips per gun (not only AimIdle).
 
-| Gun | Hand | Old enclosed % / depth mm | New enclosed % / depth mm |
+| Gun | Hand | Before enclosed % / depth mm | After enclosed % / depth mm |
 |---|---|---:|---:|
-| m4 | Right | 9.64% / 17.23 | 25.51% / 12.88 |
-| m4 | Left | 17.16% / 7.53 | 15.83% / 13.08 |
-| pistol | Right | 0.00% / 0.00 | 11.73% / 12.82 |
-| pistol | Left | 1.87% / 0.83 | 12.10% / 12.65 |
-| jupiter | Right | 58.07% / 33.30 | 23.46% / 31.54 |
-| jupiter | Left | 45.90% / 14.84 | 25.42% / 25.05 |
+| pistol | Right | 11.73% / 12.82 | 13.69% / 13.16 |
+| pistol | Left | 12.10% / 12.65 | 12.10% / 12.65 |
+| m4 | Right | 25.51% / 12.88 | 26.26% / 13.48 |
+| m4 | Left | 15.83% / 21.32 | 4.00% / 14.36 |
+| jupiter | Right | 23.37% / 31.54 | 18.06% / 27.48 |
+| jupiter | Left | 25.33% / 25.05 | 25.33% / 25.05 |
 
-The corrected numeric palm point alone is insufficient to establish visible contact quality. Close-up review and more surface-aware grip shaping are still required. No collision corrective morphs or collision-only meshes were exported to hide this failure.
+M4 support enclosure is substantially reduced, but residual intersections remain. M4/pistol right maximum depth is about 0.60/0.34 mm higher than baseline; Jupiter right depth is reduced. No corrective morphs or collision-only geometry conceal the issue.
 
 ## Verification and evidence
 
-- glTF validator: 0 errors on samurai (4 warnings) and pistol (3 warnings); warnings are tangent-space / skinned-parent diagnostics.
-- Godot imports: no ERROR/WARNING diagnostics in final import logs.
-- Final real repo tests: 223 checks passed, 0 failed; final resource-pointer-swapped copy tests: 223 checks passed, 0 failed. Test cleanup still logs ObjectDB/resource-in-use warnings at process exit. The temp copy swaps six actual gameplay resource pointers; the legacy model import assertions continue to inspect legacy files.
-- An earlier hard binary replacement experiment failed five legacy material-remapping assertions; an overloaded early real run had six navigation timing failures. Final serial capped-frame runs above pass without changing tests.
-- Working evidence: `/workspace/arena_mortis2/work/humanhands/`: `godot_check.gd`, `godot_check.log`, `godot_pointmount_before_fix.log`, `final_metrics.json`, `measure_parity_*.json`, `body_partition_proof.json`, validator/import/test logs, and build scripts.
-- Before/after previews: `/workspace/arena_mortis2/work/previews/hands_{rest,pistol,m4,jupiter}_{before,after}_{right,left}.png`; contact sheet `hands_contact_sheet.png`.
+- glTF validator: **0 errors, 4 warnings** (generated tangent-space / skinned-parent warnings).
+- Final Godot 4.7.2 real, swapped-temp and preview imports: 0 ERROR / 0 WARNING diagnostics. Renderer-only compatibility/VSync/fog warnings in screenshot logs are unrelated to import.
+- Final real-repo tests: **223 passed, 0 failed**. Final temp copy: **223 passed, 0 failed**, with three `_new` weapon resource pointers and the actual new samurai instantiated through the full suite. Assertions unchanged; legacy material-remap assertions still inspect legacy files. Actual new character additionally exercised by all-clip measurement and Rob's integrated game previews. Exit cleanup is not clean despite exit 0: real suite reports 4 ObjectDB instances / 2 resources still in use; the temp suite with the added samurai fixture reports 40 / 4. No test assertions fail.
+- Actual player eye camera (~1.6216 m) AimIdle hip/ADS previews for pistol/M4/Jupiter, before and after, show removal of the large upper-sleeve/shoulder occluders. Same Rob game/poses, 1024x576 Compatibility renderer; preview-only shadows disabled, far=30 m to keep software rendering practical. TP previews hide FP_Arms for the final asset; baseline correctly shows the former two disjoint meshes.
+- Previews: `/workspace/arena_mortis2/work/previews/hands_fpfix_*_{before,after}.png`. Main contact sheet: `hands_fpfix_contact_sheet.png`; hip and TP sheets: `hands_fpfix_hip_contact_sheet.png`, `hands_fpfix_tp_contact_sheet.png`. Includes M4 support opposite-side/top and each right grip.
+- Audit scripts/logs/JSON: `/workspace/arena_mortis2/work/fpfix/` (`contact_metrics.json`, `mesh_proof.json`, `measure_parity_*.json`, validator/import/test logs, actual-camera harness in `rob_preview/tests/_asset_review.gd`).
 
-## Local files to review / commit
+## Files changed in this follow-up
 
 - `assets/models/player_samurai.glb`
 - `assets/models/blend_sources/player_samurai.blend`
-- `assets/models/weapon_pistol_new.glb`
-- `assets/models/blend_sources/weapon_pistol_new.blend`
 - `assets/models/blend_sources/export_samurai_hands.py`
 - This note and `player_samurai_hands_metrics.json`.
 
-Working tree only. Parent owns commit/push. The visible-clipping release blocker remains open.
+No gun changes or game-code changes in this follow-up. Parent owns commit. Rob must apply the TP visibility rule above; residual skin clipping remains open.
