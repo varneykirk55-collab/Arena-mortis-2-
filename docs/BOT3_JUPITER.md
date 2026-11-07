@@ -21,14 +21,14 @@ hurtboxes. Damage is resolved atomically on the firing tick; the connecting
 beams and impacts reveal every 25 ms, for 225 ms maximum propagation. Beams
 use captured endpoints and do not track moving victims after the shot.
 
-## PROVISIONAL balance — pending Kirk approval
+## Balance — APPROVED by Kirk (Nov 6 2026)
 
 - Automatic, 4 shots/second, 100-round magazine, 400 reserve.
 - Existing 2,200 damage and 2.8-second reload retained.
 - Optimus Maximus: 4,400 damage, 150/600 ammo, 5.2 shots/second,
   2.38-second reload, existing one-tier upgrade/refill path.
-- Radius/cadence/damage/economy impact need a human balance review; changing
-  these does not change the non-negotiable ten-enemy safety limit.
+- Kirk approved these values as final on Nov 6 2026; changing them
+  does not change the non-negotiable ten-enemy safety limit.
 
 ## Presentation and audio
 

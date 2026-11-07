@@ -153,8 +153,8 @@ func test_weapon_resources() -> void:
 	var j := _load_weapon("jupiter")
 	check(j.projectile == WeaponData.Projectile.LIGHTNING, "Jupiter fires lightning")
 	check(j.hip_spread_deg == 0.0 and j.ads_spread_deg == 0.0, "Jupiter has no spread (precision)")
-	check(j.magazine_size == 100 and j.reserve_ammo == 400, "PROVISIONAL Jupiter 100/400 ammunition")
-	check(j.fire_mode == WeaponData.FireMode.AUTO and j.fire_rate == 4.0, "PROVISIONAL automatic Jupiter cadence")
+	check(j.magazine_size == 100 and j.reserve_ammo == 400, "Approved Jupiter 100/400 ammunition")
+	check(j.fire_mode == WeaponData.FireMode.AUTO and j.fire_rate == 4.0, "Approved automatic Jupiter cadence")
 
 
 func test_weapon_instance_logic() -> void:
@@ -490,7 +490,7 @@ func test_jupiter_ammo_upgrade() -> void:
 	await _game_secs(w.data.reload_time + 0.3)
 	check(w.mag == 100 and w.reserve == 390, "Jupiter reload transfers missing rounds")
 	check(wm.upgrade_current(), "Jupiter supports existing upgrade path")
-	check(w.mag == 150 and w.reserve == 600 and w.base_damage() == 4400.0, "PROVISIONAL upgraded Jupiter scales and refills")
+	check(w.mag == 150 and w.reserve == 600 and w.base_damage() == 4400.0, "Approved upgraded Jupiter scales and refills")
 	check(not wm.upgrade_current(), "Jupiter cannot upgrade twice")
 
 

@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://scripts/interactables/mystery_box.gd" id="1"]
-[ext_resource type="PackedScene" path="res://assets/models/mystery_box.glb" id="2"]
+[ext_resource type="PackedScene" path="res://assets/models/mystery_box_new.glb" id="2"]
 [ext_resource type="Resource" path="res://resources/weapons/m4.tres" id="3"]
 [ext_resource type="Resource" path="res://resources/weapons/jupiter.tres" id="4"]
 [ext_resource type="AudioStream" path="res://assets/audio/box_open.wav" id="5"]

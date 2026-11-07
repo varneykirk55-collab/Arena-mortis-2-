@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="WeaponData" load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scripts/weapons/weapon_data.gd" id="1"]
-[ext_resource type="PackedScene" path="res://assets/models/weapon_jupiter.glb" id="2"]
+[ext_resource type="PackedScene" path="res://assets/models/weapon_jupiter_new.glb" id="2"]
 [ext_resource type="AudioStream" path="res://assets/audio/jupiter_fire.wav" id="3"]
 [ext_resource type="AudioStream" path="res://assets/audio/jupiter_fire_upgraded.wav" id="4"]
 [ext_resource type="AudioStream" path="res://assets/audio/reload_jupiter.wav" id="5"]
@@ -14,7 +14,7 @@ display_name = "Jupiter"
 viewmodel_scene = ExtResource("2")
 left_arm = &"LeftArmRifle"
 projectile = 1
-; PROVISIONAL balance: automatic, 100/400, 4 shots/sec; pending Kirk approval.
+; Balance APPROVED by Kirk (Nov 6 2026): automatic, 100/400, 4 shots/sec.
 fire_mode = 1
 damage = 2200.0
 headshot_multiplier = 1.5
@@ -39,7 +39,7 @@ equip_time = 0.7
 move_speed_multiplier = 0.95
 upgraded_name = "Jupiter Optimus Maximus"
 upgrade_damage_multiplier = 2.0
-; PROVISIONAL Optimus Maximus: 150 magazine / 600 reserve.
+; Optimus Maximus, APPROVED by Kirk (Nov 6 2026): 150 magazine / 600 reserve.
 upgrade_magazine_multiplier = 1.5
 upgrade_reserve_multiplier = 1.5
 upgrade_fire_rate_multiplier = 1.3

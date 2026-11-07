@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="WeaponData" load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scripts/weapons/weapon_data.gd" id="1"]
-[ext_resource type="PackedScene" path="res://assets/models/weapon_pistol.glb" id="2"]
+[ext_resource type="PackedScene" path="res://assets/models/weapon_pistol_new.glb" id="2"]
 [ext_resource type="AudioStream" path="res://assets/audio/pistol_fire.wav" id="3"]
 [ext_resource type="AudioStream" path="res://assets/audio/pistol_fire_upgraded.wav" id="4"]
 [ext_resource type="AudioStream" path="res://assets/audio/reload_pistol.wav" id="5"]

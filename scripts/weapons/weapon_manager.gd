@@ -39,7 +39,7 @@ var _sway := Vector2.ZERO
 var _pivot: Node3D
 var _audio: AudioStreamPlayer
 var _spread_bloom := 0.0
-# PROVISIONAL range/cadence/balance pending Kirk approval. Hard safety cap is not balance.
+# Range/cadence/balance APPROVED by Kirk (Nov 6 2026). Hard safety cap is not balance.
 const CHAIN_MAX_TARGETS := 10
 const CHAIN_RADIUS := 9.0
 const CHAIN_HOP_DELAY := 0.025

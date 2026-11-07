@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/zombies/zombie.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/zombies/hurtbox.gd" id="2"]
-[ext_resource type="PackedScene" path="res://assets/models/zombie_legionary.glb" id="3"]
+[ext_resource type="PackedScene" path="res://assets/models/zombie_legionary_new.glb" id="3"]
 [ext_resource type="PackedScene" path="res://assets/models/zombie_gladiator.glb" id="4"]
 [ext_resource type="AudioStream" path="res://assets/audio/zombie_groan_1.wav" id="5"]
 [ext_resource type="AudioStream" path="res://assets/audio/zombie_groan_2.wav" id="6"]
