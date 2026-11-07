@@ -56,6 +56,10 @@ func setup(p: Player, scene: PackedScene) -> void:
 	if socket:
 		weapon_mount.name = "WeaponPresentation"
 		socket.add_child(weapon_mount)
+		# Bot1's RightWeaponSocket pose leaves weapon -Z forward but rolled 180
+		# degrees (weapon +Y points down). Kirk approved a code-side correction:
+		# roll the presentation mount 180 degrees about the barrel (-Z) axis.
+		weapon_mount.transform = Transform3D(Basis(Vector3.FORWARD, PI), Vector3.ZERO)
 	else:
 		weapon_mount.name = "RightWeaponSocket_PLACEHOLDER"
 		player.head.add_child(weapon_mount)
