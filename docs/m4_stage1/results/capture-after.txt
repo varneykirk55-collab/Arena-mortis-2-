@@ -1,0 +1,22 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.
+     at: viewport_set_screen_space_aa (servers/rendering/renderer_viewport.cpp:1435)
+WARNING: Volumetric fog is only available when using the Forward+ renderer.
+     at: environment_set_volumetric_fog (servers/rendering/storage/environment_storage.cpp:458)
+     GDScript backtrace (most recent call first):
+         [0] _run (res://tools/preview/m4_capture.gd:30)
+M4_CAPTURE res://docs/m4_stage1/after/hip.png
+M4_RENDER_STATS hip draws=1578.0 triangles=4536920.0
+M4_CAPTURE res://docs/m4_stage1/after/ads.png
+M4_RENDER_STATS ads draws=901.0 triangles=2329266.0
+M4_CAPTURE res://docs/m4_stage1/after/reload_pose.png
+M4_RENDER_STATS reload_pose draws=1592.0 triangles=4536920.0
+M4_CAPTURE res://docs/m4_stage1/after/pack_a_punch.png
+M4_RENDER_STATS pack_a_punch draws=1589.0 triangles=4563120.0
+M4_CAPTURE res://docs/m4_stage1/after/profile.png
+M4_RENDER_STATS profile draws=11.0 triangles=26172.0
+M4_CAPTURE_DONE

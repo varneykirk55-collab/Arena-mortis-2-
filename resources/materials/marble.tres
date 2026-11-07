@@ -1,18 +1,25 @@
-[gd_resource type="StandardMaterial3D" load_steps=3 format=3]
+[gd_resource type="ShaderMaterial" load_steps=7 format=3]
 
-[ext_resource type="Texture2D" path="res://assets/textures/stone_plain_albedo.png" id="1"]
-[ext_resource type="Texture2D" path="res://assets/textures/stone_plain_normal.png" id="2"]
+[ext_resource type="Shader" path="res://resources/shaders/stone.gdshader" id="1"]
+[ext_resource type="Texture2D" path="res://assets/textures/marble_albedo.png" id="2"]
+[ext_resource type="Texture2D" path="res://assets/textures/marble_normal.png" id="3"]
+[ext_resource type="Texture2D" path="res://assets/textures/marble_rough.png" id="4"]
+[ext_resource type="Texture2D" path="res://assets/textures/macro_variation.png" id="5"]
+[ext_resource type="Texture2D" path="res://assets/textures/streaks.png" id="6"]
 
 [resource]
 resource_name = "marble"
-vertex_color_use_as_albedo = true
-albedo_color = Color(1.05, 1.02, 0.98, 1)
-albedo_texture = ExtResource("1")
-roughness = 0.55
-normal_enabled = true
-normal_scale = 1.0
-normal_texture = ExtResource("2")
-uv1_triplanar = true
-uv1_triplanar_sharpness = 4.0
-uv1_scale = Vector3(0.8, 0.8, 0.8)
-texture_filter = 5
+shader = ExtResource("1")
+shader_parameter/albedo_tex = ExtResource("2")
+shader_parameter/normal_tex = ExtResource("3")
+shader_parameter/rough_tex = ExtResource("4")
+shader_parameter/macro_tex = ExtResource("5")
+shader_parameter/streak_tex = ExtResource("6")
+shader_parameter/albedo_color = Color(0.76, 0.73, 0.69, 1)
+shader_parameter/tex_scale = 0.9
+shader_parameter/normal_strength = 0.6
+shader_parameter/roughness_min = 0.35
+shader_parameter/roughness_max = 0.75
+shader_parameter/dirt_strength = 0.35
+shader_parameter/streak_strength = 0.15
+shader_parameter/dust_strength = 0.35

@@ -918,7 +918,17 @@ def hand_world(pose, side):
 
 def main():
     os.makedirs(OUT, exist_ok=True)
-    write_zombie("zombie_legionary", "legionary", 1)
+    # The legionary is now a Blender-authored reusable asset. Do not overwrite
+    # it with this historical primitive generator. Rebuild it separately with
+    # build_legionary_blender.py; all other generators keep their old behavior.
+    from pathlib import Path
+    import shutil
+    source = Path(__file__).resolve().parents[2] / "assets/models/zombie_legionary.glb"
+    target = Path(OUT).resolve() / "zombie_legionary.glb"
+    if not source.is_file():
+        raise SystemExit("Build the legionary with Blender first: build_legionary_blender.py")
+    if source.resolve() != target:
+        shutil.copyfile(source, target)
     write_zombie("zombie_gladiator", "gladiator", 2)
     # statue 1: legionary saluting with raised gladius
     pose1 = {

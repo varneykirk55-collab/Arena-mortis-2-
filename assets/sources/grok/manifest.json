@@ -1,0 +1,32 @@
+[
+  {
+    "file": "MK35_ISR_BO7_v3_part1of3.zip",
+    "sha256": "78c39905b657e80eda5ec89f865c893d3a7c355ae8c7cdf26def174a2525adc6",
+    "bytes": 18689316
+  },
+  {
+    "file": "MK35_ISR_BO7_v3_part2of3.zip",
+    "sha256": "1686813785e06730ceed24243fefc82cf3649b850c4bb75911bdf2d3a0bf34ea",
+    "bytes": 12060031
+  },
+  {
+    "file": "MK35_ISR_BO7_v3_part3of3.zip",
+    "sha256": "b297de5560b71770c5c8734f26b95d58f393e90f0bcb1438d1c8f4aa988f4235",
+    "bytes": 18829500
+  },
+  {
+    "file": "Modern_M4_v3_part1of3.zip",
+    "sha256": "8a95f20b977c315d46bc447af86806536aac2b9fe5fc85de0a9a28fb95905fa3",
+    "bytes": 19839811
+  },
+  {
+    "file": "Modern_M4_v3_part2of3.zip",
+    "sha256": "31bba2650b368ef1992fdd4544019091baab7f721af39f1c32f3da1a55a30600",
+    "bytes": 11712688
+  },
+  {
+    "file": "Modern_M4_v3_part3of3.zip",
+    "sha256": "64d26c1890f1e12e481f50dccae5c29aafa65ced5c165cfa915eca7d05322875",
+    "bytes": 19885576
+  }
+]

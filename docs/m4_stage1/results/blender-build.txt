@@ -1,0 +1,16 @@
+Warning: No mesh data to join
+Info: Saved "m4_stage1.blend"
+ERROR Draco mesh compression is not available because library could not be found at /usr/bin/4.3/python/lib/python3.13/site-packages/libextern_draco.so
+03:56:42 | INFO: Starting glTF 2.0 export
+03:56:42 | INFO: Extracting primitive: Cube.154
+03:56:42 | INFO: Primitives created: 1
+03:56:42 | INFO: Extracting primitive: Forged upper
+03:56:42 | INFO: Primitives created: 8
+03:56:42 | INFO: Extracting primitive: Curved STANAG
+03:56:42 | INFO: Primitives created: 2
+03:56:42 | INFO: Finished glTF 2.0 export in 0.04563021659851074 s
+
+M4_BUILD_DONE triangles= 26200  Blender= 4.3.2
+Blender 4.3.2
+
+Blender quit

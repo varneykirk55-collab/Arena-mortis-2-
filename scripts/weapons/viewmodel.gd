@@ -14,6 +14,9 @@ var slide: Node3D
 var magazine: Node3D
 var core: Node3D
 var sight: Node3D
+var charging_handle: Node3D
+var dust_cover: Node3D
+var _charging_rest := Vector3.ZERO
 
 var _slide_rest := Vector3.ZERO
 var _mag_rest := Vector3.ZERO
@@ -45,6 +48,10 @@ func setup(weapon: WeaponData, arms_scene: PackedScene) -> void:
 	magazine = model.find_child("Magazine", true, false)
 	core = model.find_child("Core", true, false)
 	sight = model.find_child("Sight", true, false)
+	charging_handle = model.find_child("ChargingHandle", true, false)
+	dust_cover = model.find_child("DustCover", true, false)
+	if charging_handle:
+		_charging_rest = charging_handle.position
 	if slide:
 		_slide_rest = slide.position
 	if magazine:
@@ -124,6 +131,8 @@ func play_fire() -> void:
 	if data.projectile == WeaponData.Projectile.LIGHTNING:
 		_charge = 1.0
 		_local_arc(0.13)
+	if dust_cover:
+		dust_cover.rotation.z = deg_to_rad(-110)
 	_kick = 1.0
 	_flash_time = 0.05
 	if _flash:
@@ -168,7 +177,11 @@ func play_reload(duration: float) -> void:
 	_anim_tween.tween_property(self, "anim_rotation", Vector3(0.1, -0.05, 0.2), t * 0.12)
 	if slide:
 		_anim_tween.tween_property(slide, "position", _slide_rest + Vector3(0, 0, 0.04), t * 0.05)
+		if charging_handle:
+			_anim_tween.parallel().tween_property(charging_handle, "position", _charging_rest + Vector3(0, 0, 0.06), t * 0.05)
 		_anim_tween.tween_property(slide, "position", _slide_rest, t * 0.04)
+		if charging_handle:
+			_anim_tween.parallel().tween_property(charging_handle, "position", _charging_rest, t * 0.04)
 	_anim_tween.tween_property(self, "anim_rotation", Vector3.ZERO, t * 0.1).set_trans(Tween.TRANS_SINE)
 	_anim_tween.parallel().tween_property(self, "anim_offset", Vector3.ZERO, t * 0.1)
 
@@ -201,6 +214,8 @@ func cancel_animation() -> void:
 
 
 func _kill_tween() -> void:
+	if charging_handle:
+		charging_handle.position = _charging_rest
 	if _anim_tween and _anim_tween.is_valid():
 		_anim_tween.kill()
 	if magazine:

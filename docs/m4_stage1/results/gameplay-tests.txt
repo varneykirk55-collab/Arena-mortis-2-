@@ -1,0 +1,24 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS  test_weapon_resources  (79 ms)
+PASS  test_weapon_instance_logic  (33 ms)
+PASS  test_damage_falloff  (6 ms)
+PASS  test_wallet  (0 ms)
+PASS  test_shop_items  (0 ms)
+PASS  test_wave_config  (0 ms)
+    box roll: jupiter 12.4%, m4 87.6%
+PASS  test_mystery_box_roll  (41 ms)
+PASS  test_model_imports  (1329 ms)
+PASS  test_scenes_instantiate  (915 ms)
+PASS  test_navigation_baked  (500 ms)
+PASS  test_shoot_and_kill_zombie  (8639 ms)
+PASS  test_headshot_bonus  (2023 ms)
+PASS  test_jupiter_precision  (3280 ms)
+PASS  test_reload  (3108 ms)
+PASS  test_mystery_box_flow  (5405 ms)
+PASS  test_pack_a_punch_flow  (4874 ms)
+PASS  test_shop_purchases  (1437 ms)
+PASS  test_zombie_attacks_player  (6950 ms)
+PASS  test_wave_progression  (4703 ms)
+PASS  test_death_and_restart  (7536 ms)
+TESTS DONE: 223 checks passed, 0 failed

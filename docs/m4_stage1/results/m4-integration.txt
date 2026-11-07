@@ -1,0 +1,35 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS real WeaponManager equips M4
+PASS muzzle transform preserved
+PASS sight transform preserved
+PASS right hand anchor preserved
+PASS right hand rotation preserved
+PASS left hand anchor preserved
+PASS existing arms attach
+PASS actual firing consumes one M4 round
+PASS firing moves imported Bolt
+PASS firing shows existing muzzle flash
+PASS actual reload starts
+PASS imported Magazine detaches during reload
+PASS reload preserves original ammo transfer
+PASS magazine returns to its imported rest pose
+PASS bolt returns to rest
+PASS existing upgrade applies
+PASS Pack-a-Punch data unchanged
+PASS animated camo retained on Bolt
+PASS project material remap on Bolt:0
+PASS animated camo retained on M4_Body
+PASS project material remap on M4_Body:0
+PASS project material remap on M4_Body:1
+PASS project material remap on M4_Body:2
+PASS project material remap on M4_Body:3
+PASS project material remap on M4_Body:4
+PASS project material remap on M4_Body:5
+PASS project material remap on M4_Body:6
+PASS project material remap on M4_Body:7
+PASS animated camo retained on Magazine
+PASS project material remap on Magazine:0
+PASS project material remap on Magazine:1
+PASS first-person asset budget: 11 surfaces, 26200 triangles
+M4_PIPELINE_DONE: 32 passed, 0 failed

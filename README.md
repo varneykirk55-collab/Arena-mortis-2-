@@ -83,7 +83,8 @@ how to extend the game.
 ## Running the tests
 
 ```
-godot --headless --import                                   # once
+godot --headless --import                                   # once (run it twice on a fresh checkout:
+                                                            # the first pass imports textures the GLB remap needs)
 godot --headless --path . res://tests/run_tests.tscn         # unit + integration (exit code 0 = pass)
 godot --headless --path . res://tests/bot_playtest.tscn -- 4 3   # bot plays up to round 4 at 3x speed
 ```
@@ -91,7 +92,11 @@ godot --headless --path . res://tests/bot_playtest.tscn -- 4 3   # bot plays up 
 Screenshot QA (needs a display; on Linux use Xvfb):
 `xvfb-run godot --rendering-driver opengl3 --path . res://tests/visual_capture.tscn -- res://tools/preview/out`
 
-Results and known limitations: **docs/TEST_RESULTS.md**.
+Before/after beauty shots with render statistics (fixed cameras):
+`xvfb-run godot --rendering-driver opengl3 --path . res://tests/beauty_shots.tscn -- docs/visual_pass/after after`
+
+Results and known limitations: **docs/TEST_RESULTS.md**. The visual overhaul
+(phase 1) report is **docs/VISUAL_PASS_PHASE1.md**.
 
 ## Regenerating assets
 

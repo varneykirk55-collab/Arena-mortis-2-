@@ -1,0 +1,16 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+SMOKE scene loaded in 2955 ms
+SMOKE t=1 round=1 alive=0 to_spawn=6 points=500 hp=100 nav_polys=185
+SMOKE t=2 round=1 alive=0 to_spawn=6 points=500 hp=100 nav_polys=185
+SMOKE t=3 round=1 alive=1 to_spawn=5 points=500 hp=100 nav_polys=185
+SMOKE t=4 round=1 alive=1 to_spawn=5 points=500 hp=100 nav_polys=185
+SMOKE t=5 round=1 alive=2 to_spawn=4 points=500 hp=100 nav_polys=185
+SMOKE t=6 round=1 alive=2 to_spawn=4 points=500 hp=100 nav_polys=185
+SMOKE t=7 round=1 alive=2 to_spawn=4 points=500 hp=100 nav_polys=185
+SMOKE t=8 round=1 alive=3 to_spawn=3 points=500 hp=100 nav_polys=185
+SMOKE t=9 round=1 alive=3 to_spawn=3 points=500 hp=100 nav_polys=185
+SMOKE t=10 round=1 alive=4 to_spawn=2 points=500 hp=100 nav_polys=185
+SMOKE t=11 round=1 alive=4 to_spawn=2 points=500 hp=100 nav_polys=185
+SMOKE t=12 round=1 alive=5 to_spawn=1 points=500 hp=100 nav_polys=185
+SMOKE_DONE

@@ -13,6 +13,8 @@ Each weapon GLB contains named nodes the game uses:
 import math
 import os
 import sys
+import subprocess
+from pathlib import Path
 
 import numpy as np
 
@@ -308,8 +310,10 @@ def arms():
 
 
 def main():
+    # Preserve Grok's supplied geometry; use the archived originals verbatim.
     os.makedirs(OUT, exist_ok=True)
-    for name, fn in (("weapon_pistol", pistol), ("weapon_m4", m4), ("weapon_jupiter", jupiter), ("viewmodel_arms", arms)):
+    subprocess.run([sys.executable, str(Path(__file__).with_name("install_grok_models.py").resolve()), str(Path(OUT).resolve())], check=True)
+    for name, fn in (("weapon_pistol", pistol), ("weapon_jupiter", jupiter), ("viewmodel_arms", arms)):
         sc = fn()
         size = sc.write_glb(os.path.join(OUT, name + ".glb"))
         print(name, f"{size / 1e3:.0f} KB")
