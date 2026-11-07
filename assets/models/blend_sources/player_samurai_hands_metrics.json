@@ -1,0 +1,226 @@
+{
+  "godot_per_clip": {
+    "AimIdle": {
+      "right_grip_reference_mm": 0.00037,
+      "left_rob_palm_mm": 0.00183,
+      "socket_world_matrix_delta": 1.27e-06,
+      "loop_mode": 1,
+      "baseline_left_rob_mm": 76.1465281248093
+    },
+    "AimIdle_Jupiter": {
+      "right_grip_reference_mm": 0.00017,
+      "left_rob_palm_mm": 0.00157,
+      "socket_world_matrix_delta": 1.02e-06,
+      "loop_mode": 1,
+      "baseline_left_rob_mm": 33.1069268286228
+    },
+    "AimIdle_Pistol": {
+      "right_grip_reference_mm": 0.00027,
+      "left_rob_palm_mm": 0.00147,
+      "socket_world_matrix_delta": 7.8e-07,
+      "loop_mode": 1,
+      "baseline_left_rob_mm": 8.41548852622509
+    },
+    "FireRecoil": {
+      "right_grip_reference_mm": 0.00025,
+      "left_rob_palm_mm": 0.00096,
+      "socket_world_matrix_delta": 6e-07,
+      "loop_mode": 0,
+      "baseline_left_rob_mm": 76.1465206742287
+    },
+    "FireRecoil_Jupiter": {
+      "right_grip_reference_mm": 0.00015,
+      "left_rob_palm_mm": 0.00123,
+      "socket_world_matrix_delta": 1.31e-06,
+      "loop_mode": 0,
+      "baseline_left_rob_mm": 33.1066735088825
+    },
+    "FireRecoil_Pistol": {
+      "right_grip_reference_mm": 0.00025,
+      "left_rob_palm_mm": 0.00109,
+      "socket_world_matrix_delta": 7.2e-07,
+      "loop_mode": 0,
+      "baseline_left_rob_mm": 8.4154549986124
+    },
+    "Idle": {
+      "right_grip_reference_mm": 0.00028,
+      "left_rob_palm_mm": 0.00207,
+      "socket_world_matrix_delta": 1.11e-06,
+      "loop_mode": 1,
+      "baseline_left_rob_mm": 76.1472284793854
+    },
+    "Idle_Jupiter": {
+      "right_grip_reference_mm": 0.00015,
+      "left_rob_palm_mm": 0.00204,
+      "socket_world_matrix_delta": 9.8e-07,
+      "loop_mode": 1,
+      "baseline_left_rob_mm": 33.1071615219116
+    },
+    "Idle_Pistol": {
+      "right_grip_reference_mm": 0.00012,
+      "left_rob_palm_mm": 0.00239,
+      "socket_world_matrix_delta": 1.09e-06,
+      "loop_mode": 1,
+      "baseline_left_rob_mm": 8.41553881764412
+    },
+    "Run": {
+      "right_grip_reference_mm": 0.00026,
+      "left_rob_palm_mm": 0.00133,
+      "socket_world_matrix_delta": 1.14e-06,
+      "loop_mode": 1,
+      "baseline_left_rob_mm": 76.1466324329376
+    },
+    "Run_Jupiter": {
+      "right_grip_reference_mm": 0.00014,
+      "left_rob_palm_mm": 0.00218,
+      "socket_world_matrix_delta": 7.6e-07,
+      "loop_mode": 1,
+      "baseline_left_rob_mm": 33.1069231033325
+    },
+    "Run_Pistol": {
+      "right_grip_reference_mm": 0.00015,
+      "left_rob_palm_mm": 0.00203,
+      "socket_world_matrix_delta": 1.11e-06,
+      "loop_mode": 1,
+      "baseline_left_rob_mm": 8.41568503528833
+    },
+    "Walk": {
+      "right_grip_reference_mm": 0.00014,
+      "left_rob_palm_mm": 0.00127,
+      "socket_world_matrix_delta": 1.36e-06,
+      "loop_mode": 1,
+      "baseline_left_rob_mm": 76.1464014649391
+    },
+    "Walk_Jupiter": {
+      "right_grip_reference_mm": 0.00014,
+      "left_rob_palm_mm": 0.00205,
+      "socket_world_matrix_delta": 9.8e-07,
+      "loop_mode": 1,
+      "baseline_left_rob_mm": 33.1061035394669
+    },
+    "Walk_Pistol": {
+      "right_grip_reference_mm": 0.00014,
+      "left_rob_palm_mm": 0.00193,
+      "socket_world_matrix_delta": 6e-07,
+      "loop_mode": 1,
+      "baseline_left_rob_mm": 8.41552671045065
+    }
+  },
+  "penetration_sampled": {
+    "m4": {
+      "Right": {
+        "old_fraction_pct": 9.635416666666668,
+        "old_depth_mm": 17.233634367585182,
+        "new_fraction_pct": 25.512104283054004,
+        "new_depth_mm": 12.879181653261185
+      },
+      "Left": {
+        "old_fraction_pct": 17.16417910447761,
+        "old_depth_mm": 7.534941658377647,
+        "new_fraction_pct": 15.828677839851025,
+        "new_depth_mm": 13.076895847916603
+      }
+    },
+    "pistol": {
+      "Right": {
+        "old_fraction_pct": 0,
+        "old_depth_mm": 0,
+        "new_fraction_pct": 11.731843575418994,
+        "new_depth_mm": 12.820765376091003
+      },
+      "Left": {
+        "old_fraction_pct": 1.8656716417910446,
+        "old_depth_mm": 0.8304264047183096,
+        "new_fraction_pct": 12.104283054003725,
+        "new_depth_mm": 12.648616917431355
+      }
+    },
+    "jupiter": {
+      "Right": {
+        "old_fraction_pct": 58.072916666666664,
+        "old_depth_mm": 33.30035135149956,
+        "new_fraction_pct": 23.463687150837988,
+        "new_depth_mm": 31.53970092535019
+      },
+      "Left": {
+        "old_fraction_pct": 45.8955223880597,
+        "old_depth_mm": 14.836831018328667,
+        "new_fraction_pct": 25.41899441340782,
+        "new_depth_mm": 25.050362572073936
+      }
+    }
+  },
+  "dimensions": {
+    "Right": {
+      "wrist_to_middle_tip_bone_mm": 176.58952267671114,
+      "hand_local_y_bounds_mm": [
+        -29.919477179646492,
+        176.73011124134064
+      ],
+      "skin_y_extent_mm": 206.64958842098713,
+      "source_vertices": 1621,
+      "source_polygons": 1607,
+      "max_original_influences": 4
+    },
+    "Left": {
+      "wrist_to_middle_tip_bone_mm": 176.58908547388637,
+      "hand_local_y_bounds_mm": [
+        -29.919330030679703,
+        176.73011124134064
+      ],
+      "skin_y_extent_mm": 206.64944127202034,
+      "source_vertices": 1621,
+      "source_polygons": 1607,
+      "max_original_influences": 4
+    }
+  },
+  "export": {
+    "bones": 54,
+    "clips": [
+      "AimIdle",
+      "AimIdle_Jupiter",
+      "AimIdle_Pistol",
+      "FireRecoil",
+      "FireRecoil_Jupiter",
+      "FireRecoil_Pistol",
+      "Idle",
+      "Idle_Jupiter",
+      "Idle_Pistol",
+      "Run",
+      "Run_Jupiter",
+      "Run_Pistol",
+      "Walk",
+      "Walk_Jupiter",
+      "Walk_Pistol"
+    ],
+    "meshes": {
+      "node_0": {
+        "vertices": 17873,
+        "triangles": 16074
+      },
+      "FP_Arms": {
+        "vertices": 5983,
+        "triangles": 7509
+      }
+    }
+  },
+  "body_partition_proof": {
+    "source_triangles": 19343,
+    "export_body_material_triangles": 19343,
+    "missing_triangles": 0,
+    "extra_triangles": 0,
+    "unmatched_export_vertices": 0,
+    "max_bind_position_error_m": 4.2146848510894035e-08,
+    "position_tolerance_m": 1e-06,
+    "skin_nodes": [
+      [
+        "FP_Arms",
+        0
+      ],
+      [
+        "node_0",
+        0
+      ]
+    ]
+  }
+}
