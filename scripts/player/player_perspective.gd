@@ -5,8 +5,8 @@ extends Node
 ## TODO(Bot1): body scene integration and non-rest-pose character animation.
 ## The neutral capsule and head-relative weapon mount are explicit placeholders,
 ## NOT a Roman body or a claim of final samurai animation integration.
-const SHOULDER := Vector3(0.65, 0.16, 2.7)
-const SHOULDER_ADS := Vector3(0.4, 0.08, 1.5)
+const SHOULDER := Vector3(0.85, 0.2, 2.45)
+const SHOULDER_ADS := Vector3(0.6, 0.12, 1.5)
 var player: Player
 var body: Node3D
 var weapon_mount: Node3D
