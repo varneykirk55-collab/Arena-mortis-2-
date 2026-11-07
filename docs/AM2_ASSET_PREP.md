@@ -84,3 +84,13 @@ An additional all-new-pointer trial (also switching Jupiter) produced **222 pass
 Five Blender review stills are saved beside the logs (`weapon_m4_new.png`, `weapon_pistol_new.png`, `player_samurai.png`, `mystery_box_new.png`, `pack_a_punch_new.png`). These are offline stills, not a gameplay visual sign-off.
 
 No git write commands, commits, pushes or merges were run. Parent owns commit/integration and interactive visual approval.
+
+## Samurai finger rig and gun-hold poses (Nov 6, 2026, EST; base 6c7141d)
+
+- **Finger bones:** 30 added (`{Left,Right}Hand{Thumb,Index,Middle,Ring,Pinky}{1,2,3}`, children of each hand); skeleton is now **54 bones** (24 + RightWeaponSocket/LeftHandIK included in the 24 + 30 fingers). The mesh fingers are fused (mitten-like, ~13 cm hand, no gaps between fingers), so bones were laid along four strips across the knuckle width with Gaussian cross-strip weights and a smooth hand→finger blend at the knuckles (292 right / 205 left hand vertices reweighted). The thumb has no separate lobe; its bones drive the thumb-side edge. Adjacent fingers with different curls shear the fused web; separation is limited by the geometry.
+- The old UV-preserving mesh-curl hack and the RightHand→RightWeaponSocket skin redirect were dropped (mesh is the uncurled original); the pistolfix arm-weight cleanup (2,174 vertices) is retained.
+- **Clips (all 15):** Idle/Walk/Run/AimIdle/FireRecoil × base(M4)/_Jupiter/_Pistol. Right hand in a handshake grip (fingers across the grip, index extended as trigger finger, thumb opposed); left hand palm-up under the handguard for rifles, cupped over the right hand for the pistol; elbows down. AimIdle/FireRecoil hold the gun ~4 cm further to her right than the ready clips.
+- **Socket:** RightWeaponSocket world orientation is unchanged per frame in Idle, AimIdle and FireRecoil (max basis delta 6e-7). Its origin is now keyed to the palm grip point (was the wrist). In **Walk and Run** the socket orientation is locked to Idle frame 0 so the gun no longer tilts with the gait. Rob's 180° roll stays.
+- Loop settings, clip names and -Z forward unchanged (`player_samurai.glb.import` byte-identical).
+- Measured in Godot (palm grip point to marker, roll applied): right 0.0 mm, left 10–12 mm (deliberate under-rail offset) in every clip; gun up-dot constant 0.9703 in every clip. Wrist-bone-to-marker distances are 5.6–6.0 cm (right) by design.
+- Verification: validator 0 errors/2 warnings; Godot import clean; 223/223 tests in the real repo and in an all-new-models copy.
