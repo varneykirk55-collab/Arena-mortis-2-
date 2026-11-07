@@ -84,6 +84,11 @@ func _tp_viewmodel(w: WeaponInstance) -> Viewmodel:
 		var vm := Viewmodel.new()
 		player.perspective.weapon_mount.add_child(vm)
 		vm.setup(w.data, null) # NO FP-only arms in third person.
+		# Bot1 socket origin = palm grip point: put the weapon's RightHand grip
+		# marker on it (not the model origin), avoiding a double offset.
+		var grip := vm.model.find_child("RightHand", true, false) as Node3D
+		if grip:
+			vm.model.position = -grip.position
 		vm.visible = false
 		_tp_viewmodels[w] = vm
 	return _tp_viewmodels[w]
@@ -569,8 +574,16 @@ func _process(delta: float) -> void:
 	var rot := vm.anim_rotation + Vector3(-0.35, 0.5, 0.15) * sprint_pose + Vector3(0.06 * kick * (1.0 - 0.6 * ads_amount), 0, 0)
 	rot += Vector3(_sway.y * 2.0, -_sway.x * 2.0, -_sway.x * 1.5)
 	_pivot.position = _pivot.position.lerp(Vector3.ZERO, 1.0)
-	vm.position = vm.position.lerp(pos, min(delta * 18.0, 1.0))
-	vm.rotation = vm.rotation.lerp(rot, min(delta * 14.0, 1.0))
+	if player and player.third_person and player.perspective.has_weapon_socket:
+		# TP: the samurai's clips (AimIdle/FireRecoil/Run) own the weapon pose.
+		# FP-only equip/sprint/kick/sway layers would pull the grip off her hand.
+		pos = Vector3.ZERO
+		rot = Vector3.ZERO
+		vm.position = pos
+		vm.rotation = rot
+	else:
+		vm.position = vm.position.lerp(pos, min(delta * 18.0, 1.0))
+		vm.rotation = vm.rotation.lerp(rot, min(delta * 14.0, 1.0))
 	if camera:
 		var fov_target: float = lerp(Settings.field_of_view, w.data.ads_fov, ease(ads_amount, -1.6))
 		camera.fov = lerp(camera.fov, fov_target, min(delta * 20.0, 1.0))
