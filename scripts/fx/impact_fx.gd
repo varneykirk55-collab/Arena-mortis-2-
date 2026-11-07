@@ -98,14 +98,15 @@ static func blood_pool(context: Node, pos: Vector3, size := 1.4) -> void:
 	decal(context, pos, Vector3.UP, BLOOD_A if randf() < 0.5 else BLOOD_B, size, 40.0)
 
 
-static func lightning_hit(context: Node, pos: Vector3, normal: Vector3, color: Color) -> void:
-	_burst(context, pos, normal, Color(color.r, color.g, color.b, 1.0), 26, 9.0, 0.08, 0.5, GLOW, true, Vector3(0, -9, 0))
-	_burst(context, pos, normal, Color(0.3, 0.32, 0.4, 0.7), 8, 1.5, 0.6, 1.2, SMOKE, false, Vector3(0, 0.5, 0))
-	decal(context, pos, normal, SCORCH, 1.0, 25.0)
+static func lightning_hit(context: Node, pos: Vector3, normal: Vector3, color: Color, strength := 1.0) -> void:
+	_burst(context, pos, normal, Color(color.r, color.g, color.b, 1.0), maxi(4, int(26 * strength)), 9.0, 0.08 * sqrt(strength), 0.5, GLOW, true, Vector3(0, -9, 0))
+	_burst(context, pos, normal, Color(0.3, 0.32, 0.4, 0.7), maxi(2, int(8 * strength)), 1.5, 0.6 * sqrt(strength), 1.2, SMOKE, false, Vector3(0, 0.5, 0))
+	if strength >= 0.9:
+		decal(context, pos, normal, SCORCH, 1.0, 25.0)
 	var l := OmniLight3D.new()
 	l.light_color = color
-	l.light_energy = 8.0
-	l.omni_range = 9.0
+	l.light_energy = 8.0 * strength
+	l.omni_range = 9.0 * sqrt(strength)
 	_root(context).add_child(l)
 	l.global_position = pos + normal * 0.4
 	var t := l.create_tween()

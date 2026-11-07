@@ -1,6 +1,7 @@
 [gd_scene load_steps=15 format=3]
 
 [ext_resource type="Script" path="res://scripts/player/player.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/models/player_samurai.glb" id="tpbody"]
 [ext_resource type="Script" path="res://scripts/player/interactor.gd" id="2"]
 [ext_resource type="Script" path="res://scripts/weapons/weapon_manager.gd" id="3"]
 [ext_resource type="Resource" path="res://resources/weapons/pistol.tres" id="4"]
@@ -20,6 +21,7 @@ height = 1.8
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1")
+third_person_body_scene = ExtResource("tpbody")
 hurt_sounds = Array[AudioStream]([ExtResource("6"), ExtResource("7")])
 death_sound = ExtResource("8")
 footstep_sounds = Array[AudioStream]([ExtResource("9"), ExtResource("10"), ExtResource("11")])

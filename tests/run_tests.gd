@@ -32,9 +32,13 @@ func _run_all() -> void:
 		"test_weapon_resources", "test_weapon_instance_logic", "test_damage_falloff", "test_wallet",
 		"test_shop_items", "test_wave_config", "test_mystery_box_roll", "test_model_imports",
 		"test_scenes_instantiate", "test_navigation_baked", "test_shoot_and_kill_zombie", "test_headshot_bonus",
-		"test_jupiter_precision", "test_reload", "test_mystery_box_flow", "test_pack_a_punch_flow",
-		"test_shop_purchases", "test_zombie_attacks_player", "test_wave_progression", "test_death_and_restart",
+		"test_jupiter_precision", "test_jupiter_chain_cap", "test_jupiter_chain_los", "test_jupiter_chain_rewards", "test_jupiter_ammo_upgrade", "test_reload", "test_mystery_box_flow", "test_pack_a_punch_flow",
+		"test_perspective_weapons", "test_perspective_collision", "test_perspective_socket_contract", "test_shop_purchases", "test_zombie_attacks_player", "test_wave_progression", "test_death_and_restart",
 	]
+	if "--jupiter-only" in OS.get_cmdline_user_args():
+		tests = tests.filter(func(t): return t.begins_with("test_jupiter"))
+	if "--camera-only" in OS.get_cmdline_user_args():
+		tests = tests.filter(func(t): return t.begins_with("test_perspective"))
 	for t in tests:
 		_current = t
 		var before := _failed
@@ -149,8 +153,8 @@ func test_weapon_resources() -> void:
 	var j := _load_weapon("jupiter")
 	check(j.projectile == WeaponData.Projectile.LIGHTNING, "Jupiter fires lightning")
 	check(j.hip_spread_deg == 0.0 and j.ads_spread_deg == 0.0, "Jupiter has no spread (precision)")
-	check(j.magazine_size <= 5 and j.reserve_ammo <= 20, "Jupiter ammo is limited")
-	check(j.fire_rate <= 1.0, "Jupiter has a deliberate cadence")
+	check(j.magazine_size == 100 and j.reserve_ammo == 400, "Approved Jupiter 100/400 ammunition")
+	check(j.fire_mode == WeaponData.FireMode.AUTO and j.fire_rate == 4.0, "Approved automatic Jupiter cadence")
 
 
 func test_weapon_instance_logic() -> void:
@@ -290,6 +294,9 @@ func test_navigation_baked() -> void:
 	check(nm != null and nm.get_polygon_count() > 20, "navigation mesh baked (%d polys)" % (nm.get_polygon_count() if nm else 0))
 	await _frames(4)
 	var map := game.get_world_3d().navigation_map
+	# Headless runs under concurrent render load can query before queued map
+	# changes synchronize. Test pathfinding, not a fixed four-frame timing race.
+	NavigationServer3D.map_force_update(map)
 	var gates := get_tree().get_nodes_in_group("zombie_spawn")
 	check(gates.size() == 6, "six zombie spawn gates")
 	for g in gates:
@@ -359,15 +366,254 @@ func test_jupiter_precision() -> void:
 	_fire_once()
 	await _frames(3)
 	check(a.health == 5000.0 and b.health == 5000.0, "a missed bolt hurts nobody")
-	# direct hit on A must not chain to B
+	# direct hit must visibly chain to the nearby second zombie
 	_aim_at(a.global_position + Vector3(0, 1.0, 0))
 	await _frames(2)
 	_fire_once()
 	await _frames(3)
 	check(a.health < 5000.0, "a direct bolt damages its target")
 	check(a.health <= 5000.0 - 2000.0, "Jupiter hits hard (%.0f left)" % a.health)
-	check(b.health == 5000.0, "the bolt does not chain to the neighbour")
-	check(game.player.weapons.current().mag == 1, "limited Jupiter ammo consumed")
+	check(b.health < 5000.0, "the bolt chains to the neighbour")
+	check(game.player.weapons.current().mag == 98, "two discharges consume exactly two rounds")
+
+
+func _jupiter_setup() -> void:
+	await _new_game()
+	_place_player(Vector3(0, 0.1, 12))
+	game.player.weapons.give_weapon(_load_weapon("jupiter"))
+	await _frames(50)
+
+
+func test_jupiter_chain_cap() -> void:
+	await _jupiter_setup()
+	var targets: Array[Zombie] = []
+	for i in 12:
+		var z := _spawn_zombie(Vector3(-3 + (i % 3) * 3, 0.05, 3 - (i / 3) * 3), 50000.0)
+		z.set_physics_process(false)
+		targets.append(z)
+	await _frames(4)
+	var hits: Array = []
+	game.player.weapons.hit_registered.connect(func(r): hits.append(r))
+	_aim_at(targets[1].get_node("BodyHurtbox/CollisionShape3D").global_position)
+	await _frames(2)
+	_fire_once()
+	var links: Array[LightningBeam] = []
+	for child in game.get_children():
+		if child is LightningBeam and child.color == Color(0.72, 0.88, 1.0):
+			links.append(child)
+	check(links.size() == 9, "10 damaged enemies have nine real target-to-target beams")
+	var connected := true
+	for i in range(1, links.size()):
+		connected = connected and links[i - 1].end.is_equal_approx(links[i].start)
+	check(connected, "successive jump beams share connected target endpoints")
+	await _frames(20)
+	check(hits.size() == 10, "12 valid enemies produce exactly 10 damage events")
+	var unique := {}
+	for hit in hits:
+		unique[hit.zombie.get_instance_id()] = true
+	check(unique.size() == hits.size(), "no body/head duplicate damage per discharge")
+	var damaged := 0
+	for z in targets:
+		if z.health < 50000.0:
+			damaged += 1
+	check(damaged == 10, "never more than 10 unique enemies damaged")
+	check(game.player.weapons.current().mag == 99, "chain consumes one round, not one per enemy")
+	# The second shot must have a fresh visited set.
+	_fire_once()
+	check(hits.size() == 20, "visited identities reset per discharge")
+	check(game.player.weapons._electric_voices.size() <= 8, "electric spatial voice budget never exceeds eight")
+
+
+func test_jupiter_chain_los() -> void:
+	await _jupiter_setup()
+	# Keep the test wall separate from the existing central arena obstacle.
+	_place_player(Vector3(5, 0.1, 12))
+	var a := _spawn_zombie(Vector3(5, 0.05, 3), 50000.0)
+	var b := _spawn_zombie(Vector3(5, 0.05, -3), 50000.0)
+	var distant := _spawn_zombie(Vector3(23, 0.05, 3), 50000.0)
+	for z in [a, b, distant]:
+		z.set_physics_process(false)
+	var wall := StaticBody3D.new()
+	wall.collision_layer = Layers.WORLD
+	var collision := CollisionShape3D.new()
+	var shape := BoxShape3D.new()
+	shape.size = Vector3(12, 4, 0.4)
+	collision.shape = shape
+	wall.add_child(collision)
+	game.add_child(wall)
+	wall.global_position = Vector3(5, 2, 0)
+	await _frames(4)
+	_aim_at(a.get_node("BodyHurtbox/CollisionShape3D").global_position)
+	await _frames(2)
+	_fire_once()
+	check(a.health < 50000.0, "initial unobstructed target damaged")
+	check(b.health == 50000.0, "chain cannot pass through world obstruction")
+	check(distant.health == 50000.0, "out-of-range enemy not chained")
+	wall.queue_free()
+	await _frames(3)
+	_aim_at(a.get_node("BodyHurtbox/CollisionShape3D").global_position)
+	await _frames(2)
+	_fire_once()
+	check(b.health < 50000.0, "removing obstruction permits jump and exhausts valid targets")
+	check(distant.health == 50000.0, "chain stops after reachable set exhausted")
+
+
+func test_jupiter_chain_rewards() -> void:
+	await _jupiter_setup()
+	var targets: Array[Zombie] = []
+	for i in 3:
+		var z := _spawn_zombie(Vector3(-2 + i * 2, 0.05, 2), 100.0)
+		z.set_physics_process(false)
+		targets.append(z)
+	await _frames(4)
+	var points := game.wallet.points
+	game.waves.to_spawn = 0
+	game.waves.running = true
+	var rounds: Array = []
+	game.waves.round_completed.connect(func(r): rounds.append(r))
+	_aim_at(targets[1].get_node("BodyHurtbox/CollisionShape3D").global_position)
+	await _frames(2)
+	_fire_once()
+	check(game.kills == 3 and game.waves.alive.is_empty(), "all chain kills reach wave death tracking")
+	check(game.wallet.points == points + 3 * 70 + game.headshots * 40, "each chain kill awards hit and correct body/head kill points once")
+	check(rounds.size() == 1, "last chain kill completes the wave exactly once")
+
+
+func test_jupiter_ammo_upgrade() -> void:
+	await _jupiter_setup()
+	var wm := game.player.weapons
+	var w := wm.current()
+	w.mag = 90
+	wm.state = WeaponManager.State.READY
+	wm.reload()
+	check(wm.state == WeaponManager.State.RELOADING, "Jupiter electrical reload starts")
+	await _game_secs(w.data.reload_time + 0.3)
+	check(w.mag == 100 and w.reserve == 390, "Jupiter reload transfers missing rounds")
+	check(wm.upgrade_current(), "Jupiter supports existing upgrade path")
+	check(w.mag == 150 and w.reserve == 600 and w.base_damage() == 4400.0, "Approved upgraded Jupiter scales and refills")
+	check(not wm.upgrade_current(), "Jupiter cannot upgrade twice")
+
+
+func test_perspective_weapons() -> void:
+	await _new_game()
+	var p := game.player
+	_place_player(Vector3(5, 0.1, 12))
+	check(not p.third_person and not p.perspective.body.visible, "first person is default; TP body hidden")
+	check(InputMap.has_action("camera_toggle"), "V perspective action registered")
+	var toggle := InputEventAction.new()
+	toggle.action = "camera_toggle"
+	toggle.pressed = true
+	p._unhandled_input(toggle)
+	check(p.third_person, "camera action toggles into third person")
+	var z := _spawn_zombie(Vector3(5, 0.05, 3), 50000.0)
+	z.set_physics_process(false)
+	await _frames(4)
+	Input.action_press("aim")
+	p.weapons._rng.seed = 123
+	for id in ["pistol", "m4", "jupiter"]:
+		var w := p.weapons.give_weapon(_load_weapon(id))
+		await _frames(50)
+		p.weapons.ads_amount = 1.0
+		p.weapons._spread_bloom = 0.0
+		p.camera.look_at(z.get_node("BodyHurtbox/CollisionShape3D").global_position)
+		var hp := z.health
+		var mag := w.mag
+		_fire_once()
+		check(z.health < hp and w.mag == mag - 1, "%s fires through TP reticle and consumes ammo" % id)
+		check(not p.weapons._viewmodels[w].visible and p.weapons.current_viewmodel().visible, "%s FP-only model hidden; TP weapon visible" % id)
+		check(p.weapons.current_viewmodel().find_child("RightArm", true, false) == null, "%s TP weapon has no FP arms" % id)
+		# Verify the same weapon still shoots from the FP reticle after a live toggle.
+		p.toggle_perspective()
+		p.perspective.update_camera(1.0)
+		p.weapons._spread_bloom = 0.0
+		p.camera.look_at(z.get_node("BodyHurtbox/CollisionShape3D").global_position)
+		hp = z.health
+		_fire_once()
+		check(z.health < hp, "%s still hits through FP reticle after toggling mid-combat" % id)
+		p.toggle_perspective()
+		# Restore camera rotation used by normal head-controlled play.
+		p.camera.rotation = Vector3.ZERO
+	Input.action_release("aim")
+	var w := p.weapons.current()
+	p.weapons.state = WeaponManager.State.READY
+	p.weapons.reload()
+	p.toggle_perspective()
+	check(not p.third_person and p.weapons.state == WeaponManager.State.RELOADING, "toggle mid-reload preserves gameplay state")
+	await _game_secs(w.data.reload_time + 0.3)
+	check(w.mag == 100, "reload completes after perspective toggle")
+	p.toggle_perspective()
+	var start := p.global_position
+	Input.action_press("move_right")
+	await _frames(10)
+	Input.action_release("move_right")
+	check(p.global_position.distance_to(start) > 0.05, "movement remains functional in TP")
+
+
+func test_perspective_collision() -> void:
+	await _new_game()
+	var p := game.player
+	_place_player(Vector3(5, 0.1, 8))
+	p.toggle_perspective()
+	await _frames(25)
+	p.perspective.update_camera(1.0)
+	var normal_distance := p.camera.global_position.distance_to(p.head.global_position)
+	check(normal_distance > 2.5 and p.perspective.body.visible, "TP shoulder offset shows placeholder body")
+	p.weapons.ads_amount = 1.0
+	p.perspective.update_camera(1.0)
+	check(p.camera.global_position.distance_to(p.head.global_position) < normal_distance - 0.5, "ADS tightens shoulder camera")
+	p.weapons.ads_amount = 0.0
+	var wall := StaticBody3D.new()
+	wall.collision_layer = Layers.WORLD
+	var collision := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = Vector3(4, 4, 0.2)
+	collision.shape = box
+	wall.add_child(collision)
+	game.add_child(wall)
+	wall.global_position = p.head.global_position + Vector3(0, 0, 1.0)
+	await _frames(3)
+	p.perspective.update_camera(1.0)
+	check(p.camera.global_position.z < wall.global_position.z - 0.25, "sphere sweep stops camera before wall/near plane")
+	check(not p.perspective.body.visible, "body hidden when camera is pulled inside silhouette")
+	wall.queue_free()
+	await _frames(3)
+	p.perspective.update_camera(1.0)
+	check(p.camera.global_position.distance_to(p.head.global_position) > 2.5, "camera recovers after wall clears")
+	p.toggle_perspective()
+	await _frames(45)
+	check(p.camera.position.length() < 0.02 and not p.perspective.body.visible, "smooth transition returns to unobstructed FP origin")
+
+
+func test_perspective_socket_contract() -> void:
+	await _new_game()
+	# Synthetic socket contract only: no samurai/model asset is imported or changed.
+	var body := Node3D.new()
+	var skeleton := Skeleton3D.new()
+	skeleton.name = "SamuraiSkeletonContract"
+	skeleton.add_bone("RightHand")
+	skeleton.add_bone("RightWeaponSocket")
+	skeleton.set_bone_parent(1, 0)
+	skeleton.set_bone_rest(1, Transform3D(Basis.IDENTITY, Vector3(0.3, 1.2, -0.2)))
+	body.add_child(skeleton)
+	skeleton.owner = body
+	var exported_collider := StaticBody3D.new()
+	exported_collider.name = "ExportedCollider"
+	body.add_child(exported_collider)
+	exported_collider.owner = body
+	var packed := PackedScene.new()
+	check(packed.pack(body) == OK, "socket contract fixture packs")
+	body.free()
+	var p: Player = load("res://scenes/player/player.tscn").instantiate()
+	p.third_person_body_scene = packed
+	game.add_child(p)
+	check(p.perspective.has_weapon_socket, "provided RightWeaponSocket discovered without bone assumptions")
+	check(p.perspective.body.get_node("ExportedCollider").collision_layer == 0, "imported body collider cannot block reticle/camera")
+	var attachment := p.perspective.weapon_mount.get_parent() as BoneAttachment3D
+	check(attachment != null and attachment.bone_name == "RightWeaponSocket", "TP mount binds via BoneAttachment3D to authored socket bone")
+	p.toggle_perspective()
+	check(p.weapons.current_viewmodel().get_parent() == p.perspective.weapon_mount, "weapon-only presentation follows socket")
+	p.queue_free()
+	await _frames(2)
 
 
 func test_reload() -> void:

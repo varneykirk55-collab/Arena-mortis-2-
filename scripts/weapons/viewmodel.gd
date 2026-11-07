@@ -24,6 +24,9 @@ var _kick := 0.0               ## 0..1 recoil pose, decays
 var _anim_tween: Tween
 var _camo: ShaderMaterial
 var _core_time := 0.0
+var _electric_t := 0.0
+var _electric_light: OmniLight3D
+var _charge := 0.0
 
 ## procedural pose offsets read by WeaponManager
 var anim_offset := Vector3.ZERO
@@ -49,6 +52,13 @@ func setup(weapon: WeaponData, arms_scene: PackedScene) -> void:
 	if arms_scene:
 		_attach_arms(arms_scene.instantiate())
 	_build_flash()
+	if data.projectile == WeaponData.Projectile.LIGHTNING:
+		_electric_light = OmniLight3D.new()
+		_electric_light.light_color = Color(1.0, 0.86, 0.5)
+		_electric_light.omni_range = 1.4
+		_electric_light.light_energy = 0.15
+		add_child(_electric_light)
+		_electric_light.position = core.position if core else Vector3.ZERO
 	_disable_shadows(self)
 
 
@@ -111,6 +121,9 @@ func muzzle_position() -> Vector3:
 # ---------------------------------------------------------------- animations
 
 func play_fire() -> void:
+	if data.projectile == WeaponData.Projectile.LIGHTNING:
+		_charge = 1.0
+		_local_arc(0.13)
 	_kick = 1.0
 	_flash_time = 0.05
 	if _flash:
@@ -127,6 +140,20 @@ func play_reload(duration: float) -> void:
 	_kill_tween()
 	_anim_tween = create_tween()
 	var t := duration
+	if data.projectile == WeaponData.Projectile.LIGHTNING:
+		# Distinct electrical core recharge, retaining shared magazine/arm anchors.
+		_charge = 1.0
+		_anim_tween.tween_property(self, "anim_rotation", Vector3(-0.12, -0.4, -0.45), t * 0.2)
+		_anim_tween.parallel().tween_property(self, "anim_offset", Vector3(0.04, -0.08, 0.06), t * 0.2)
+		if magazine:
+			_anim_tween.tween_property(magazine, "position", _mag_rest + Vector3(0, -0.16, 0), t * 0.2)
+		_anim_tween.tween_callback(func(): _charge = 1.0; _local_arc(0.3))
+		_anim_tween.tween_interval(t * 0.25)
+		if magazine:
+			_anim_tween.tween_property(magazine, "position", _mag_rest, t * 0.2)
+		_anim_tween.tween_property(self, "anim_rotation", Vector3.ZERO, t * 0.15)
+		_anim_tween.parallel().tween_property(self, "anim_offset", Vector3.ZERO, t * 0.15)
+		return
 	# tilt the weapon, drop the magazine, insert a new one, rack
 	_anim_tween.tween_property(self, "anim_rotation", Vector3(0.25, 0.2, 0.55), t * 0.18).set_trans(Tween.TRANS_SINE)
 	_anim_tween.parallel().tween_property(self, "anim_offset", Vector3(-0.03, -0.04, 0.02), t * 0.18)
@@ -206,6 +233,13 @@ func kick_amount() -> float:
 
 
 func _process(delta: float) -> void:
+	if _electric_light and is_visible_in_tree():
+		_charge = move_toward(_charge, 0.0, delta * 4.5)
+		_electric_light.light_energy = 0.12 + 2.5 * sin(_charge * PI) + 0.04 * sin(_core_time * 19.0)
+		_electric_t -= delta
+		if _electric_t <= 0.0:
+			_electric_t = randf_range(0.35, 0.65)
+			_local_arc(0.12)
 	_kick = move_toward(_kick, 0.0, delta * 9.0)
 	if slide:
 		slide.position = slide.position.lerp(_slide_rest, min(delta * 25.0, 1.0)) if _anim_tween == null or not _anim_tween.is_running() else slide.position
@@ -218,3 +252,17 @@ func _process(delta: float) -> void:
 		_core_time += delta
 		var s := 1.0 + 0.04 * sin(_core_time * 23.0) + 0.03 * sin(_core_time * 61.0)
 		core.scale = Vector3(s, s, 1.0)
+
+
+func _local_arc(duration: float) -> void:
+	if muzzle == null or not is_visible_in_tree():
+		return
+	var a := core.global_position if core else global_position
+	var b := muzzle.global_position
+	var width := 0.01
+	if _charge <= 0.01:
+		b = a.lerp(b, 0.25)
+		width = 0.004
+	var arc := LightningBeam.spawn(self, a, b, Color(1.0, 0.9, 0.62), width, 0.0, 0.02)
+	arc.life = duration
+	# Short lifetime bounds trailing when the first-person weapon moves.

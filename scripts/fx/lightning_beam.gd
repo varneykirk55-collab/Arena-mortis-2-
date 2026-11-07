@@ -11,17 +11,21 @@ var color := Color(0.55, 0.8, 1.0)
 var life := 0.32
 var width := 0.09
 var _age := 0.0
+var reveal_delay := 0.0
+var light_strength := 1.0
 var _regen := 0.0
 var _mat: ShaderMaterial
 var _im: ImmediateMesh
 
 
-static func spawn(context: Node, from: Vector3, to: Vector3, col: Color, w := 0.09) -> LightningBeam:
+static func spawn(context: Node, from: Vector3, to: Vector3, col: Color, w := 0.09, delay := 0.0, illumination := 1.0) -> LightningBeam:
 	var b := LightningBeam.new()
 	b.start = from
 	b.end = to
 	b.color = col
 	b.width = w
+	b.reveal_delay = delay
+	b.light_strength = illumination
 	var root := context.get_tree().current_scene if context.get_tree().current_scene else context.get_tree().root
 	root.add_child(b)
 	return b
@@ -38,12 +42,16 @@ func _ready() -> void:
 	_mat.set_shader_parameter("color", color)
 	material_override = _mat
 	extra_cull_margin = 200.0
+	visible = reveal_delay <= 0.0
 	_rebuild()
+	if reveal_delay > 0.0:
+		await get_tree().create_timer(reveal_delay, false).timeout
+	visible = true
 	# a light that travels along the bolt for a moment
 	var l := OmniLight3D.new()
 	l.light_color = color
-	l.light_energy = 5.0
-	l.omni_range = 7.0
+	l.light_energy = 5.0 * light_strength
+	l.omni_range = maxf(0.5, 7.0 * sqrt(light_strength))
 	add_child(l)
 	l.global_position = start.lerp(end, 0.25)
 	var t := create_tween()
@@ -95,17 +103,20 @@ func _rebuild() -> void:
 	var cam_pos := cam.global_position if cam else start + Vector3.UP
 	var main := _jagged(start, end, 5, 0.18)
 	_ribbon(main, width, cam_pos)
+	var fork_scale := minf(start.distance_to(end), 1.0)
 	# a few forks
 	for f in 3:
 		var idx := randi_range(main.size() / 4, main.size() - 2)
 		var a := main[idx]
 		var dir := (end - start).normalized()
 		var off := Vector3(randf_range(-1, 1), randf_range(-1, 1), randf_range(-1, 1)).normalized() * randf_range(0.6, 1.6)
-		var fork := _jagged(a, a + dir * randf_range(0.6, 1.5) + off, 3, 0.3)
+		var fork := _jagged(a, a + (dir * randf_range(0.6, 1.5) + off) * fork_scale, 3, 0.3)
 		_ribbon(fork, width * 0.45, cam_pos)
 
 
 func _process(delta: float) -> void:
+	if not visible:
+		return
 	_age += delta
 	_regen -= delta
 	if _regen <= 0.0 and _age < life * 0.7:

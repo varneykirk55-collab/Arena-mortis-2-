@@ -36,6 +36,10 @@ var health := 100.0
 var damage_multiplier := 1.0       ## shop "weapon damage" upgrade
 var input_enabled := true
 var alive := true
+var third_person := false
+var perspective: PlayerPerspective
+# Bot 1 supplies the female samurai scene; weapon socket contract: RightWeaponSocket.
+@export var third_person_body_scene: PackedScene
 
 var _pitch := 0.0
 var _recoil := Vector2.ZERO        ## accumulated (pitch, yaw) degrees to recover
@@ -55,6 +59,9 @@ func _ready() -> void:
 	collision_mask = Layers.WORLD | Layers.ZOMBIE_BODY
 	health = max_health
 	weapons.player = self
+	perspective = PlayerPerspective.new()
+	add_child(perspective)
+	perspective.setup(self, third_person_body_scene)
 	camera.fov = Settings.field_of_view
 	health_changed.emit(health, max_health)
 
@@ -76,7 +83,15 @@ func horizontal_speed() -> float:
 	return Vector2(velocity.x, velocity.z).length()
 
 
+func toggle_perspective() -> void:
+	third_person = not third_person
+	weapons.sync_perspective()
+
+
 func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("camera_toggle") and can_act():
+		toggle_perspective()
+		get_viewport().set_input_as_handled()
 	if event is InputEventMouseMotion and can_act():
 		var sens := BASE_SENSITIVITY * Settings.mouse_sensitivity
 		if weapons.is_aiming():
@@ -129,6 +144,8 @@ func _physics_process(delta: float) -> void:
 	_update_recoil(delta)
 	_update_regen(delta)
 	_footsteps(delta, on_floor)
+	if perspective:
+		perspective.update_camera(delta)
 
 
 func _update_recoil(delta: float) -> void:
