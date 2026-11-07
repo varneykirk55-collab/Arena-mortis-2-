@@ -12,6 +12,9 @@ var body: Node3D
 var weapon_mount: Node3D
 var placeholder_body := false
 var has_weapon_socket := false
+var body_anim: AnimationPlayer
+var _recoil_t := 0.0
+var _fired_hooked := false
 
 func setup(p: Player, scene: PackedScene) -> void:
 	player = p
@@ -31,6 +34,7 @@ func setup(p: Player, scene: PackedScene) -> void:
 			mat.albedo_color = Color(0.28, 0.32, 0.36)
 			(body as MeshInstance3D).material_override = mat
 	_disable_visual_collisions(body)
+	body_anim = body.find_child("AnimationPlayer", true, false) as AnimationPlayer
 	body.visible = false
 	weapon_mount = Node3D.new()
 	var socket: Node3D
@@ -96,6 +100,50 @@ func update_camera(delta: float) -> void:
 		var weapon := player.weapons.current_viewmodel()
 		if weapon:
 			weapon.visible = body.visible
+	update_body_animation(delta)
+
+
+## Bot1 clip sets: base clips are posed for the M4/rifles; `_Pistol` and
+## `_Jupiter` variants place the left hand on that weapon's support grip.
+func clip_suffix() -> String:
+	var w = player.weapons.current() if player.weapons else null
+	if w == null:
+		return ""
+	match String(w.data.id):
+		"pistol":
+			return "_Pistol"
+		"jupiter":
+			return "_Jupiter"
+	return ""
+
+
+func body_clip(base: String) -> String:
+	if body_anim == null:
+		return ""
+	var variant := base + clip_suffix()
+	return variant if body_anim.has_animation(variant) else base
+
+
+func update_body_animation(delta: float) -> void:
+	if body_anim == null or not player.third_person:
+		return
+	if not _fired_hooked and player.weapons:
+		player.weapons.fired.connect(_on_weapon_fired)
+		_fired_hooked = true
+	_recoil_t = maxf(_recoil_t - delta, 0.0)
+	var base := "AimIdle"
+	var speed := player.horizontal_speed()
+	if _recoil_t > 0.0:
+		base = "FireRecoil"
+	elif speed > 4.5 and not player.weapons.is_aiming():
+		base = "Run"
+	elif speed > 0.5:
+		base = "Walk"
+	var clip := body_clip(base)
+	if clip == "" or not body_anim.has_animation(clip):
+		return
+	if body_anim.current_animation != clip:
+		body_anim.play(clip, 0.0 if base == "FireRecoil" else 0.15)
 
 
 func _disable_visual_collisions(node: Node) -> void:
@@ -106,3 +154,9 @@ func _disable_visual_collisions(node: Node) -> void:
 		node.collision_mask = 0
 	for child in node.get_children():
 		_disable_visual_collisions(child)
+
+
+func _on_weapon_fired(_w) -> void:
+	_recoil_t = 0.24
+	if body_anim and player.third_person and body_anim.current_animation.begins_with("FireRecoil"):
+		body_anim.seek(0.0, true)
