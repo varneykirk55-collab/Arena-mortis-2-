@@ -1,6 +1,15 @@
 extends "res://tests/run_tests.gd"
 ## End-to-end coverage through existing game systems, not a parallel weapon API.
 
+func _load_weapon(id: String) -> WeaponData:
+	var w: WeaponData = load("res://resources/weapons/%s.tres" % id)
+	if id == "m4":
+		w = w.duplicate()
+		w.viewmodel_scene = load("res://assets/models/weapon_m4.glb")
+		w.hip_offset = Vector3(0.12, -0.18, -0.31)
+		w.ads_offset = Vector3(0, -0.13, -0.30)
+	return w
+
 func _run_all() -> void:
 	for test in ["test_weapon_resources", "test_model_imports", "test_grok_imports", "test_rifles_combat", "test_box_acquisition_and_upgrade", "test_switching_and_empty"]:
 		_current = test
@@ -64,6 +73,10 @@ func test_rifles_combat() -> void:
 func test_box_acquisition_and_upgrade() -> void:
 	await _new_game()
 	var box: MysteryBox = game.colosseum.get_node("NavigationRegion3D/MysteryBox")
+	var grok_pool: Array[WeaponData] = []
+	for entry in box.pool:
+		grok_pool.append(_load_weapon("m4") if entry.id == &"m4" else entry)
+	box.pool = grok_pool
 	var counts := {"m4":0, "mk35":0, "jupiter":0}
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 3507

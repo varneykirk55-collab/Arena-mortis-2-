@@ -6,7 +6,7 @@ func _initialize() -> void:
 	var failures := 0
 	var files := _collect("res://", [])
 	for f in files:
-		if f.ends_with(".gd") and not f.begins_with("res://tests/") and not f.begins_with("res://tools/"):
+		if f.ends_with(".gd"):
 			var s = load(f)
 			if s == null or not (s as Script).can_instantiate():
 				print("SCRIPT_FAIL ", f)

@@ -92,12 +92,30 @@ func _new_game() -> Game:
 	return game
 
 
+func _stop_audio_recursive(n: Node) -> void:
+	if n is AudioStreamPlayer:
+		(n as AudioStreamPlayer).stop()
+		(n as AudioStreamPlayer).stream = null
+	elif n is AudioStreamPlayer3D:
+		(n as AudioStreamPlayer3D).stop()
+		(n as AudioStreamPlayer3D).stream = null
+	for c in n.get_children():
+		_stop_audio_recursive(c)
+
+
 func _teardown_game() -> void:
 	get_tree().paused = false
 	Engine.time_scale = 1.0
+	if (game == null or not is_instance_valid(game)) and get_tree().current_scene is Game:
+		game = get_tree().current_scene as Game
+	_stop_audio_recursive(get_tree().root)
 	if game and is_instance_valid(game):
 		game.queue_free()
 		await _frames(2)
+		await _process_frames(2)
+		OS.delay_msec(35)
+		await _process_frames(1)
+	ImpactFX.clear_cache()
 	game = null
 
 
@@ -508,6 +526,10 @@ func test_perspective_weapons() -> void:
 	toggle.pressed = true
 	p._unhandled_input(toggle)
 	check(p.third_person, "camera action toggles into third person")
+	var fp_arms := p.perspective.body.find_child("FP_Arms", true, false) as Node3D
+	var tp_body_mesh := p.perspective.body.find_child("node_0", true, false) as Node3D
+	if fp_arms and tp_body_mesh:
+		check(not fp_arms.visible and tp_body_mesh.visible, "TP body shows node_0 and hides duplicate FP_Arms")
 	var z := _spawn_zombie(Vector3(5, 0.05, 3), 50000.0)
 	z.set_physics_process(false)
 	await _frames(4)
@@ -615,6 +637,7 @@ func test_perspective_socket_contract() -> void:
 	check(attachment != null and attachment.bone_name == "RightWeaponSocket", "TP mount binds via BoneAttachment3D to authored socket bone")
 	p.toggle_perspective()
 	check(p.weapons.current_viewmodel().get_parent() == p.perspective.weapon_mount, "weapon-only presentation follows socket")
+	_stop_audio_recursive(p)
 	p.queue_free()
 	await _frames(2)
 
@@ -768,7 +791,12 @@ func test_death_and_restart() -> void:
 	await _secs(3.0)
 	check(game.phase == Game.Phase.GAME_OVER and game.game_over.visible, "game-over screen shown")
 	var old := game
+	_stop_audio_recursive(old)
 	game.restart()
+	var wait_frames := 0
+	while (get_tree().current_scene == null or get_tree().current_scene == old) and wait_frames < 60:
+		await get_tree().process_frame
+		wait_frames += 1
 	await _frames(5)
 	game = get_tree().current_scene as Game
 	check(game != null and game != old, "scene reloaded")

@@ -12,6 +12,10 @@ const SCORCH := preload("res://assets/textures/scorch_decal.png")
 static var _mat_cache := {}
 
 
+static func clear_cache() -> void:
+	_mat_cache.clear()
+
+
 static func _root(context: Node) -> Node:
 	return context.get_tree().current_scene if context.get_tree().current_scene else context.get_tree().root
 

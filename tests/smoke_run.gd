@@ -28,4 +28,16 @@ func _run() -> void:
 			game.wallet.points, game.player.health,
 			game.colosseum.nav_region.navigation_mesh.get_polygon_count() if game.colosseum.nav_region.navigation_mesh else -1])
 	print("SMOKE_DONE")
+	for ap in get_tree().root.find_children("*", "AudioStreamPlayer", true, false):
+		(ap as AudioStreamPlayer).stop()
+		(ap as AudioStreamPlayer).stream = null
+	for ap3 in get_tree().root.find_children("*", "AudioStreamPlayer3D", true, false):
+		(ap3 as AudioStreamPlayer3D).stop()
+		(ap3 as AudioStreamPlayer3D).stream = null
+	game.queue_free()
+	ImpactFX.clear_cache()
+	await get_tree().process_frame
+	await get_tree().process_frame
+	OS.delay_msec(35)
+	await get_tree().process_frame
 	get_tree().quit()

@@ -34,6 +34,15 @@ func setup(p: Player, scene: PackedScene) -> void:
 			mat.albedo_color = Color(0.28, 0.32, 0.36)
 			(body as MeshInstance3D).material_override = mat
 	_disable_visual_collisions(body)
+	# Samurai asset contract (PLAYER_SAMURAI_HANDS.md): node_0 is the complete
+	# 23,583-tri TP body (including arms/sleeves/hands); FP_Arms is a 4,600-tri
+	# forearm/hand duplicate for FP only and must be hidden in TP to prevent z-fighting.
+	var fp_arms := body.find_child("FP_Arms", true, false) as Node3D
+	if fp_arms:
+		fp_arms.visible = false
+	var tp_body_mesh := body.find_child("node_0", true, false) as Node3D
+	if tp_body_mesh:
+		tp_body_mesh.visible = true
 	body_anim = body.find_child("AnimationPlayer", true, false) as AnimationPlayer
 	body.visible = false
 	weapon_mount = Node3D.new()

@@ -16,7 +16,13 @@ func _run() -> void:
 	game.player.head.rotation = Vector3.ZERO
 	var wm := game.player.weapons
 	for id in ["m4", "mk35"]:
-		wm.give_weapon(load("res://resources/weapons/%s.tres" % id))
+		var wdata: WeaponData = load("res://resources/weapons/%s.tres" % id)
+		if id == "m4":
+			wdata = wdata.duplicate()
+			wdata.viewmodel_scene = load("res://assets/models/weapon_m4.glb")
+			wdata.hip_offset = Vector3(0.12, -0.18, -0.31)
+			wdata.ads_offset = Vector3(0, -0.13, -0.30)
+		wm.give_weapon(wdata)
 		wm.set_physics_process(false)
 		wm.set_process(false)
 		var vm := wm.current_viewmodel()

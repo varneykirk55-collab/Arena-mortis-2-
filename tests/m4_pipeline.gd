@@ -20,7 +20,11 @@ func _run() -> void:
 	game.auto_start = false
 	add_child(game)
 	await get_tree().physics_frame
-	game.player.weapons.give_weapon(load("res://resources/weapons/m4.tres"))
+	var m4_data := (load("res://resources/weapons/m4.tres") as WeaponData).duplicate()
+	m4_data.viewmodel_scene = load("res://assets/models/weapon_m4.glb")
+	m4_data.hip_offset = Vector3(0.12, -0.18, -0.31)
+	m4_data.ads_offset = Vector3(0, -0.13, -0.30)
+	game.player.weapons.give_weapon(m4_data)
 	var wm := game.player.weapons
 	await get_tree().create_timer(0.7).timeout
 	var w := wm.current()
@@ -65,6 +69,16 @@ func _run() -> void:
 			triangles += mesh.mesh.surface_get_array_index_len(i) / 3
 	check(surfaces <= 12 and triangles <= 30000, "first-person asset budget: %d surfaces, %d triangles" % [surfaces,triangles])
 	print("M4_PIPELINE_DONE: %d passed, %d failed" % [passed,failed])
+	for ap in get_tree().root.find_children("*", "AudioStreamPlayer", true, false):
+		(ap as AudioStreamPlayer).stop()
+		(ap as AudioStreamPlayer).stream = null
+	for ap3 in get_tree().root.find_children("*", "AudioStreamPlayer3D", true, false):
+		(ap3 as AudioStreamPlayer3D).stop()
+		(ap3 as AudioStreamPlayer3D).stream = null
 	game.queue_free()
+	ImpactFX.clear_cache()
+	await get_tree().process_frame
+	await get_tree().process_frame
+	OS.delay_msec(35)
 	await get_tree().process_frame
 	get_tree().quit(0 if failed == 0 else 1)
